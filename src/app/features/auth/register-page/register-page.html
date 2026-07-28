@@ -1,286 +1,737 @@
 <main class="auth-page">
+
   <section class="auth-card register-card">
-    <!-- Left Side -->
+
+    <!-- Left showcase section -->
 
     <aside class="auth-showcase">
-      <a routerLink="/" class="auth-logo">
+
+      <a
+        routerLink="/"
+        class="auth-logo"
+        aria-label="Go to HubShop home"
+      >
         <span class="logo-icon">
-          <i class="pi pi-shopping-bag"></i>
+          <i
+            class="pi pi-shopping-bag"
+            aria-hidden="true"
+          ></i>
         </span>
 
-        <span> Hub<strong>Shop</strong> </span>
+        <span>
+          Hub<strong>Shop</strong>
+        </span>
       </a>
 
       <div class="showcase-content">
-        <p class="showcase-label">JOIN HUBSHOP</p>
+
+        <p class="showcase-label">
+          JOIN HUBSHOP
+        </p>
 
         <h2>
           Create your account
-          <span>and start shopping.</span>
+
+          <span>
+            and start shopping.
+          </span>
         </h2>
 
-        <p>Save your favorite products, manage your orders and enjoy a faster checkout.</p>
+        <p class="showcase-description">
+          Save your favorite products,
+          manage your orders and enjoy
+          a faster checkout.
+        </p>
 
         <div class="showcase-features">
-          <div>
-            <i class="pi pi-bolt"></i>
+
+          <div class="showcase-feature">
+
+            <i
+              class="pi pi-bolt"
+              aria-hidden="true"
+            ></i>
 
             <span>
-              <strong>Faster Checkout</strong>
+              <strong>
+                Faster Checkout
+              </strong>
+
               Save addresses and preferences
             </span>
+
           </div>
 
-          <div>
-            <i class="pi pi-gift"></i>
+          <div class="showcase-feature">
+
+            <i
+              class="pi pi-gift"
+              aria-hidden="true"
+            ></i>
 
             <span>
-              <strong>Exclusive Offers</strong>
+              <strong>
+                Exclusive Offers
+              </strong>
+
               Access member-only discounts
             </span>
+
           </div>
 
-          <div>
-            <i class="pi pi-history"></i>
+          <div class="showcase-feature">
+
+            <i
+              class="pi pi-history"
+              aria-hidden="true"
+            ></i>
 
             <span>
-              <strong>Order History</strong>
+              <strong>
+                Order History
+              </strong>
+
               Manage previous purchases
             </span>
+
           </div>
+
         </div>
+
       </div>
 
-      <div class="decorative-circle circle-one"></div>
-      <div class="decorative-circle circle-two"></div>
+      <div
+        class="decorative-circle circle-one"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="decorative-circle circle-two"
+        aria-hidden="true"
+      ></div>
+
     </aside>
 
-    <!-- Form Side -->
+    <!-- Form section -->
 
     <section class="auth-form-panel">
-      <div class="auth-heading">
-        <p>CREATE ACCOUNT</p>
 
-        <h1>Join HubShop</h1>
+      <div class="form-panel-content">
 
-        <span> Enter your details to create a new account. </span>
-      </div>
+        <div class="auth-heading">
 
-      <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="submit()" novalidate>
-        <!-- Names -->
+          <p>
+            CREATE ACCOUNT
+          </p>
 
-        <div class="form-row">
+          <h1>
+            Join HubShop
+          </h1>
+
+          <span>
+            Enter your details to create
+            a new account.
+          </span>
+
+        </div>
+
+        <form
+          class="auth-form"
+          [formRoot]="registerForm"
+        >
+
+          <!-- First Name and Last Name -->
+
+          <div class="form-row">
+
+            <!-- First Name -->
+
+            <div class="form-field">
+
+              <label for="first-name">
+                First Name
+              </label>
+
+              <div
+                class="input-wrapper"
+                [class.invalid]="
+                  registerForm
+                    .firstName()
+                    .invalid() &&
+                  registerForm
+                    .firstName()
+                    .touched()
+                "
+              >
+
+                <i
+                  class="pi pi-user field-icon"
+                  aria-hidden="true"
+                ></i>
+
+                <input
+                  id="first-name"
+                  type="text"
+                  pInputText
+                  [formField]="
+                    registerForm.firstName
+                  "
+                  placeholder="First name"
+                  autocomplete="given-name"
+                  aria-describedby="first-name-error"
+                  [attr.aria-invalid]="
+                    registerForm
+                      .firstName()
+                      .invalid() &&
+                    registerForm
+                      .firstName()
+                      .touched()
+                  "
+                />
+
+              </div>
+
+              @if (
+                registerForm
+                  .firstName()
+                  .invalid() &&
+                registerForm
+                  .firstName()
+                  .touched()
+              ) {
+
+                <small
+                  id="first-name-error"
+                  class="error-message"
+                  aria-live="polite"
+                >
+                  <i
+                    class="pi pi-exclamation-circle"
+                    aria-hidden="true"
+                  ></i>
+
+                  <span>
+                    {{
+                      registerForm
+                        .firstName()
+                        .errors()[0]
+                        .message
+                    }}
+                  </span>
+                </small>
+
+              }
+
+            </div>
+
+            <!-- Last Name -->
+
+            <div class="form-field">
+
+              <label for="last-name">
+                Last Name
+              </label>
+
+              <div
+                class="input-wrapper"
+                [class.invalid]="
+                  registerForm
+                    .lastName()
+                    .invalid() &&
+                  registerForm
+                    .lastName()
+                    .touched()
+                "
+              >
+
+                <i
+                  class="pi pi-user field-icon"
+                  aria-hidden="true"
+                ></i>
+
+                <input
+                  id="last-name"
+                  type="text"
+                  pInputText
+                  [formField]="
+                    registerForm.lastName
+                  "
+                  placeholder="Last name"
+                  autocomplete="family-name"
+                  aria-describedby="last-name-error"
+                  [attr.aria-invalid]="
+                    registerForm
+                      .lastName()
+                      .invalid() &&
+                    registerForm
+                      .lastName()
+                      .touched()
+                  "
+                />
+
+              </div>
+
+              @if (
+                registerForm
+                  .lastName()
+                  .invalid() &&
+                registerForm
+                  .lastName()
+                  .touched()
+              ) {
+
+                <small
+                  id="last-name-error"
+                  class="error-message"
+                  aria-live="polite"
+                >
+                  <i
+                    class="pi pi-exclamation-circle"
+                    aria-hidden="true"
+                  ></i>
+
+                  <span>
+                    {{
+                      registerForm
+                        .lastName()
+                        .errors()[0]
+                        .message
+                    }}
+                  </span>
+                </small>
+
+              }
+
+            </div>
+
+          </div>
+
+          <!-- Email -->
+
           <div class="form-field">
-            <label for="first-name"> First Name </label>
+
+            <label for="register-email">
+              Email Address
+            </label>
 
             <div
               class="input-wrapper"
-              [class.invalid]="firstName.invalid && (firstName.touched || submitted())"
+              [class.invalid]="
+                registerForm
+                  .email()
+                  .invalid() &&
+                registerForm
+                  .email()
+                  .touched()
+              "
             >
-              <i class="pi pi-user field-icon"></i>
 
-              <input
-                id="first-name"
-                type="text"
-                pInputText
-                formControlName="firstName"
-                placeholder="First name"
-                autocomplete="given-name"
-              />
-            </div>
-
-            @if (firstName.invalid && (firstName.touched || submitted())) {
-              <small class="error-message"> First name must contain at least 2 characters. </small>
-            }
-          </div>
-
-          <div class="form-field">
-            <label for="last-name"> Last Name </label>
-
-            <div
-              class="input-wrapper"
-              [class.invalid]="lastName.invalid && (lastName.touched || submitted())"
-            >
-              <i class="pi pi-user field-icon"></i>
-
-              <input
-                id="last-name"
-                type="text"
-                pInputText
-                formControlName="lastName"
-                placeholder="Last name"
-                autocomplete="family-name"
-              />
-            </div>
-
-            @if (lastName.invalid && (lastName.touched || submitted())) {
-              <small class="error-message"> Last name must contain at least 2 characters. </small>
-            }
-          </div>
-        </div>
-
-        <!-- Email -->
-
-        <div class="form-field">
-          <label for="register-email"> Email Address </label>
-
-          <div
-            class="input-wrapper"
-            [class.invalid]="email.invalid && (email.touched || submitted())"
-          >
-            <i class="pi pi-envelope field-icon"></i>
-
-            <input
-              id="register-email"
-              type="email"
-              pInputText
-              formControlName="email"
-              placeholder="name@example.com"
-              autocomplete="email"
-            />
-          </div>
-
-          @if (email.invalid && (email.touched || submitted())) {
-            <small class="error-message"> Enter a valid email address. </small>
-          }
-        </div>
-
-        <!-- Password -->
-
-        <div class="form-field">
-          <label for="register-password"> Password </label>
-
-          <div
-            class="input-wrapper password-wrapper"
-            [class.invalid]="password.invalid && (password.touched || submitted())"
-          >
-            <i class="pi pi-lock field-icon"></i>
-
-            <input
-              id="register-password"
-              [type]="passwordVisible() ? 'text' : 'password'"
-              pInputText
-              formControlName="password"
-              placeholder="Create a strong password"
-              autocomplete="new-password"
-            />
-
-            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
               <i
-                class="pi"
-                [class.pi-eye]="!passwordVisible()"
-                [class.pi-eye-slash]="passwordVisible()"
+                class="pi pi-envelope field-icon"
+                aria-hidden="true"
               ></i>
-            </button>
+
+              <input
+                id="register-email"
+                type="email"
+                pInputText
+                [formField]="registerForm.email"
+                placeholder="name@example.com"
+                autocomplete="email"
+                spellcheck="false"
+                aria-describedby="register-email-error"
+                [attr.aria-invalid]="
+                  registerForm
+                    .email()
+                    .invalid() &&
+                  registerForm
+                    .email()
+                    .touched()
+                "
+              />
+
+            </div>
+
+            @if (
+              registerForm
+                .email()
+                .invalid() &&
+              registerForm
+                .email()
+                .touched()
+            ) {
+
+              <small
+                id="register-email-error"
+                class="error-message"
+                aria-live="polite"
+              >
+                <i
+                  class="pi pi-exclamation-circle"
+                  aria-hidden="true"
+                ></i>
+
+                <span>
+                  {{
+                    registerForm
+                      .email()
+                      .errors()[0]
+                      .message
+                  }}
+                </span>
+              </small>
+
+            }
+
           </div>
 
-          @if (password.hasError('required') && (password.touched || submitted())) {
-            <small class="error-message"> Password is required. </small>
-          }
+          <!-- Password -->
 
-          @if (
-            password.hasError('minlength') &&
-            !password.hasError('required') &&
-            (password.touched || submitted())
-          ) {
-            <small class="error-message"> Password must contain at least 8 characters. </small>
-          }
+          <div class="form-field">
 
-          @if (
-            password.hasError('pattern') &&
-            !password.hasError('required') &&
-            !password.hasError('minlength') &&
-            (password.touched || submitted())
-          ) {
-            <small class="error-message"> Include uppercase, lowercase and a number. </small>
-          }
-        </div>
+            <label for="register-password">
+              Password
+            </label>
 
-        <!-- Confirm Password -->
+            <div
+              class="input-wrapper password-wrapper"
+              [class.invalid]="
+                registerForm
+                  .password()
+                  .invalid() &&
+                registerForm
+                  .password()
+                  .touched()
+              "
+            >
 
-        <div class="form-field">
-          <label for="confirm-password"> Confirm Password </label>
+              <i
+                class="pi pi-lock field-icon"
+                aria-hidden="true"
+              ></i>
 
-          <div
-            class="input-wrapper password-wrapper"
-            [class.invalid]="
-              (confirmPassword.invalid || registerForm.hasError('passwordMismatch')) &&
-              (confirmPassword.touched || submitted())
+              <input
+                id="register-password"
+                [type]="
+                  passwordVisible()
+                    ? 'text'
+                    : 'password'
+                "
+                pInputText
+                [formField]="
+                  registerForm.password
+                "
+                placeholder="Create a strong password"
+                autocomplete="new-password"
+                aria-describedby="register-password-error"
+                [attr.aria-invalid]="
+                  registerForm
+                    .password()
+                    .invalid() &&
+                  registerForm
+                    .password()
+                    .touched()
+                "
+              />
+
+              <button
+                type="button"
+                class="password-toggle"
+                [attr.aria-label]="
+                  passwordVisible()
+                    ? 'Hide password'
+                    : 'Show password'
+                "
+                (click)="
+                  togglePasswordVisibility()
+                "
+              >
+                <i
+                  class="pi"
+                  aria-hidden="true"
+                  [class.pi-eye]="
+                    !passwordVisible()
+                  "
+                  [class.pi-eye-slash]="
+                    passwordVisible()
+                  "
+                ></i>
+              </button>
+
+            </div>
+
+            @if (
+              registerForm
+                .password()
+                .invalid() &&
+              registerForm
+                .password()
+                .touched()
+            ) {
+
+              <small
+                id="register-password-error"
+                class="error-message"
+                aria-live="polite"
+              >
+                <i
+                  class="pi pi-exclamation-circle"
+                  aria-hidden="true"
+                ></i>
+
+                <span>
+                  {{
+                    registerForm
+                      .password()
+                      .errors()[0]
+                      .message
+                  }}
+                </span>
+              </small>
+
+            }
+
+          </div>
+
+          <!-- Confirm Password -->
+
+          <div class="form-field">
+
+            <label for="confirm-password">
+              Confirm Password
+            </label>
+
+            <div
+              class="input-wrapper password-wrapper"
+              [class.invalid]="
+                registerForm
+                  .confirmPassword()
+                  .invalid() &&
+                registerForm
+                  .confirmPassword()
+                  .touched()
+              "
+            >
+
+              <i
+                class="pi pi-lock field-icon"
+                aria-hidden="true"
+              ></i>
+
+              <input
+                id="confirm-password"
+                [type]="
+                  confirmPasswordVisible()
+                    ? 'text'
+                    : 'password'
+                "
+                pInputText
+                [formField]="
+                  registerForm.confirmPassword
+                "
+                placeholder="Repeat your password"
+                autocomplete="new-password"
+                aria-describedby="confirm-password-error"
+                [attr.aria-invalid]="
+                  registerForm
+                    .confirmPassword()
+                    .invalid() &&
+                  registerForm
+                    .confirmPassword()
+                    .touched()
+                "
+              />
+
+              <button
+                type="button"
+                class="password-toggle"
+                [attr.aria-label]="
+                  confirmPasswordVisible()
+                    ? 'Hide confirm password'
+                    : 'Show confirm password'
+                "
+                (click)="
+                  toggleConfirmPasswordVisibility()
+                "
+              >
+                <i
+                  class="pi"
+                  aria-hidden="true"
+                  [class.pi-eye]="
+                    !confirmPasswordVisible()
+                  "
+                  [class.pi-eye-slash]="
+                    confirmPasswordVisible()
+                  "
+                ></i>
+              </button>
+
+            </div>
+
+            @if (
+              registerForm
+                .confirmPassword()
+                .invalid() &&
+              registerForm
+                .confirmPassword()
+                .touched()
+            ) {
+
+              <small
+                id="confirm-password-error"
+                class="error-message"
+                aria-live="polite"
+              >
+                <i
+                  class="pi pi-exclamation-circle"
+                  aria-hidden="true"
+                ></i>
+
+                <span>
+                  {{
+                    registerForm
+                      .confirmPassword()
+                      .errors()[0]
+                      .message
+                  }}
+                </span>
+              </small>
+
+            }
+
+          </div>
+
+          <!-- Terms -->
+
+          <div class="terms-field">
+
+            <label class="checkbox-label">
+
+              <input
+                type="checkbox"
+                [formField]="
+                  registerForm.acceptTerms
+                "
+              />
+
+              <span class="custom-checkbox">
+                <i
+                  class="pi pi-check"
+                  aria-hidden="true"
+                ></i>
+              </span>
+
+              <span class="terms-text">
+                I agree to the
+
+                <button
+                  type="button"
+                  class="inline-link"
+                >
+                  Terms and Conditions
+                </button>
+
+                and
+
+                <button
+                  type="button"
+                  class="inline-link"
+                >
+                  Privacy Policy
+                </button>.
+              </span>
+
+            </label>
+
+            @if (
+              registerForm
+                .acceptTerms()
+                .invalid() &&
+              registerForm
+                .acceptTerms()
+                .touched()
+            ) {
+
+              <small
+                class="error-message terms-error"
+                aria-live="polite"
+              >
+                <i
+                  class="pi pi-exclamation-circle"
+                  aria-hidden="true"
+                ></i>
+
+                <span>
+                  {{
+                    registerForm
+                      .acceptTerms()
+                      .errors()[0]
+                      .message
+                  }}
+                </span>
+              </small>
+
+            }
+
+          </div>
+
+          <!-- Submit -->
+
+          <button
+            type="submit"
+            pButton
+            class="submit-button"
+            [disabled]="
+              registerForm().submitting()
             "
           >
-            <i class="pi pi-lock field-icon"></i>
 
-            <input
-              id="confirm-password"
-              [type]="confirmPasswordVisible() ? 'text' : 'password'"
-              pInputText
-              formControlName="confirmPassword"
-              placeholder="Repeat your password"
-              autocomplete="new-password"
-            />
+            @if (
+              registerForm().submitting()
+            ) {
 
-            <button
-              type="button"
-              class="password-toggle"
-              (click)="toggleConfirmPasswordVisibility()"
-            >
               <i
-                class="pi"
-                [class.pi-eye]="!confirmPasswordVisible()"
-                [class.pi-eye-slash]="confirmPasswordVisible()"
+                class="pi pi-spinner pi-spin"
+                aria-hidden="true"
               ></i>
-            </button>
-          </div>
 
-          @if (confirmPassword.hasError('required') && (confirmPassword.touched || submitted())) {
-            <small class="error-message"> Confirm your password. </small>
-          }
+              <span>
+                Creating Account...
+              </span>
 
-          @if (
-            registerForm.hasError('passwordMismatch') &&
-            !confirmPassword.hasError('required') &&
-            (confirmPassword.touched || submitted())
-          ) {
-            <small class="error-message"> Passwords do not match. </small>
-          }
+            } @else {
+
+              <span>
+                Create Account
+              </span>
+
+              <i
+                class="pi pi-arrow-right"
+                aria-hidden="true"
+              ></i>
+
+            }
+
+          </button>
+
+        </form>
+
+        <div class="auth-switch">
+
+          <span>
+            Already have an account?
+          </span>
+
+          <a routerLink="/auth/login">
+            Sign In
+          </a>
+
         </div>
 
-        <!-- Terms -->
-
-        <div class="terms-field">
-          <label class="checkbox-label">
-            <input type="checkbox" formControlName="acceptTerms" />
-
-            <span class="custom-checkbox">
-              <i class="pi pi-check"></i>
-            </span>
-
-            <span>
-              I agree to the
-              <a href="#">Terms and Conditions</a>
-              and
-              <a href="#">Privacy Policy</a>.
-            </span>
-          </label>
-
-          @if (acceptTerms.invalid && (acceptTerms.touched || submitted())) {
-            <small class="error-message"> You must accept the terms and conditions. </small>
-          }
-        </div>
-
-        <!-- Submit -->
-
-        <button type="submit" pButton class="submit-button">
-          <span>Create Account</span>
-          <i class="pi pi-arrow-right"></i>
-        </button>
-      </form>
-
-      <div class="auth-switch">
-        <span>Already have an account?</span>
-
-        <a routerLink="/auth/login"> Sign In </a>
       </div>
+
     </section>
+
   </section>
+
 </main>

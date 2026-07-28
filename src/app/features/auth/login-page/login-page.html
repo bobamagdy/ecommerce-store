@@ -2,13 +2,14 @@
 
   <section class="auth-card">
 
-    <!-- Left Side -->
+    <!-- Left showcase section -->
 
     <aside class="auth-showcase">
 
       <a
         routerLink="/"
         class="auth-logo"
+        aria-label="Go to HubShop home"
       >
         <span class="logo-icon">
           <i class="pi pi-shopping-bag"></i>
@@ -30,58 +31,85 @@
           <span>all in one place.</span>
         </h2>
 
-        <p>
-          Sign in to access your orders, wishlist,
-          saved addresses and exclusive offers.
+        <p class="showcase-description">
+          Sign in to access your orders,
+          wishlist, saved addresses and
+          exclusive offers.
         </p>
 
         <div class="showcase-features">
 
-          <div>
+          <div class="showcase-feature">
+
             <i class="pi pi-truck"></i>
 
             <span>
-              <strong>Track Your Orders</strong>
+              <strong>
+                Track Your Orders
+              </strong>
+
               Follow every delivery
             </span>
+
           </div>
 
-          <div>
+          <div class="showcase-feature">
+
             <i class="pi pi-heart"></i>
 
             <span>
-              <strong>Save Your Favorites</strong>
+              <strong>
+                Save Your Favorites
+              </strong>
+
               Keep products in your wishlist
             </span>
+
           </div>
 
-          <div>
+          <div class="showcase-feature">
+
             <i class="pi pi-shield"></i>
 
             <span>
-              <strong>Secure Shopping</strong>
+              <strong>
+                Secure Shopping
+              </strong>
+
               Your information is protected
             </span>
+
           </div>
 
         </div>
 
       </div>
 
-      <div class="decorative-circle circle-one"></div>
-      <div class="decorative-circle circle-two"></div>
+      <div
+        class="decorative-circle circle-one"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="decorative-circle circle-two"
+        aria-hidden="true"
+      ></div>
 
     </aside>
 
-    <!-- Form Side -->
+    <!-- Login form section -->
 
     <section class="auth-form-panel">
 
       <div class="auth-heading">
 
-        <p>SIGN IN</p>
+        <p>
+          SIGN IN
+        </p>
 
-        <h1>Welcome Back</h1>
+        <h1>
+          Welcome Back
+        </h1>
 
         <span>
           Enter your account details to continue.
@@ -91,9 +119,7 @@
 
       <form
         class="auth-form"
-        [formGroup]="loginForm"
-        (ngSubmit)="submit()"
-        novalidate
+        [formRoot]="loginForm"
       >
 
         <!-- Email -->
@@ -107,45 +133,66 @@
           <div
             class="input-wrapper"
             [class.invalid]="
-              email.invalid &&
-              (email.touched || submitted())
+              loginForm.email().invalid() &&
+              loginForm.email().touched()
             "
           >
-            <i class="pi pi-envelope field-icon"></i>
+
+            <i
+              class="pi pi-envelope field-icon"
+              aria-hidden="true"
+            ></i>
 
             <input
               id="login-email"
               type="email"
               pInputText
-              formControlName="email"
+              [formField]="loginForm.email"
               placeholder="name@example.com"
               autocomplete="email"
+              spellcheck="false"
+              aria-describedby="login-email-errors"
               [attr.aria-invalid]="
-                email.invalid &&
-                (email.touched || submitted())
+                loginForm.email().invalid() &&
+                loginForm.email().touched()
               "
             />
+
           </div>
 
           @if (
-            email.hasError('required') &&
-            (email.touched || submitted())
+            loginForm.email().invalid() &&
+            loginForm.email().touched()
           ) {
-            <small class="error-message">
-              <i class="pi pi-exclamation-circle"></i>
-              Email address is required.
-            </small>
-          }
 
-          @if (
-            email.hasError('email') &&
-            !email.hasError('required') &&
-            (email.touched || submitted())
-          ) {
-            <small class="error-message">
-              <i class="pi pi-exclamation-circle"></i>
-              Enter a valid email address.
-            </small>
+            <div
+              id="login-email-errors"
+              class="error-list"
+              aria-live="polite"
+            >
+
+              @for (
+                error of loginForm.email().errors();
+                track error.kind
+              ) {
+
+                <small class="error-message">
+
+                  <i
+                    class="pi pi-exclamation-circle"
+                    aria-hidden="true"
+                  ></i>
+
+                  <span>
+                    {{ error.message }}
+                  </span>
+
+                </small>
+
+              }
+
+            </div>
+
           }
 
         </div>
@@ -161,11 +208,15 @@
           <div
             class="input-wrapper password-wrapper"
             [class.invalid]="
-              password.invalid &&
-              (password.touched || submitted())
+              loginForm.password().invalid() &&
+              loginForm.password().touched()
             "
           >
-            <i class="pi pi-lock field-icon"></i>
+
+            <i
+              class="pi pi-lock field-icon"
+              aria-hidden="true"
+            ></i>
 
             <input
               id="login-password"
@@ -175,12 +226,13 @@
                   : 'password'
               "
               pInputText
-              formControlName="password"
+              [formField]="loginForm.password"
               placeholder="Enter your password"
               autocomplete="current-password"
+              aria-describedby="login-password-errors"
               [attr.aria-invalid]="
-                password.invalid &&
-                (password.touched || submitted())
+                loginForm.password().invalid() &&
+                loginForm.password().touched()
               "
             />
 
@@ -194,38 +246,60 @@
               "
               (click)="togglePasswordVisibility()"
             >
+
               <i
                 class="pi"
-                [class.pi-eye]="!passwordVisible()"
-                [class.pi-eye-slash]="passwordVisible()"
+                aria-hidden="true"
+                [class.pi-eye]="
+                  !passwordVisible()
+                "
+                [class.pi-eye-slash]="
+                  passwordVisible()
+                "
               ></i>
+
             </button>
+
           </div>
 
           @if (
-            password.hasError('required') &&
-            (password.touched || submitted())
+            loginForm.password().invalid() &&
+            loginForm.password().touched()
           ) {
-            <small class="error-message">
-              <i class="pi pi-exclamation-circle"></i>
-              Password is required.
-            </small>
-          }
 
-          @if (
-            password.hasError('minlength') &&
-            !password.hasError('required') &&
-            (password.touched || submitted())
-          ) {
-            <small class="error-message">
-              <i class="pi pi-exclamation-circle"></i>
-              Password must contain at least 8 characters.
-            </small>
+            <div
+              id="login-password-errors"
+              class="error-list"
+              aria-live="polite"
+            >
+
+              @for (
+                error of loginForm.password().errors();
+                track error.kind
+              ) {
+
+                <small class="error-message">
+
+                  <i
+                    class="pi pi-exclamation-circle"
+                    aria-hidden="true"
+                  ></i>
+
+                  <span>
+                    {{ error.message }}
+                  </span>
+
+                </small>
+
+              }
+
+            </div>
+
           }
 
         </div>
 
-        <!-- Options -->
+        <!-- Remember me and forgot password -->
 
         <div class="form-options">
 
@@ -233,14 +307,21 @@
 
             <input
               type="checkbox"
-              formControlName="rememberMe"
+              [formField]="loginForm.rememberMe"
             />
 
             <span class="custom-checkbox">
-              <i class="pi pi-check"></i>
+
+              <i
+                class="pi pi-check"
+                aria-hidden="true"
+              ></i>
+
             </span>
 
-            <span>Remember me</span>
+            <span>
+              Remember me
+            </span>
 
           </label>
 
@@ -259,16 +340,42 @@
           type="submit"
           pButton
           class="submit-button"
+          [disabled]="loginForm().submitting()"
         >
-          <span>Sign In</span>
-          <i class="pi pi-arrow-right"></i>
+
+          @if (loginForm().submitting()) {
+
+            <i
+              class="pi pi-spinner pi-spin"
+              aria-hidden="true"
+            ></i>
+
+            <span>
+              Signing In...
+            </span>
+
+          } @else {
+
+            <span>
+              Sign In
+            </span>
+
+            <i
+              class="pi pi-arrow-right"
+              aria-hidden="true"
+            ></i>
+
+          }
+
         </button>
 
       </form>
 
       <div class="auth-switch">
 
-        <span>Don’t have an account?</span>
+        <span>
+          Don’t have an account?
+        </span>
 
         <a routerLink="/auth/register">
           Create Account

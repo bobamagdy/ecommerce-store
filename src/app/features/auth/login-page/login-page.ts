@@ -5,10 +5,14 @@ import {
 } from '@angular/core';
 
 import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+  email,
+  form,
+  FormField,
+  FormRoot,
+  minLength,
+  required
+} from '@angular/forms/signals';
+
 import {
   ActivatedRoute,
   Router,
@@ -17,12 +21,21 @@ import {
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+
 import { AuthService } from '../../../core/services/auth';
+
+interface LoginFormModel {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+
 @Component({
   selector: 'app-login-page',
 
   imports: [
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     RouterLink,
     ButtonModule,
     InputTextModule
@@ -32,72 +45,102 @@ import { AuthService } from '../../../core/services/auth';
   styleUrl: './login-page.scss'
 })
 export class LoginPage {
-  private readonly formBuilder = inject(FormBuilder);
-private readonly authService =
-  inject(AuthService);
+  private readonly authService =
+    inject(AuthService);
 
-private readonly router =
-  inject(Router);
+  private readonly router =
+    inject(Router);
 
-private readonly route =
-  inject(ActivatedRoute);
-  readonly submitted = signal(false);
+  private readonly route =
+    inject(ActivatedRoute);
+
   readonly passwordVisible = signal(false);
 
-  readonly loginForm = this.formBuilder.nonNullable.group({
-    email: [
-      '',
-      [
-        Validators.required,
-        Validators.email
-      ]
-    ],
-
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(8)
-      ]
-    ],
-
-    rememberMe: [false]
+  /*
+   * The form model is the single source of truth.
+   * Every input change updates this signal automatically.
+   */
+  readonly loginModel = signal<LoginFormModel>({
+    email: '',
+    password: '',
+    rememberMe: false
   });
 
-  get email() {
-    return this.loginForm.controls.email;
-  }
+  /*
+   * form() creates a typed FieldTree that matches
+   * the structure of loginModel.
+   */
+  readonly loginForm = form(
+    this.loginModel,
 
-  get password() {
-    return this.loginForm.controls.password;
-  }
+    (schemaPath) => {
+      required(schemaPath.email, {
+        message: 'Email address is required.'
+      });
+
+      email(schemaPath.email, {
+        message: 'Enter a valid email address.'
+      });
+
+      required(schemaPath.password, {
+        message: 'Password is required.'
+      });
+
+      minLength(schemaPath.password, 8, {
+        message:
+          'Password must contain at least 8 characters.'
+      });
+    },
+
+    {
+      submission: {
+        action: async (field) => {
+          const loginRequest =
+            field().value();
+
+          /*
+           * Temporary front-end login.
+           * This will be replaced by the .NET API later.
+           */
+          this.authService.login(
+            loginRequest.rememberMe
+          );
+
+          const requestedUrl =
+            this.route.snapshot.queryParamMap.get(
+              'returnUrl'
+            );
+
+          /*
+           * Only navigate to an internal Angular URL.
+           */
+          const returnUrl =
+            requestedUrl &&
+            requestedUrl.startsWith('/') &&
+            !requestedUrl.startsWith('//')
+              ? requestedUrl
+              : '/';
+
+          await this.router.navigateByUrl(
+            returnUrl
+          );
+        },
+
+        onInvalid: (field) => {
+          const firstError =
+            field().errorSummary()[0];
+
+          firstError
+            ?.fieldTree()
+            .focusBoundControl();
+        }
+      }
+    }
+  );
 
   togglePasswordVisibility(): void {
     this.passwordVisible.update(
       (currentValue) => !currentValue
     );
   }
-
-  submit(): void {
-  this.submitted.set(true);
-  this.loginForm.markAllAsTouched();
-
-  if (this.loginForm.invalid) {
-    return;
-  }
-
-  const loginRequest =
-    this.loginForm.getRawValue();
-
-  this.authService.login(
-    loginRequest.rememberMe
-  );
-
-  const returnUrl =
-    this.route.snapshot.queryParamMap.get(
-      'returnUrl'
-    ) ?? '/';
-
-  this.router.navigateByUrl(returnUrl);
-}
 }
