@@ -43,6 +43,10 @@ import {
   ProductCard
 } from '../../shared/components/product-card/product-card';
 
+import {
+  ProductGridSkeleton
+} from '../../shared/components/product-grid-skeleton/product-grid-skeleton';
+
 type SortOption =
   | 'newest'
   | 'price-low'
@@ -75,7 +79,8 @@ const SORT_OPTIONS:
   imports: [
     CurrencyPipe,
     ButtonModule,
-    ProductCard
+    ProductCard,
+    ProductGridSkeleton
   ],
 
   templateUrl: './products-page.html',
@@ -102,6 +107,21 @@ export class ProductsPage {
 
   readonly products =
     this.productService.products;
+
+  readonly productsLoading =
+    this.productService.isLoading;
+
+  readonly initialProductsLoading =
+    this.productService.isInitialLoading;
+
+  readonly productsReloading =
+    this.productService.isReloading;
+
+  readonly productsLoadError =
+    this.productService.hasBlockingError;
+
+  readonly productsErrorMessage =
+    this.productService.errorMessage;
 
   readonly categories:
     FilterOption[] = [
@@ -163,12 +183,6 @@ export class ProductsPage {
       }
     ];
 
-  /*
-   * الـRouter هو مصدر الحقيقة للفلاتر.
-   *
-   * لما الرابط يتغير، كل الـcomputed Signals
-   * تتحدث تلقائيًا.
-   */
   private readonly queryParamMap =
     toSignal(
       this.route.queryParamMap,
@@ -212,7 +226,8 @@ export class ProductsPage {
         (brandName) =>
           this.brands.some(
             (brand) =>
-              brand.name === brandName
+              brand.name ===
+              brandName
           )
       );
     });
@@ -383,6 +398,10 @@ export class ProductsPage {
         }
       );
     });
+
+  retryLoadingProducts(): void {
+    this.productService.reloadProducts();
+  }
 
   toggleCategory(
     categoryName: string,

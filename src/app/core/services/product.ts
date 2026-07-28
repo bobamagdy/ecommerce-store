@@ -16,15 +16,12 @@ import {
 })
 export class ProductService {
   /*
-   * httpResource تنفذ GET request فور إنشاء
-   * الـService، وتدير القيمة والتحميل والخطأ
-   * في صورة Signals.
+   * GET request تفاعلية باستخدام
+   * Angular 22 httpResource.
    *
-   * لاحقًا سنستبدل المسار فقط بـ:
-   *
-   * http://localhost:5000/api/products
+   * لاحقًا سنغير الرابط فقط إلى
+   * .NET Products API.
    */
-
   private readonly productsResource =
     httpResource<Product[]>(
       () => '/data/products.json',
@@ -35,15 +32,12 @@ export class ProductService {
     );
 
   /*
-   * نحافظ على نفس الـAPI التي تستخدمها
-   * بقية الصفحات:
+   * لا نقرأ value() إلا عندما تكون
+   * للـResource قيمة صالحة.
    *
-   * productService.products()
-   *
-   * ونستخدم hasValue قبل قراءة value
-   * حتى لا نحاول قراءة قيمة في حالة الخطأ.
+   * قراءة value أثناء Error State
+   * قد ترمي Runtime Error.
    */
-
   readonly products = computed<Product[]>(
     () =>
       this.productsResource.hasValue()
@@ -52,9 +46,8 @@ export class ProductService {
   );
 
   /*
-   * Signals خاصة بحالة الـRequest.
+   * Request state signals.
    */
-
   readonly isLoading =
     this.productsResource.isLoading;
 
@@ -68,12 +61,53 @@ export class ProductService {
     this.productsResource.statusCode;
 
   /*
-   * البحث عن منتج سيظل يعمل كما كان.
+   * Initial loading:
    *
-   * لأن products() أصبحت تعتمد على
-   * httpResource وتتحدث تلقائيًا بعد
-   * وصول البيانات.
+   * لا توجد منتجات قديمة نعرضها.
    */
+  readonly isInitialLoading =
+    computed(
+      () =>
+        this.isLoading() &&
+        this.products().length === 0
+    );
+
+  /*
+   * Reloading:
+   *
+   * يوجد Data قديمة ونحضر نسخة جديدة.
+   */
+  readonly isReloading =
+    computed(
+      () =>
+        this.status() === 'reloading'
+    );
+
+  /*
+   * Error يمنع عرض صفحة المنتجات
+   * فقط عندما لا توجد Data سابقة.
+   */
+  readonly hasBlockingError =
+    computed(
+      () =>
+        this.error() !== undefined &&
+        this.products().length === 0
+    );
+
+  readonly errorMessage =
+    computed(() => {
+      const currentError =
+        this.error();
+
+      if (!currentError) {
+        return '';
+      }
+
+      return (
+        currentError.message ||
+        'Products could not be loaded.'
+      );
+    });
 
   getProductById(
     productId: number
@@ -84,12 +118,7 @@ export class ProductService {
     );
   }
 
-  /*
-   * إعادة تحميل المنتجات بدون Refresh
-   * للتطبيق كله.
-   */
-
-  reloadProducts(): void {
-    this.productsResource.reload();
+  reloadProducts(): boolean {
+    return this.productsResource.reload();
   }
 }

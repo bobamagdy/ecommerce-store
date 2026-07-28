@@ -342,189 +342,295 @@
 
     </aside>
 
-    <!-- Products -->
+    <!-- Products area -->
 
     <section class="products-area">
 
-      <div class="products-toolbar">
+      @if (initialProductsLoading()) {
 
-        <p class="results-count">
-          Showing
+        <div class="products-toolbar loading-toolbar">
 
-          <strong>
-            {{ filteredProducts().length }}
-          </strong>
+          <p class="results-count">
+            Loading products...
+          </p>
 
-          of
+        </div>
 
-          <strong>
-            {{ products().length }}
-          </strong>
+        <app-product-grid-skeleton
+          [count]="8"
+          [listView]="!gridView()"
+        />
 
-          products
-        </p>
+      } @else if (productsLoadError()) {
 
-        <div class="toolbar-actions">
+        <section
+          class="products-error-state"
+          role="alert"
+        >
 
-          <label class="sort-control">
+          <div class="error-state-icon">
+            <i
+              class="pi pi-cloud-times"
+              aria-hidden="true"
+            ></i>
+          </div>
 
-            <span>
-              Sort by:
-            </span>
+          <p class="error-state-label">
+            LOADING ERROR
+          </p>
 
-            <select
-              [value]="sortBy()"
-              (change)="changeSorting($event)"
-            >
-              <option value="newest">
-                Newest First
-              </option>
+          <h2>
+            Products could not be loaded
+          </h2>
 
-              <option value="price-low">
-                Price: Low to High
-              </option>
+          <p class="error-state-description">
+            {{
+              productsErrorMessage() ||
+              'Check your connection and try again.'
+            }}
+          </p>
 
-              <option value="price-high">
-                Price: High to Low
-              </option>
+          <button
+            type="button"
+            pButton
+            class="retry-button"
+            [disabled]="productsLoading()"
+            (click)="retryLoadingProducts()"
+          >
+            @if (productsLoading()) {
 
-              <option value="rating">
-                Highest Rated
-              </option>
-            </select>
-
-          </label>
-
-          <div class="view-buttons">
-
-            <span>
-              View:
-            </span>
-
-            <button
-              type="button"
-              class="view-button"
-              [class.active]="gridView()"
-              aria-label="Grid view"
-              (click)="showGridView()"
-            >
               <i
-                class="pi pi-th-large"
+                class="pi pi-spinner pi-spin"
                 aria-hidden="true"
               ></i>
-            </button>
 
-            <button
-              type="button"
-              class="view-button"
-              [class.active]="!gridView()"
-              aria-label="List view"
-              (click)="showListView()"
-            >
+              <span>
+                Retrying...
+              </span>
+
+            } @else {
+
               <i
-                class="pi pi-list"
+                class="pi pi-refresh"
                 aria-hidden="true"
               ></i>
-            </button>
+
+              <span>
+                Try Again
+              </span>
+
+            }
+          </button>
+
+        </section>
+
+      } @else {
+
+        @if (productsReloading()) {
+
+          <div
+            class="reloading-notice"
+            role="status"
+            aria-live="polite"
+          >
+            <i
+              class="pi pi-spinner pi-spin"
+              aria-hidden="true"
+            ></i>
+
+            <span>
+              Updating products...
+            </span>
+          </div>
+
+        }
+
+        <div class="products-toolbar">
+
+          <p class="results-count">
+            Showing
+
+            <strong>
+              {{ filteredProducts().length }}
+            </strong>
+
+            of
+
+            <strong>
+              {{ products().length }}
+            </strong>
+
+            products
+          </p>
+
+          <div class="toolbar-actions">
+
+            <label class="sort-control">
+
+              <span>
+                Sort by:
+              </span>
+
+              <select
+                [value]="sortBy()"
+                (change)="
+                  changeSorting($event)
+                "
+              >
+                <option value="newest">
+                  Newest First
+                </option>
+
+                <option value="price-low">
+                  Price: Low to High
+                </option>
+
+                <option value="price-high">
+                  Price: High to Low
+                </option>
+
+                <option value="rating">
+                  Highest Rated
+                </option>
+              </select>
+
+            </label>
+
+            <div class="view-buttons">
+
+              <span>
+                View:
+              </span>
+
+              <button
+                type="button"
+                class="view-button"
+                [class.active]="gridView()"
+                aria-label="Grid view"
+                (click)="showGridView()"
+              >
+                <i
+                  class="pi pi-th-large"
+                  aria-hidden="true"
+                ></i>
+              </button>
+
+              <button
+                type="button"
+                class="view-button"
+                [class.active]="!gridView()"
+                aria-label="List view"
+                (click)="showListView()"
+              >
+                <i
+                  class="pi pi-list"
+                  aria-hidden="true"
+                ></i>
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
-      </div>
+        @if (
+          filteredProducts().length > 0
+        ) {
 
-      @if (
-        filteredProducts().length > 0
-      ) {
-
-        <div
-          class="products-grid"
-          [class.list-view]="!gridView()"
-        >
-
-          @for (
-            product of filteredProducts();
-            track product.id
-          ) {
-
-            <app-product-card
-              [product]="product"
-              [layout]="
-                gridView()
-                  ? 'grid'
-                  : 'list'
-              "
-              [favorite]="
-                isFavorite(product.id)
-              "
-              (favoriteChange)="
-                setFavorite(
-                  product.id,
-                  $event
-                )
-              "
-              [quantity]="
-                getProductQuantity(
-                  product.id
-                )
-              "
-              (quantityChange)="
-                setProductQuantity(
-                  product,
-                  $event
-                )
-              "
-            />
-
-          }
-
-        </div>
-
-      } @else {
-
-        <div class="no-products">
-
-          <i
-            class="pi pi-search"
-            aria-hidden="true"
-          ></i>
-
-          <h2>
-            No products found
-          </h2>
-
-          @if (searchQuery().length > 0) {
-
-            <p>
-              We couldn’t find products matching
-              “{{ searchQuery() }}”.
-            </p>
-
-          } @else {
-
-            <p>
-              Try changing or resetting
-              your filters.
-            </p>
-
-          }
-
-          <button
-            type="button"
-            pButton
-            (click)="resetFilters()"
+          <div
+            class="products-grid"
+            [class.list-view]="!gridView()"
           >
+
+            @for (
+              product of filteredProducts();
+              track product.id
+            ) {
+
+              <app-product-card
+                [product]="product"
+                [layout]="
+                  gridView()
+                    ? 'grid'
+                    : 'list'
+                "
+                [favorite]="
+                  isFavorite(product.id)
+                "
+                (favoriteChange)="
+                  setFavorite(
+                    product.id,
+                    $event
+                  )
+                "
+                [quantity]="
+                  getProductQuantity(
+                    product.id
+                  )
+                "
+                (quantityChange)="
+                  setProductQuantity(
+                    product,
+                    $event
+                  )
+                "
+              />
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="no-products">
+
             <i
-              class="pi pi-refresh"
+              class="pi pi-search"
               aria-hidden="true"
             ></i>
 
-            <span>
-              Reset Filters
-            </span>
-          </button>
+            <h2>
+              No products found
+            </h2>
 
-        </div>
+            @if (
+              searchQuery().length > 0
+            ) {
+
+              <p>
+                We couldn’t find products
+                matching
+                “{{ searchQuery() }}”.
+              </p>
+
+            } @else {
+
+              <p>
+                Try changing or resetting
+                your filters.
+              </p>
+
+            }
+
+            <button
+              type="button"
+              pButton
+              (click)="resetFilters()"
+            >
+              <i
+                class="pi pi-refresh"
+                aria-hidden="true"
+              ></i>
+
+              <span>
+                Reset Filters
+              </span>
+            </button>
+
+          </div>
+
+        }
 
       }
 

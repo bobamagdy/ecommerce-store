@@ -1,0 +1,49 @@
+<div
+  class="skeleton-grid"
+  [class.list-view]="listView()"
+  aria-label="Loading products"
+  aria-busy="true"
+>
+  @for (
+    item of skeletonItems();
+    track item
+  ) {
+    <article class="skeleton-card">
+
+      <div class="skeleton-image shimmer"></div>
+
+      <div class="skeleton-content">
+
+        <div
+          class="skeleton-line category-line shimmer"
+        ></div>
+
+        <div
+          class="skeleton-line title-line shimmer"
+        ></div>
+
+        <div
+          class="skeleton-line title-line short shimmer"
+        ></div>
+
+        <div
+          class="skeleton-line rating-line shimmer"
+        ></div>
+
+        <div class="skeleton-bottom">
+
+          <div
+            class="skeleton-line price-line shimmer"
+          ></div>
+
+          <div
+            class="skeleton-button shimmer"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </article>
+  }
+</div>
