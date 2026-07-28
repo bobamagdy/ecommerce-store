@@ -65,7 +65,7 @@
 
   </div>
 
-  <!-- Product information -->
+  <!-- Product content -->
 
   <div class="product-content">
 
@@ -84,6 +84,8 @@
         {{ product().name }}
       </h3>
     </a>
+
+    <!-- Rating -->
 
     <div class="product-rating">
 
@@ -109,31 +111,59 @@
 
     <div class="product-bottom">
 
-      <!-- Product price -->
+      <!--
+        @let تنشئ Template Variable
+        وتحافظ على تحديثها تلقائيًا.
+      -->
+
+      @let discount =
+        product().price
+          | discountPercentage:
+              product().oldPrice;
+
+      <!-- Price -->
 
       <div class="product-price">
 
-        <strong>
-          {{
-            product().price
-              | currency:
-                  'USD':
-                  'symbol':
-                  '1.2-2'
-          }}
-        </strong>
+        <div class="price-values">
 
-        @if (product().oldPrice) {
-
-          <del>
+          <strong>
             {{
-              product().oldPrice
+              product().price
                 | currency:
                     'USD':
                     'symbol':
                     '1.2-2'
             }}
-          </del>
+          </strong>
+
+          @if (product().oldPrice) {
+
+            <del>
+              {{
+                product().oldPrice
+                  | currency:
+                      'USD':
+                      'symbol':
+                      '1.2-2'
+              }}
+            </del>
+
+          }
+
+        </div>
+
+        @if (discount !== null) {
+
+          <span
+            class="discount-percentage"
+            [attr.aria-label]="
+              discount +
+              ' percent discount'
+            "
+          >
+            {{ discount }}% OFF
+          </span>
 
         }
 
@@ -181,7 +211,7 @@
 
       } @else {
 
-        <!-- Quantity selector -->
+        <!-- Quantity Selector -->
 
         <app-quantity-selector
           [(quantity)]="quantity"

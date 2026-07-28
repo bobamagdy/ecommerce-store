@@ -1,38 +1,19 @@
-import {
-  CurrencyPipe
-} from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  model,
-  output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 
-import {
-  RouterLink
-} from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import {
-  ButtonModule
-} from 'primeng/button';
+import { ButtonModule } from 'primeng/button';
 
-import {
-  Product
-} from '../../../../core/models/product.model';
+import { Product } from '../../../../core/models/product.model';
 
-import {
-  ImageFallback
-} from '../../../../features/shared/directives/image-fallback';
+import { ImageFallback } from '../../directives/image-fallback';
+import { DiscountPercentagePipe } from '../../pipes/discount-percentage/discount-percentage-pipe';
 
-import {
-  QuantitySelector
-} from '../quantity-selector/quantity-selector';
+import { QuantitySelector } from '../quantity-selector/quantity-selector';
 
-export type ProductCardLayout =
-  | 'grid'
-  | 'list';
+export type ProductCardLayout = 'grid' | 'list';
 
 @Component({
   selector: 'app-product-card',
@@ -42,69 +23,53 @@ export type ProductCardLayout =
     RouterLink,
     ButtonModule,
     ImageFallback,
-    QuantitySelector
+    DiscountPercentagePipe,
+    QuantitySelector,
   ],
 
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss',
 
-  changeDetection:
-    ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCard {
   /*
-   * المنتج إجباري.
+   * Required Signal Input.
    */
-  readonly product =
-    input.required<Product>();
+  readonly product = input.required<Product>();
 
   /*
-   * شكل الكارت:
+   * شكل عرض الكارت.
+   */
+  readonly layout = input<ProductCardLayout>('grid');
+
+  /*
+   * حالة المنتج داخل الـWishlist.
+   */
+  readonly favorite = input(false);
+
+  /*
+   * Model Signal:
    *
-   * grid
-   * list
+   * Input: quantity
+   * Output: quantityChange
    */
-  readonly layout =
-    input<ProductCardLayout>('grid');
+  readonly quantity = model(0);
 
   /*
-   * هل المنتج موجود داخل Wishlist؟
+   * Event يتم إرساله للـParent عند
+   * تغيير حالة القلب.
    */
-  readonly favorite =
-    input(false);
-
-  /*
-   * Model Input:
-   *
-   * Input:
-   * quantity
-   *
-   * Output:
-   * quantityChange
-   */
-  readonly quantity =
-    model(0);
-
-  /*
-   * Event للـParent عند تغيير حالة القلب.
-   */
-  readonly favoriteChange =
-    output<boolean>();
+  readonly favoriteChange = output<boolean>();
 
   toggleFavorite(): void {
-    this.favoriteChange.emit(
-      !this.favorite()
-    );
+    this.favoriteChange.emit(!this.favorite());
   }
 
   addToCart(): void {
-    const currentProduct =
-      this.product();
+    const currentProduct = this.product();
 
-    if (
-      currentProduct.stock <= 0 ||
-      this.quantity() > 0
-    ) {
+    if (currentProduct.stock <= 0 || this.quantity() > 0) {
       return;
     }
 
