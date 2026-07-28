@@ -1,0 +1,229 @@
+<article
+  class="product-card"
+  [class.list-card]="
+    layout() === 'list'
+  "
+>
+
+  <!-- Product image -->
+
+  <div class="product-image-container">
+
+    @if (product().badge) {
+
+      <span
+        class="product-badge"
+        [class.sale-badge]="
+          product().badge === 'Sale'
+        "
+        [class.new-badge]="
+          product().badge === 'New'
+        "
+      >
+        {{ product().badge }}
+      </span>
+
+    }
+
+    <button
+      type="button"
+      class="favorite-button"
+      [class.active]="favorite()"
+      [attr.aria-label]="
+        favorite()
+          ? 'Remove from wishlist'
+          : 'Add to wishlist'
+      "
+      (click)="toggleFavorite()"
+    >
+      <i
+        class="pi pi-heart"
+        aria-hidden="true"
+      ></i>
+    </button>
+
+    <a
+      class="product-image-link"
+      [routerLink]="[
+        '/products',
+        product().id
+      ]"
+      [attr.aria-label]="
+        'View ' + product().name
+      "
+    >
+      <img
+        [src]="product().image"
+        [alt]="product().name"
+        appImageFallback="/images/product-placeholder.svg"
+        loading="lazy"
+        decoding="async"
+        width="400"
+        height="400"
+      />
+    </a>
+
+  </div>
+
+  <!-- Product content -->
+
+  <div class="product-content">
+
+    <p class="product-category">
+      {{ product().category }}
+    </p>
+
+    <a
+      class="product-title-link"
+      [routerLink]="[
+        '/products',
+        product().id
+      ]"
+    >
+      <h3>
+        {{ product().name }}
+      </h3>
+    </a>
+
+    <!-- Rating -->
+
+    <div class="product-rating">
+
+      <span
+        class="stars"
+        [attr.aria-label]="
+          product().rating +
+          ' out of 5 stars'
+        "
+      >
+        ★★★★★
+      </span>
+
+      <strong>
+        {{ product().rating }}
+      </strong>
+
+      <span>
+        ({{ product().reviews }})
+      </span>
+
+    </div>
+
+    <div class="product-bottom">
+
+      <!--
+        @let تنشئ Template Variable
+        وتحافظ على تحديثها تلقائيًا.
+      -->
+
+      @let discount =
+        product().price
+          | discountPercentage:
+              product().oldPrice;
+
+      <!-- Price -->
+
+      <div class="product-price">
+
+        <div class="price-values">
+
+          <strong>
+            {{
+              product().price
+                | currency:
+                    'USD':
+                    'symbol':
+                    '1.2-2'
+            }}
+          </strong>
+
+          @if (product().oldPrice) {
+
+            <del>
+              {{
+                product().oldPrice
+                  | currency:
+                      'USD':
+                      'symbol':
+                      '1.2-2'
+              }}
+            </del>
+
+          }
+
+        </div>
+
+        @if (discount !== null) {
+
+          <span
+            class="discount-percentage"
+            [attr.aria-label]="
+              discount +
+              ' percent discount'
+            "
+          >
+            {{ discount }}% OFF
+          </span>
+
+        }
+
+      </div>
+
+      <!-- Out of stock -->
+
+      @if (product().stock === 0) {
+
+        <button
+          type="button"
+          pButton
+          class="out-of-stock-button"
+          disabled
+        >
+          <i
+            class="pi pi-ban"
+            aria-hidden="true"
+          ></i>
+
+          <span>
+            Out of Stock
+          </span>
+        </button>
+
+      } @else if (quantity() === 0) {
+
+        <!-- Add to cart -->
+
+        <button
+          type="button"
+          pButton
+          class="add-cart-button"
+          (click)="addToCart()"
+        >
+          <i
+            class="pi pi-shopping-cart"
+            aria-hidden="true"
+          ></i>
+
+          <span>
+            Add to Cart
+          </span>
+        </button>
+
+      } @else {
+
+        <!-- Quantity Selector -->
+
+        <app-quantity-selector
+          [(quantity)]="quantity"
+          [min]="0"
+          [max]="product().stock"
+          label="In Cart"
+        />
+
+      }
+
+    </div>
+
+  </div>
+
+</article>

@@ -1,0 +1,105 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="600"
+  height="600"
+  viewBox="0 0 600 600"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">
+    Product image unavailable
+  </title>
+
+  <desc id="description">
+    Placeholder displayed when a product image cannot be loaded.
+  </desc>
+
+  <defs>
+    <linearGradient
+      id="background"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="1"
+    >
+      <stop
+        offset="0%"
+        stop-color="#faf7ff"
+      />
+
+      <stop
+        offset="100%"
+        stop-color="#ede9fe"
+      />
+    </linearGradient>
+  </defs>
+
+  <rect
+    width="600"
+    height="600"
+    rx="48"
+    fill="url(#background)"
+  />
+
+  <circle
+    cx="300"
+    cy="245"
+    r="105"
+    fill="#ffffff"
+    stroke="#c4b5fd"
+    stroke-width="8"
+  />
+
+  <path
+    d="
+      M225 295
+      L275 245
+      L315 280
+      L350 225
+      L395 295
+      Z
+    "
+    fill="#a78bfa"
+  />
+
+  <circle
+    cx="260"
+    cy="210"
+    r="22"
+    fill="#7c3aed"
+  />
+
+  <path
+    d="
+      M235 175
+      L365 305
+    "
+    fill="none"
+    stroke="#6d28d9"
+    stroke-width="12"
+    stroke-linecap="round"
+  />
+
+  <text
+    x="300"
+    y="405"
+    text-anchor="middle"
+    fill="#5b21b6"
+    font-family="Arial, sans-serif"
+    font-size="30"
+    font-weight="700"
+  >
+    Image unavailable
+  </text>
+
+  <text
+    x="300"
+    y="450"
+    text-anchor="middle"
+    fill="#7c3aed"
+    font-family="Arial, sans-serif"
+    font-size="20"
+  >
+    HubShop
+  </text>
+</svg>

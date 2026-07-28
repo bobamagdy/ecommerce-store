@@ -1,223 +1,124 @@
-import { Injectable, signal } from '@angular/core';
+import {
+  httpResource
+} from '@angular/common/http';
 
-import { Product } from '../models/product.model';
+import {
+  computed,
+  Injectable
+} from '@angular/core';
+
+import {
+  Product
+} from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private readonly productsState = signal<Product[]>([
-    {
-      id: 1,
-      name: 'Sony WH-1000XM5 Wireless Headphones',
-      category: 'Electronics',
-      brand: 'Sony',
-      price: 249.99,
-      oldPrice: 349,
-      rating: 4.8,
-      reviews: 467,
-      badge: 'Sale',
+  /*
+   * GET request تفاعلية باستخدام
+   * Angular 22 httpResource.
+   *
+   * لاحقًا سنغير الرابط فقط إلى
+   * .NET Products API.
+   */
+  private readonly productsResource =
+    httpResource<Product[]>(
+      () => '/data/products.json',
 
-      image:
-        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85',
-
-      images: [
-        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85',
-        'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=900&q=85',
-        'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=85'
-      ],
-
-      description:
-        'Industry-leading wireless headphones with powerful noise cancellation, clear hands-free calling and long battery life.',
-
-      stock: 18,
-      sku: 'SONY-WH1000XM5'
-    },
-
-    {
-      id: 2,
-      name: 'Michael Kors Jet Set Travel Tote Bag',
-      category: 'Fashion',
-      brand: 'Michael Kors',
-      price: 149.99,
-      oldPrice: 199,
-      rating: 4.7,
-      reviews: 230,
-      badge: 'New',
-
-      image:
-        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=85',
-
-      images: [
-        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=85',
-        'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=900&q=85'
-      ],
-
-      description:
-        'A stylish and spacious travel tote bag designed for everyday use with premium materials and elegant details.',
-
-      stock: 12,
-      sku: 'MK-JETSET-001'
-    },
-
-    {
-      id: 3,
-      name: 'Apple Watch Series 9 GPS',
-      category: 'Electronics',
-      brand: 'Apple',
-      price: 399.99,
-      oldPrice: 499,
-      rating: 4.9,
-      reviews: 398,
-      badge: 'Sale',
-
-      image:
-        'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85',
-
-      images: [
-        'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85',
-        'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?auto=format&fit=crop&w=900&q=85'
-      ],
-
-      description:
-        'A powerful smartwatch with fitness tracking, notifications, health insights and a bright always-on display.',
-
-      stock: 9,
-      sku: 'APPLE-WATCH-S9'
-    },
-
-    {
-      id: 4,
-      name: 'Lancôme La Vie Est Belle Perfume',
-      category: 'Beauty',
-      brand: 'Lancôme',
-      price: 79.99,
-      oldPrice: 100,
-      rating: 4.6,
-      reviews: 152,
-      badge: 'New',
-
-      image:
-        'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=85',
-
-      images: [
-        'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=85',
-        'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=85'
-      ],
-
-      description:
-        'A sophisticated fragrance with floral and sweet notes, designed for a warm and elegant everyday experience.',
-
-      stock: 25,
-      sku: 'LANCOME-LVEB-100'
-    },
-
-    {
-      id: 5,
-      name: 'Nike Air Max 270 Men Shoes',
-      category: 'Fashion',
-      brand: 'Nike',
-      price: 129.99,
-      oldPrice: 160,
-      rating: 4.8,
-      reviews: 310,
-      badge: 'Sale',
-
-      image:
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85',
-
-      images: [
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85',
-        'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=85'
-      ],
-
-      description:
-        'Comfortable lifestyle shoes with lightweight cushioning, breathable materials and a modern athletic design.',
-
-      stock: 22,
-      sku: 'NIKE-AM270'
-    },
-
-    {
-      id: 6,
-      name: 'Modern Three-Seater Fabric Sofa',
-      category: 'Home & Living',
-      brand: 'IKEA',
-      price: 599.99,
-      rating: 4.7,
-      reviews: 184,
-
-      image:
-        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85',
-
-      images: [
-        'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85',
-        'https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?auto=format&fit=crop&w=900&q=85'
-      ],
-
-      description:
-        'A comfortable modern sofa with durable fabric, supportive cushions and enough space for the whole family.',
-
-      stock: 5,
-      sku: 'IKEA-SOFA-003'
-    },
-
-    {
-      id: 7,
-      name: 'Philips Hue White Smart Bulb',
-      category: 'Home & Living',
-      brand: 'Philips',
-      price: 19.99,
-      oldPrice: 29.99,
-      rating: 4.5,
-      reviews: 267,
-      badge: 'New',
-
-      image:
-        'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85',
-
-      images: [
-        'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85'
-      ],
-
-      description:
-        'A smart LED light bulb that can be controlled remotely to create comfortable lighting for your home.',
-
-      stock: 42,
-      sku: 'PHILIPS-HUE-WHITE'
-    },
-
-    {
-      id: 8,
-      name: 'Adidas Tango Soccer Ball',
-      category: 'Sports',
-      brand: 'Adidas',
-      price: 29.99,
-      oldPrice: 39.99,
-      rating: 4.4,
-      reviews: 163,
-      badge: 'Sale',
-
-      image:
-        'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=900&q=85',
-
-      images: [
-        'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=900&q=85'
-      ],
-
-      description:
-        'A durable soccer ball designed for training and recreational matches with reliable control and performance.',
-
-      stock: 31,
-      sku: 'ADIDAS-TANGO-05'
-    }
-  ]);
-
-  readonly products = this.productsState.asReadonly();
-
-  getProductById(productId: number): Product | undefined {
-    return this.productsState().find(
-      (product) => product.id === productId
+      {
+        defaultValue: []
+      }
     );
+
+  /*
+   * لا نقرأ value() إلا عندما تكون
+   * للـResource قيمة صالحة.
+   *
+   * قراءة value أثناء Error State
+   * قد ترمي Runtime Error.
+   */
+  readonly products = computed<Product[]>(
+    () =>
+      this.productsResource.hasValue()
+        ? this.productsResource.value()
+        : []
+  );
+
+  /*
+   * Request state signals.
+   */
+  readonly isLoading =
+    this.productsResource.isLoading;
+
+  readonly error =
+    this.productsResource.error;
+
+  readonly status =
+    this.productsResource.status;
+
+  readonly statusCode =
+    this.productsResource.statusCode;
+
+  /*
+   * Initial loading:
+   *
+   * لا توجد منتجات قديمة نعرضها.
+   */
+  readonly isInitialLoading =
+    computed(
+      () =>
+        this.isLoading() &&
+        this.products().length === 0
+    );
+
+  /*
+   * Reloading:
+   *
+   * يوجد Data قديمة ونحضر نسخة جديدة.
+   */
+  readonly isReloading =
+    computed(
+      () =>
+        this.status() === 'reloading'
+    );
+
+  /*
+   * Error يمنع عرض صفحة المنتجات
+   * فقط عندما لا توجد Data سابقة.
+   */
+  readonly hasBlockingError =
+    computed(
+      () =>
+        this.error() !== undefined &&
+        this.products().length === 0
+    );
+
+  readonly errorMessage =
+    computed(() => {
+      const currentError =
+        this.error();
+
+      if (!currentError) {
+        return '';
+      }
+
+      return (
+        currentError.message ||
+        'Products could not be loaded.'
+      );
+    });
+
+  getProductById(
+    productId: number
+  ): Product | undefined {
+    return this.products().find(
+      (product) =>
+        product.id === productId
+    );
+  }
+
+  reloadProducts(): boolean {
+    return this.productsResource.reload();
   }
 }

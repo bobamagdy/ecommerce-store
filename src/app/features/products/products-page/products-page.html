@@ -1,41 +1,148 @@
 <main class="products-page">
+
+  <!-- Page heading -->
+
   <section class="page-heading">
-    <p class="breadcrumb">Home <span>/</span> Products</p>
 
-    <h1>All Products</h1>
+    <p class="breadcrumb">
+      Home
+      <span>/</span>
+      Products
+    </p>
 
-    <p class="page-description">Explore our wide range of products across all categories.</p>
+    @if (searchQuery().length > 0) {
+
+      <h1>
+        Search Results
+      </h1>
+
+      <p class="page-description">
+        Showing results for
+
+        <strong>
+          “{{ searchQuery() }}”
+        </strong>
+      </p>
+
+    } @else {
+
+      <h1>
+        All Products
+      </h1>
+
+      <p class="page-description">
+        Explore our wide range of products
+        across all categories.
+      </p>
+
+    }
+
   </section>
 
   <section class="shop-layout">
-    <!-- Sidebar Filters -->
+
+    <!-- Filters -->
 
     <aside class="filters-sidebar">
-      <div class="filters-heading">
-        <h2>Filters</h2>
 
-        <button type="button" class="reset-button" (click)="resetFilters()">Reset</button>
+      <div class="filters-heading">
+
+        <h2>
+          Filters
+        </h2>
+
+        @if (hasActiveFilters()) {
+
+          <button
+            type="button"
+            class="reset-button"
+            (click)="resetFilters()"
+          >
+            Reset
+          </button>
+
+        }
+
       </div>
+
+      @if (searchQuery().length > 0) {
+
+        <section class="filter-section">
+
+          <div class="active-search-filter">
+
+            <div>
+
+              <small>
+                Search
+              </small>
+
+              <strong>
+                {{ searchQuery() }}
+              </strong>
+
+            </div>
+
+            <button
+              type="button"
+              aria-label="Clear search"
+              (click)="clearSearch()"
+            >
+              <i
+                class="pi pi-times"
+                aria-hidden="true"
+              ></i>
+            </button>
+
+          </div>
+
+        </section>
+
+      }
 
       <!-- Categories -->
 
       <section class="filter-section">
+
         <div class="filter-title">
+
           <span>
-            <i class="pi pi-list"></i>
+            <i
+              class="pi pi-list"
+              aria-hidden="true"
+            ></i>
+
             Categories
           </span>
 
-          <i class="pi pi-chevron-up"></i>
+          <i
+            class="pi pi-chevron-up"
+            aria-hidden="true"
+          ></i>
+
         </div>
 
         <div class="filter-options">
-          @for (category of categories; track category.name) {
+
+          @for (
+            category of categories;
+            track category.name
+          ) {
+
             <label class="filter-check">
+
               <input
                 type="checkbox"
-                [checked]="selectedCategories().includes(category.name)"
-                (change)="toggleCategory(category.name, $event)"
+                [checked]="
+                  selectedCategories()
+                    .includes(category.name)
+                "
+                (change)="
+                  toggleCategory(
+                    category.name,
+                    $event
+                  )
+                "
               />
 
               <span class="check-box"></span>
@@ -44,64 +151,121 @@
                 {{ category.name }}
               </span>
 
-              <span class="option-count"> ({{ category.count }}) </span>
+              <span class="option-count">
+                ({{ category.count }})
+              </span>
+
             </label>
+
           }
+
         </div>
+
       </section>
 
       <!-- Price -->
 
       <section class="filter-section">
+
         <div class="filter-title">
+
           <span>
-            <i class="pi pi-dollar"></i>
+            <i
+              class="pi pi-dollar"
+              aria-hidden="true"
+            ></i>
+
             Price Range
           </span>
 
-          <i class="pi pi-chevron-up"></i>
+          <i
+            class="pi pi-chevron-up"
+            aria-hidden="true"
+          ></i>
+
         </div>
 
         <div class="price-filter">
+
           <input
             type="range"
             min="10"
             max="600"
             step="10"
+            aria-label="Maximum product price"
             [value]="maxPrice()"
-            (input)="changeMaximumPrice($event)"
+            (input)="
+              changeMaximumPrice($event)
+            "
           />
 
           <div class="price-values">
-            <span>$10</span>
+
+            <span>
+              $10
+            </span>
 
             <strong>
               Up to
-              {{ maxPrice() | currency: 'USD' : 'symbol' : '1.0-0' }}
+
+              {{
+                maxPrice()
+                  | currency:
+                      'USD':
+                      'symbol':
+                      '1.0-0'
+              }}
             </strong>
+
           </div>
+
         </div>
+
       </section>
 
       <!-- Brands -->
 
       <section class="filter-section">
+
         <div class="filter-title">
+
           <span>
-            <i class="pi pi-tag"></i>
+            <i
+              class="pi pi-tag"
+              aria-hidden="true"
+            ></i>
+
             Brand
           </span>
 
-          <i class="pi pi-chevron-up"></i>
+          <i
+            class="pi pi-chevron-up"
+            aria-hidden="true"
+          ></i>
+
         </div>
 
         <div class="filter-options">
-          @for (brand of brands; track brand.name) {
+
+          @for (
+            brand of brands;
+            track brand.name
+          ) {
+
             <label class="filter-check">
+
               <input
                 type="checkbox"
-                [checked]="selectedBrands().includes(brand.name)"
-                (change)="toggleBrand(brand.name, $event)"
+                [checked]="
+                  selectedBrands()
+                    .includes(brand.name)
+                "
+                (change)="
+                  toggleBrand(
+                    brand.name,
+                    $event
+                  )
+                "
               />
 
               <span class="check-box"></span>
@@ -110,221 +274,368 @@
                 {{ brand.name }}
               </span>
 
-              <span class="option-count"> ({{ brand.count }}) </span>
+              <span class="option-count">
+                ({{ brand.count }})
+              </span>
+
             </label>
+
           }
+
         </div>
+
       </section>
 
       <section class="collapsed-filter">
+
         <span>
-          <i class="pi pi-star"></i>
+          <i
+            class="pi pi-star"
+            aria-hidden="true"
+          ></i>
+
           Rating
         </span>
 
-        <i class="pi pi-chevron-down"></i>
+        <i
+          class="pi pi-chevron-down"
+          aria-hidden="true"
+        ></i>
+
       </section>
 
       <section class="collapsed-filter">
+
         <span>
-          <i class="pi pi-box"></i>
+          <i
+            class="pi pi-box"
+            aria-hidden="true"
+          ></i>
+
           Availability
         </span>
 
-        <i class="pi pi-chevron-down"></i>
+        <i
+          class="pi pi-chevron-down"
+          aria-hidden="true"
+        ></i>
+
       </section>
 
       <section class="collapsed-filter">
+
         <span>
-          <i class="pi pi-palette"></i>
+          <i
+            class="pi pi-palette"
+            aria-hidden="true"
+          ></i>
+
           Color
         </span>
 
-        <i class="pi pi-chevron-down"></i>
+        <i
+          class="pi pi-chevron-down"
+          aria-hidden="true"
+        ></i>
+
       </section>
+
     </aside>
 
-    <!-- Products Area -->
+    <!-- Products area -->
 
     <section class="products-area">
-      <div class="products-toolbar">
-        <p class="results-count">
-          Showing
-          <strong>{{ filteredProducts().length }}</strong>
-          of
-          <strong>{{ products().length }}</strong>
-          products
-        </p>
 
-        <div class="toolbar-actions">
-          <label class="sort-control">
-            <span>Sort by:</span>
+      @if (initialProductsLoading()) {
 
-            <select [value]="sortBy()" (change)="changeSorting($event)">
-              <option value="newest">Newest First</option>
+        <div class="products-toolbar loading-toolbar">
 
-              <option value="price-low">Price: Low to High</option>
+          <p class="results-count">
+            Loading products...
+          </p>
 
-              <option value="price-high">Price: High to Low</option>
+        </div>
 
-              <option value="rating">Highest Rated</option>
-            </select>
-          </label>
+        <app-product-grid-skeleton
+          [count]="8"
+          [listView]="!gridView()"
+        />
 
-          <div class="view-buttons">
-            <span>View:</span>
+      } @else if (productsLoadError()) {
 
-            <button
-              type="button"
-              class="view-button"
-              [class.active]="gridView()"
-              aria-label="Grid view"
-              (click)="showGridView()"
-            >
-              <i class="pi pi-th-large"></i>
-            </button>
+        <section
+          class="products-error-state"
+          role="alert"
+        >
 
-            <button
-              type="button"
-              class="view-button"
-              [class.active]="!gridView()"
-              aria-label="List view"
-              (click)="showListView()"
-            >
-              <i class="pi pi-list"></i>
-            </button>
+          <div class="error-state-icon">
+            <i
+              class="pi pi-cloud-times"
+              aria-hidden="true"
+            ></i>
           </div>
-        </div>
-      </div>
 
-      @if (filteredProducts().length > 0) {
-        <div class="products-grid" [class.list-view]="!gridView()">
-          @for (product of filteredProducts(); track product.id) {
-            <article class="product-card">
-              <div class="product-image-container">
-                @if (product.badge) {
-                  <span
-                    class="product-badge"
-                    [class.sale-badge]="product.badge === 'Sale'"
-                    [class.new-badge]="product.badge === 'New'"
-                  >
-                    {{ product.badge }}
-                  </span>
-                }
+          <p class="error-state-label">
+            LOADING ERROR
+          </p>
 
-                <button
-                  type="button"
-                  class="favorite-button"
-                  [class.active]="isFavorite(product.id)"
-                  [attr.aria-label]="
-                    isFavorite(product.id) ? 'Remove from wishlist' : 'Add to wishlist'
-                  "
-                  (click)="toggleFavorite(product.id)"
-                >
-                  <i class="pi pi-heart"></i>
-                </button>
+          <h2>
+            Products could not be loaded
+          </h2>
 
-                <a class="product-image-link" [routerLink]="['/products', product.id]">
-                  <img [src]="product.image" [alt]="product.name" loading="lazy" />
-                </a>
-              </div>
+          <p class="error-state-description">
+            {{
+              productsErrorMessage() ||
+              'Check your connection and try again.'
+            }}
+          </p>
 
-              <div class="product-content">
-                <p class="product-category">
-                  {{ product.category }}
-                </p>
+          <button
+            type="button"
+            pButton
+            class="retry-button"
+            [disabled]="productsLoading()"
+            (click)="retryLoadingProducts()"
+          >
+            @if (productsLoading()) {
 
-                <a class="product-title-link" [routerLink]="['/products', product.id]">
-                  <h3>
-                    {{ product.name }}
-                  </h3>
-                </a>
+              <i
+                class="pi pi-spinner pi-spin"
+                aria-hidden="true"
+              ></i>
 
-                <div class="product-rating">
-                  <span class="stars"> ★★★★★ </span>
+              <span>
+                Retrying...
+              </span>
 
-                  <strong>
-                    {{ product.rating }}
-                  </strong>
+            } @else {
 
-                  <span> ({{ product.reviews }}) </span>
-                </div>
+              <i
+                class="pi pi-refresh"
+                aria-hidden="true"
+              ></i>
 
-                <div class="product-bottom">
-                  <div class="product-price">
-                    <strong>
-                      {{ product.price | currency: 'USD' : 'symbol' : '1.2-2' }}
-                    </strong>
+              <span>
+                Try Again
+              </span>
 
-                    @if (product.oldPrice) {
-                      <del>
-                        {{ product.oldPrice | currency: 'USD' : 'symbol' : '1.2-2' }}
-                      </del>
-                    }
-                  </div>
-                  @if (getProductQuantity(product.id) === 0) {
-                    <button
-                      type="button"
-                      pButton
-                      class="add-cart-button"
-                      (click)="increaseProductQuantity(product)"
-                    >
-                      <i class="pi pi-shopping-cart"></i>
-                      <span>Add to Cart</span>
-                    </button>
-                  } @else {
-                    <div class="product-quantity-control">
-                      <button
-                        type="button"
-                        class="quantity-button decrease-button"
-                        aria-label="Decrease product quantity"
-                        (click)="decreaseProductQuantity(product.id)"
-                      >
-                        <i
-                          class="pi"
-                          [class.pi-minus]="getProductQuantity(product.id) > 1"
-                          [class.pi-trash]="getProductQuantity(product.id) === 1"
-                        ></i>
-                      </button>
-
-                      <div class="product-quantity-value">
-                        <small>In Cart</small>
-
-                        <strong>
-                          {{ getProductQuantity(product.id) }}
-                        </strong>
-                      </div>
-
-                      <button
-                        type="button"
-                        class="quantity-button increase-button"
-                        aria-label="Increase product quantity"
-                        [disabled]="getProductQuantity(product.id) >= product.stock"
-                        (click)="increaseProductQuantity(product)"
-                      >
-                        <i class="pi pi-plus"></i>
-                      </button>
-                    </div>
-                  }
-                </div>
-              </div>
-            </article>
-          }
-        </div>
-      } @else {
-        <div class="no-products">
-          <i class="pi pi-search"></i>
-
-          <h2>No products found</h2>
-
-          <p>Try changing or resetting your filters.</p>
-
-          <button type="button" pButton (click)="resetFilters()">
-            <i class="pi pi-refresh"></i>
-            <span>Reset Filters</span>
+            }
           </button>
+
+        </section>
+
+      } @else {
+
+        @if (productsReloading()) {
+
+          <div
+            class="reloading-notice"
+            role="status"
+            aria-live="polite"
+          >
+            <i
+              class="pi pi-spinner pi-spin"
+              aria-hidden="true"
+            ></i>
+
+            <span>
+              Updating products...
+            </span>
+          </div>
+
+        }
+
+        <div class="products-toolbar">
+
+          <p class="results-count">
+            Showing
+
+            <strong>
+              {{ filteredProducts().length }}
+            </strong>
+
+            of
+
+            <strong>
+              {{ products().length }}
+            </strong>
+
+            products
+          </p>
+
+          <div class="toolbar-actions">
+
+            <label class="sort-control">
+
+              <span>
+                Sort by:
+              </span>
+
+              <select
+                [value]="sortBy()"
+                (change)="
+                  changeSorting($event)
+                "
+              >
+                <option value="newest">
+                  Newest First
+                </option>
+
+                <option value="price-low">
+                  Price: Low to High
+                </option>
+
+                <option value="price-high">
+                  Price: High to Low
+                </option>
+
+                <option value="rating">
+                  Highest Rated
+                </option>
+              </select>
+
+            </label>
+
+            <div class="view-buttons">
+
+              <span>
+                View:
+              </span>
+
+              <button
+                type="button"
+                class="view-button"
+                [class.active]="gridView()"
+                aria-label="Grid view"
+                (click)="showGridView()"
+              >
+                <i
+                  class="pi pi-th-large"
+                  aria-hidden="true"
+                ></i>
+              </button>
+
+              <button
+                type="button"
+                class="view-button"
+                [class.active]="!gridView()"
+                aria-label="List view"
+                (click)="showListView()"
+              >
+                <i
+                  class="pi pi-list"
+                  aria-hidden="true"
+                ></i>
+              </button>
+
+            </div>
+
+          </div>
+
         </div>
+
+        @if (
+          filteredProducts().length > 0
+        ) {
+
+          <div
+            class="products-grid"
+            [class.list-view]="!gridView()"
+          >
+
+            @for (
+              product of filteredProducts();
+              track product.id
+            ) {
+
+              <app-product-card
+                [product]="product"
+                [layout]="
+                  gridView()
+                    ? 'grid'
+                    : 'list'
+                "
+                [favorite]="
+                  isFavorite(product.id)
+                "
+                (favoriteChange)="
+                  setFavorite(
+                    product.id,
+                    $event
+                  )
+                "
+                [quantity]="
+                  getProductQuantity(
+                    product.id
+                  )
+                "
+                (quantityChange)="
+                  setProductQuantity(
+                    product,
+                    $event
+                  )
+                "
+              />
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="no-products">
+
+            <i
+              class="pi pi-search"
+              aria-hidden="true"
+            ></i>
+
+            <h2>
+              No products found
+            </h2>
+
+            @if (
+              searchQuery().length > 0
+            ) {
+
+              <p>
+                We couldn’t find products
+                matching
+                “{{ searchQuery() }}”.
+              </p>
+
+            } @else {
+
+              <p>
+                Try changing or resetting
+                your filters.
+              </p>
+
+            }
+
+            <button
+              type="button"
+              pButton
+              (click)="resetFilters()"
+            >
+              <i
+                class="pi pi-refresh"
+                aria-hidden="true"
+              ></i>
+
+              <span>
+                Reset Filters
+              </span>
+            </button>
+
+          </div>
+
+        }
+
       }
+
     </section>
+
   </section>
+
 </main>

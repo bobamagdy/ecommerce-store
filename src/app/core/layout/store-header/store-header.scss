@@ -266,7 +266,55 @@
   font-size: 7px;
   font-weight: 800;
 }
+/* Reactive product search */
 
+.search-box {
+  position: relative;
+  margin: 0;
+}
+
+.search-box input {
+  padding-right: 92px;
+}
+
+.clear-search-button {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: 58px;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+  border: 0;
+
+  display: grid;
+  place-items: center;
+
+  transform: translateY(-50%);
+
+  border-radius: 50%;
+
+  color: #64748b;
+  background-color: transparent;
+
+  cursor: pointer;
+
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.clear-search-button:hover {
+  color: #6d28d9;
+  background-color: #f3e8ff;
+}
+
+.clear-search-button:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 1px;
+}
 /* Responsive */
 
 @media (max-width: 1050px) {
