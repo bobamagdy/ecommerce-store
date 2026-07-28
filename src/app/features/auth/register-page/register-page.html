@@ -1,0 +1,286 @@
+<main class="auth-page">
+  <section class="auth-card register-card">
+    <!-- Left Side -->
+
+    <aside class="auth-showcase">
+      <a routerLink="/" class="auth-logo">
+        <span class="logo-icon">
+          <i class="pi pi-shopping-bag"></i>
+        </span>
+
+        <span> Hub<strong>Shop</strong> </span>
+      </a>
+
+      <div class="showcase-content">
+        <p class="showcase-label">JOIN HUBSHOP</p>
+
+        <h2>
+          Create your account
+          <span>and start shopping.</span>
+        </h2>
+
+        <p>Save your favorite products, manage your orders and enjoy a faster checkout.</p>
+
+        <div class="showcase-features">
+          <div>
+            <i class="pi pi-bolt"></i>
+
+            <span>
+              <strong>Faster Checkout</strong>
+              Save addresses and preferences
+            </span>
+          </div>
+
+          <div>
+            <i class="pi pi-gift"></i>
+
+            <span>
+              <strong>Exclusive Offers</strong>
+              Access member-only discounts
+            </span>
+          </div>
+
+          <div>
+            <i class="pi pi-history"></i>
+
+            <span>
+              <strong>Order History</strong>
+              Manage previous purchases
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="decorative-circle circle-one"></div>
+      <div class="decorative-circle circle-two"></div>
+    </aside>
+
+    <!-- Form Side -->
+
+    <section class="auth-form-panel">
+      <div class="auth-heading">
+        <p>CREATE ACCOUNT</p>
+
+        <h1>Join HubShop</h1>
+
+        <span> Enter your details to create a new account. </span>
+      </div>
+
+      <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="submit()" novalidate>
+        <!-- Names -->
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="first-name"> First Name </label>
+
+            <div
+              class="input-wrapper"
+              [class.invalid]="firstName.invalid && (firstName.touched || submitted())"
+            >
+              <i class="pi pi-user field-icon"></i>
+
+              <input
+                id="first-name"
+                type="text"
+                pInputText
+                formControlName="firstName"
+                placeholder="First name"
+                autocomplete="given-name"
+              />
+            </div>
+
+            @if (firstName.invalid && (firstName.touched || submitted())) {
+              <small class="error-message"> First name must contain at least 2 characters. </small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="last-name"> Last Name </label>
+
+            <div
+              class="input-wrapper"
+              [class.invalid]="lastName.invalid && (lastName.touched || submitted())"
+            >
+              <i class="pi pi-user field-icon"></i>
+
+              <input
+                id="last-name"
+                type="text"
+                pInputText
+                formControlName="lastName"
+                placeholder="Last name"
+                autocomplete="family-name"
+              />
+            </div>
+
+            @if (lastName.invalid && (lastName.touched || submitted())) {
+              <small class="error-message"> Last name must contain at least 2 characters. </small>
+            }
+          </div>
+        </div>
+
+        <!-- Email -->
+
+        <div class="form-field">
+          <label for="register-email"> Email Address </label>
+
+          <div
+            class="input-wrapper"
+            [class.invalid]="email.invalid && (email.touched || submitted())"
+          >
+            <i class="pi pi-envelope field-icon"></i>
+
+            <input
+              id="register-email"
+              type="email"
+              pInputText
+              formControlName="email"
+              placeholder="name@example.com"
+              autocomplete="email"
+            />
+          </div>
+
+          @if (email.invalid && (email.touched || submitted())) {
+            <small class="error-message"> Enter a valid email address. </small>
+          }
+        </div>
+
+        <!-- Password -->
+
+        <div class="form-field">
+          <label for="register-password"> Password </label>
+
+          <div
+            class="input-wrapper password-wrapper"
+            [class.invalid]="password.invalid && (password.touched || submitted())"
+          >
+            <i class="pi pi-lock field-icon"></i>
+
+            <input
+              id="register-password"
+              [type]="passwordVisible() ? 'text' : 'password'"
+              pInputText
+              formControlName="password"
+              placeholder="Create a strong password"
+              autocomplete="new-password"
+            />
+
+            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+              <i
+                class="pi"
+                [class.pi-eye]="!passwordVisible()"
+                [class.pi-eye-slash]="passwordVisible()"
+              ></i>
+            </button>
+          </div>
+
+          @if (password.hasError('required') && (password.touched || submitted())) {
+            <small class="error-message"> Password is required. </small>
+          }
+
+          @if (
+            password.hasError('minlength') &&
+            !password.hasError('required') &&
+            (password.touched || submitted())
+          ) {
+            <small class="error-message"> Password must contain at least 8 characters. </small>
+          }
+
+          @if (
+            password.hasError('pattern') &&
+            !password.hasError('required') &&
+            !password.hasError('minlength') &&
+            (password.touched || submitted())
+          ) {
+            <small class="error-message"> Include uppercase, lowercase and a number. </small>
+          }
+        </div>
+
+        <!-- Confirm Password -->
+
+        <div class="form-field">
+          <label for="confirm-password"> Confirm Password </label>
+
+          <div
+            class="input-wrapper password-wrapper"
+            [class.invalid]="
+              (confirmPassword.invalid || registerForm.hasError('passwordMismatch')) &&
+              (confirmPassword.touched || submitted())
+            "
+          >
+            <i class="pi pi-lock field-icon"></i>
+
+            <input
+              id="confirm-password"
+              [type]="confirmPasswordVisible() ? 'text' : 'password'"
+              pInputText
+              formControlName="confirmPassword"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="toggleConfirmPasswordVisibility()"
+            >
+              <i
+                class="pi"
+                [class.pi-eye]="!confirmPasswordVisible()"
+                [class.pi-eye-slash]="confirmPasswordVisible()"
+              ></i>
+            </button>
+          </div>
+
+          @if (confirmPassword.hasError('required') && (confirmPassword.touched || submitted())) {
+            <small class="error-message"> Confirm your password. </small>
+          }
+
+          @if (
+            registerForm.hasError('passwordMismatch') &&
+            !confirmPassword.hasError('required') &&
+            (confirmPassword.touched || submitted())
+          ) {
+            <small class="error-message"> Passwords do not match. </small>
+          }
+        </div>
+
+        <!-- Terms -->
+
+        <div class="terms-field">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="acceptTerms" />
+
+            <span class="custom-checkbox">
+              <i class="pi pi-check"></i>
+            </span>
+
+            <span>
+              I agree to the
+              <a href="#">Terms and Conditions</a>
+              and
+              <a href="#">Privacy Policy</a>.
+            </span>
+          </label>
+
+          @if (acceptTerms.invalid && (acceptTerms.touched || submitted())) {
+            <small class="error-message"> You must accept the terms and conditions. </small>
+          }
+        </div>
+
+        <!-- Submit -->
+
+        <button type="submit" pButton class="submit-button">
+          <span>Create Account</span>
+          <i class="pi pi-arrow-right"></i>
+        </button>
+      </form>
+
+      <div class="auth-switch">
+        <span>Already have an account?</span>
+
+        <a routerLink="/auth/login"> Sign In </a>
+      </div>
+    </section>
+  </section>
+</main>

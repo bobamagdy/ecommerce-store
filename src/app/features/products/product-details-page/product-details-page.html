@@ -1,0 +1,291 @@
+<main class="product-details-page">
+
+  @if (product(); as currentProduct) {
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+
+      <a routerLink="/">
+        Home
+      </a>
+
+      <i class="pi pi-chevron-right"></i>
+
+      <a routerLink="/products">
+        Products
+      </a>
+
+      <i class="pi pi-chevron-right"></i>
+
+      <span>
+        {{ currentProduct.name }}
+      </span>
+
+    </nav>
+
+    <section class="product-details">
+
+      <!-- Gallery -->
+
+      <div class="product-gallery">
+
+        <div class="thumbnails">
+
+          @for (
+            image of currentProduct.images;
+            track image
+          ) {
+
+            <button
+              type="button"
+              class="thumbnail-button"
+              [class.active]="selectedImage() === image"
+              (click)="selectImage(image)"
+            >
+              <img
+                [src]="image"
+                [alt]="currentProduct.name"
+              />
+            </button>
+
+          }
+
+        </div>
+
+        <div class="main-image">
+
+          @if (currentProduct.badge) {
+            <span class="product-badge">
+              {{ currentProduct.badge }}
+            </span>
+          }
+
+          <img
+            [src]="selectedImage()"
+            [alt]="currentProduct.name"
+          />
+
+        </div>
+
+      </div>
+
+      <!-- Product Information -->
+
+      <div class="product-information">
+
+        <p class="product-category">
+          {{ currentProduct.category }}
+        </p>
+
+        <h1>
+          {{ currentProduct.name }}
+        </h1>
+
+        <div class="rating-row">
+
+          <span class="stars">
+            ★★★★★
+          </span>
+
+          <strong>
+            {{ currentProduct.rating }}
+          </strong>
+
+          <span>
+            ({{ currentProduct.reviews }} reviews)
+          </span>
+
+        </div>
+
+        <div class="price-row">
+
+          <strong>
+            {{
+              currentProduct.price
+                | currency:'USD':'symbol':'1.2-2'
+            }}
+          </strong>
+
+          @if (currentProduct.oldPrice) {
+            <del>
+              {{
+                currentProduct.oldPrice
+                  | currency:'USD':'symbol':'1.2-2'
+              }}
+            </del>
+
+            <span class="discount">
+              Save
+              {{
+                currentProduct.oldPrice -
+                currentProduct.price
+                  | currency:'USD':'symbol':'1.2-2'
+              }}
+            </span>
+          }
+
+        </div>
+
+        <div class="stock-row">
+          <i class="pi pi-check-circle"></i>
+
+          <span>
+            In Stock —
+            {{ currentProduct.stock }} available
+          </span>
+        </div>
+
+        <p class="description">
+          {{ currentProduct.description }}
+        </p>
+
+        <dl class="product-meta">
+
+          <div>
+            <dt>Brand</dt>
+            <dd>{{ currentProduct.brand }}</dd>
+          </div>
+
+          <div>
+            <dt>SKU</dt>
+            <dd>{{ currentProduct.sku }}</dd>
+          </div>
+
+          <div>
+            <dt>Category</dt>
+            <dd>{{ currentProduct.category }}</dd>
+          </div>
+
+        </dl>
+
+        <div class="purchase-section">
+
+          <div class="quantity-control">
+
+            <span class="quantity-label">
+              Quantity
+            </span>
+
+            <div class="quantity-buttons">
+
+              <button
+                type="button"
+                aria-label="Decrease quantity"
+                [disabled]="quantity() === 1"
+                (click)="decreaseQuantity()"
+              >
+                <i class="pi pi-minus"></i>
+              </button>
+
+              <strong>
+                {{ quantity() }}
+              </strong>
+
+              <button
+                type="button"
+                aria-label="Increase quantity"
+                [disabled]="
+                  quantity() === currentProduct.stock
+                "
+                (click)="increaseQuantity()"
+              >
+                <i class="pi pi-plus"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+          <button
+            type="button"
+            pButton
+            class="add-to-cart-button"
+            [class.added]="addedToCart()"
+            (click)="addToCart()"
+          >
+
+            <i
+              class="pi"
+              [class.pi-shopping-cart]="!addedToCart()"
+              [class.pi-check]="addedToCart()"
+            ></i>
+
+            <span>
+              {{
+                addedToCart()
+                  ? 'Added to Cart'
+                  : 'Add to Cart'
+              }}
+            </span>
+
+          </button>
+
+          <button
+            type="button"
+            class="wishlist-button"
+            aria-label="Add to wishlist"
+          >
+            <i class="pi pi-heart"></i>
+          </button>
+
+        </div>
+
+        <div class="service-features">
+
+          <div>
+            <i class="pi pi-truck"></i>
+
+            <span>
+              <strong>Free Shipping</strong>
+              Orders over $50
+            </span>
+          </div>
+
+          <div>
+            <i class="pi pi-refresh"></i>
+
+            <span>
+              <strong>30-Day Returns</strong>
+              Money-back guarantee
+            </span>
+          </div>
+
+          <div>
+            <i class="pi pi-shield"></i>
+
+            <span>
+              <strong>Secure Payment</strong>
+              Protected checkout
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  } @else {
+
+    <section class="not-found">
+
+      <i class="pi pi-exclamation-circle"></i>
+
+      <h1>Product Not Found</h1>
+
+      <p>
+        The product you are looking for does not exist.
+      </p>
+
+      <a
+        routerLink="/products"
+        pButton
+      >
+        <i class="pi pi-arrow-left"></i>
+        <span>Back to Products</span>
+      </a>
+
+    </section>
+
+  }
+
+</main>

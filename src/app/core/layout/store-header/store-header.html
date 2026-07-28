@@ -1,0 +1,125 @@
+<header class="store-header">
+  <!-- الشريط البنفسجي العلوي -->
+  <div class="top-bar">
+    <div class="header-container top-bar-content">
+      <p class="shipping-message">
+        <i class="pi pi-truck"></i>
+        Free shipping on orders over $50
+      </p>
+
+      <div class="top-links">
+        <a href="#">Track Order</a>
+        <span>|</span>
+        <a href="#">Help Center</a>
+        <span>|</span>
+
+        <button type="button" class="currency-button">
+          USD
+          <i class="pi pi-chevron-down"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- اللوجو والبحث والحساب -->
+  <div class="main-header">
+    <div class="header-container main-header-content">
+      <a class="logo" href="/">
+        <span class="logo-icon">
+          <i class="pi pi-shopping-bag"></i>
+        </span>
+
+        <span class="logo-text"> Hub<span>Shop</span> </span>
+      </a>
+
+      <div class="search-box">
+        <input
+          type="search"
+          pInputText
+          placeholder="Search products..."
+          aria-label="Search products"
+        />
+
+        <button type="button" pButton class="search-button" aria-label="Search">
+          <i class="pi pi-search"></i>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <a class="header-action" routerLink="/auth/login">
+          <i class="pi pi-user"></i>
+
+          <span class="action-text"> Account </span>
+        </a>
+
+        <a
+          class="header-action"
+          routerLink="/wishlist"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          <span class="action-icon">
+            <i class="pi pi-heart"></i>
+
+            <span class="count-badge">
+              {{ wishlistCount() }}
+            </span>
+          </span>
+
+          <span class="action-text"> Wishlist </span>
+        </a>
+
+        <a class="header-action" routerLink="/cart">
+          <span class="action-icon">
+            <i class="pi pi-shopping-cart"></i>
+
+            <span class="count-badge">
+              {{ cartCount() }}
+            </span>
+          </span>
+
+          <span class="action-text"> Cart </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- القائمة الرئيسية -->
+  <nav class="main-nav" aria-label="Main navigation">
+    <div class="header-container nav-content">
+      <a
+        class="nav-link"
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+      >
+        Home
+      </a>
+
+      <a
+        class="nav-link active"
+        routerLink="/products"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+      >
+        Shop
+        <i class="pi pi-chevron-down"></i>
+      </a>
+
+      <a class="nav-link categories-link" href="#">
+        Categories
+        <span class="hot-badge">HOT</span>
+        <i class="pi pi-chevron-down"></i>
+      </a>
+
+      <a class="nav-link" href="#"> Deals </a>
+
+      <a class="nav-link" href="#"> New Arrivals </a>
+
+      <a class="nav-link" href="#"> About </a>
+
+      <a class="nav-link" href="#"> Contact </a>
+    </div>
+  </nav>
+</header>
