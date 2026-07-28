@@ -1,5 +1,7 @@
 <main class="products-page">
 
+  <!-- Page heading -->
+
   <section class="page-heading">
 
     <p class="breadcrumb">
@@ -8,18 +10,38 @@
       Products
     </p>
 
-    <h1>
-      All Products
-    </h1>
+    @if (searchQuery().length > 0) {
 
-    <p class="page-description">
-      Explore our wide range of products
-      across all categories.
-    </p>
+      <h1>
+        Search Results
+      </h1>
+
+      <p class="page-description">
+        Showing results for
+
+        <strong>
+          “{{ searchQuery() }}”
+        </strong>
+      </p>
+
+    } @else {
+
+      <h1>
+        All Products
+      </h1>
+
+      <p class="page-description">
+        Explore our wide range of products
+        across all categories.
+      </p>
+
+    }
 
   </section>
 
   <section class="shop-layout">
+
+    <!-- Filters -->
 
     <aside class="filters-sidebar">
 
@@ -29,26 +51,74 @@
           Filters
         </h2>
 
-        <button
-          type="button"
-          class="reset-button"
-          (click)="resetFilters()"
-        >
-          Reset
-        </button>
+        @if (hasActiveFilters()) {
+
+          <button
+            type="button"
+            class="reset-button"
+            (click)="resetFilters()"
+          >
+            Reset
+          </button>
+
+        }
 
       </div>
+
+      @if (searchQuery().length > 0) {
+
+        <section class="filter-section">
+
+          <div class="active-search-filter">
+
+            <div>
+
+              <small>
+                Search
+              </small>
+
+              <strong>
+                {{ searchQuery() }}
+              </strong>
+
+            </div>
+
+            <button
+              type="button"
+              aria-label="Clear search"
+              (click)="clearSearch()"
+            >
+              <i
+                class="pi pi-times"
+                aria-hidden="true"
+              ></i>
+            </button>
+
+          </div>
+
+        </section>
+
+      }
+
+      <!-- Categories -->
 
       <section class="filter-section">
 
         <div class="filter-title">
 
           <span>
-            <i class="pi pi-list"></i>
+            <i
+              class="pi pi-list"
+              aria-hidden="true"
+            ></i>
+
             Categories
           </span>
 
-          <i class="pi pi-chevron-up"></i>
+          <i
+            class="pi pi-chevron-up"
+            aria-hidden="true"
+          ></i>
 
         </div>
 
@@ -58,6 +128,7 @@
             category of categories;
             track category.name
           ) {
+
             <label class="filter-check">
 
               <input
@@ -85,22 +156,32 @@
               </span>
 
             </label>
+
           }
 
         </div>
 
       </section>
 
+      <!-- Price -->
+
       <section class="filter-section">
 
         <div class="filter-title">
 
           <span>
-            <i class="pi pi-dollar"></i>
+            <i
+              class="pi pi-dollar"
+              aria-hidden="true"
+            ></i>
+
             Price Range
           </span>
 
-          <i class="pi pi-chevron-up"></i>
+          <i
+            class="pi pi-chevron-up"
+            aria-hidden="true"
+          ></i>
 
         </div>
 
@@ -111,6 +192,7 @@
             min="10"
             max="600"
             step="10"
+            aria-label="Maximum product price"
             [value]="maxPrice()"
             (input)="
               changeMaximumPrice($event)
@@ -141,16 +223,25 @@
 
       </section>
 
+      <!-- Brands -->
+
       <section class="filter-section">
 
         <div class="filter-title">
 
           <span>
-            <i class="pi pi-tag"></i>
+            <i
+              class="pi pi-tag"
+              aria-hidden="true"
+            ></i>
+
             Brand
           </span>
 
-          <i class="pi pi-chevron-up"></i>
+          <i
+            class="pi pi-chevron-up"
+            aria-hidden="true"
+          ></i>
 
         </div>
 
@@ -160,6 +251,7 @@
             brand of brands;
             track brand.name
           ) {
+
             <label class="filter-check">
 
               <input
@@ -187,6 +279,7 @@
               </span>
 
             </label>
+
           }
 
         </div>
@@ -196,37 +289,60 @@
       <section class="collapsed-filter">
 
         <span>
-          <i class="pi pi-star"></i>
+          <i
+            class="pi pi-star"
+            aria-hidden="true"
+          ></i>
+
           Rating
         </span>
 
-        <i class="pi pi-chevron-down"></i>
+        <i
+          class="pi pi-chevron-down"
+          aria-hidden="true"
+        ></i>
 
       </section>
 
       <section class="collapsed-filter">
 
         <span>
-          <i class="pi pi-box"></i>
+          <i
+            class="pi pi-box"
+            aria-hidden="true"
+          ></i>
+
           Availability
         </span>
 
-        <i class="pi pi-chevron-down"></i>
+        <i
+          class="pi pi-chevron-down"
+          aria-hidden="true"
+        ></i>
 
       </section>
 
       <section class="collapsed-filter">
 
         <span>
-          <i class="pi pi-palette"></i>
+          <i
+            class="pi pi-palette"
+            aria-hidden="true"
+          ></i>
+
           Color
         </span>
 
-        <i class="pi pi-chevron-down"></i>
+        <i
+          class="pi pi-chevron-down"
+          aria-hidden="true"
+        ></i>
 
       </section>
 
     </aside>
+
+    <!-- Products -->
 
     <section class="products-area">
 
@@ -292,7 +408,10 @@
               aria-label="Grid view"
               (click)="showGridView()"
             >
-              <i class="pi pi-th-large"></i>
+              <i
+                class="pi pi-th-large"
+                aria-hidden="true"
+              ></i>
             </button>
 
             <button
@@ -302,7 +421,10 @@
               aria-label="List view"
               (click)="showListView()"
             >
-              <i class="pi pi-list"></i>
+              <i
+                class="pi pi-list"
+                aria-hidden="true"
+              ></i>
             </button>
 
           </div>
@@ -362,23 +484,40 @@
 
         <div class="no-products">
 
-          <i class="pi pi-search"></i>
+          <i
+            class="pi pi-search"
+            aria-hidden="true"
+          ></i>
 
           <h2>
             No products found
           </h2>
 
-          <p>
-            Try changing or resetting
-            your filters.
-          </p>
+          @if (searchQuery().length > 0) {
+
+            <p>
+              We couldn’t find products matching
+              “{{ searchQuery() }}”.
+            </p>
+
+          } @else {
+
+            <p>
+              Try changing or resetting
+              your filters.
+            </p>
+
+          }
 
           <button
             type="button"
             pButton
             (click)="resetFilters()"
           >
-            <i class="pi pi-refresh"></i>
+            <i
+              class="pi pi-refresh"
+              aria-hidden="true"
+            ></i>
 
             <span>
               Reset Filters

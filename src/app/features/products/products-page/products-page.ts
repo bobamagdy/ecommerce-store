@@ -3,11 +3,21 @@ import {
 } from '@angular/common';
 
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
-  inject,
-  signal
+  inject
 } from '@angular/core';
+
+import {
+  toSignal
+} from '@angular/core/rxjs-interop';
+
+import {
+  ActivatedRoute,
+  Params,
+  Router
+} from '@angular/router';
 
 import {
   ButtonModule
@@ -39,10 +49,25 @@ type SortOption =
   | 'price-high'
   | 'rating';
 
+type ProductsView =
+  | 'grid'
+  | 'list';
+
 interface FilterOption {
   name: string;
   count: number;
 }
+
+const DEFAULT_MAX_PRICE = 600;
+const MINIMUM_PRICE = 10;
+
+const SORT_OPTIONS:
+  readonly SortOption[] = [
+    'newest',
+    'price-low',
+    'price-high',
+    'rating'
+  ];
 
 @Component({
   selector: 'app-products-page',
@@ -54,7 +79,10 @@ interface FilterOption {
   ],
 
   templateUrl: './products-page.html',
-  styleUrl: './products-page.scss'
+  styleUrl: './products-page.scss',
+
+  changeDetection:
+    ChangeDetectionStrategy.OnPush
 })
 export class ProductsPage {
   private readonly productService =
@@ -65,6 +93,12 @@ export class ProductsPage {
 
   private readonly wishlistService =
     inject(WishlistService);
+
+  private readonly router =
+    inject(Router);
+
+  private readonly route =
+    inject(ActivatedRoute);
 
   readonly products =
     this.productService.products;
@@ -129,23 +163,131 @@ export class ProductsPage {
       }
     ];
 
+  /*
+   * الـRouter هو مصدر الحقيقة للفلاتر.
+   *
+   * لما الرابط يتغير، كل الـcomputed Signals
+   * تتحدث تلقائيًا.
+   */
+  private readonly queryParamMap =
+    toSignal(
+      this.route.queryParamMap,
+      {
+        initialValue:
+          this.route.snapshot.queryParamMap
+      }
+    );
+
+  readonly searchQuery =
+    computed(
+      () =>
+        this.queryParamMap()
+          .get('q')
+          ?.trim() ?? ''
+    );
+
   readonly selectedCategories =
-    signal<string[]>([]);
+    computed(() => {
+      const routeCategories =
+        this.queryParamMap()
+          .getAll('category');
+
+      return routeCategories.filter(
+        (categoryName) =>
+          this.categories.some(
+            (category) =>
+              category.name ===
+              categoryName
+          )
+      );
+    });
 
   readonly selectedBrands =
-    signal<string[]>([]);
+    computed(() => {
+      const routeBrands =
+        this.queryParamMap()
+          .getAll('brand');
+
+      return routeBrands.filter(
+        (brandName) =>
+          this.brands.some(
+            (brand) =>
+              brand.name === brandName
+          )
+      );
+    });
 
   readonly maxPrice =
-    signal(600);
+    computed(() => {
+      const routeValue =
+        this.queryParamMap()
+          .get('maxPrice');
+
+      const parsedValue =
+        Number(routeValue);
+
+      if (
+        !routeValue ||
+        !Number.isFinite(parsedValue)
+      ) {
+        return DEFAULT_MAX_PRICE;
+      }
+
+      return Math.min(
+        Math.max(
+          parsedValue,
+          MINIMUM_PRICE
+        ),
+        DEFAULT_MAX_PRICE
+      );
+    });
 
   readonly sortBy =
-    signal<SortOption>('newest');
+    computed<SortOption>(() => {
+      const routeSorting =
+        this.queryParamMap()
+          .get('sort');
+
+      return this.isSortOption(
+        routeSorting
+      )
+        ? routeSorting
+        : 'newest';
+    });
+
+  readonly view =
+    computed<ProductsView>(() =>
+      this.queryParamMap()
+        .get('view') === 'list'
+        ? 'list'
+        : 'grid'
+    );
 
   readonly gridView =
-    signal(true);
+    computed(
+      () => this.view() === 'grid'
+    );
+
+  readonly hasActiveFilters =
+    computed(
+      () =>
+        this.searchQuery().length > 0 ||
+        this.selectedCategories().length >
+          0 ||
+        this.selectedBrands().length >
+          0 ||
+        this.maxPrice() !==
+          DEFAULT_MAX_PRICE ||
+        this.sortBy() !== 'newest' ||
+        this.view() !== 'grid'
+    );
 
   readonly filteredProducts =
     computed(() => {
+      const normalizedSearch =
+        this.searchQuery()
+          .toLowerCase();
+
       const selectedCategories =
         this.selectedCategories();
 
@@ -161,14 +303,35 @@ export class ProductsPage {
       const filteredItems =
         this.products().filter(
           (product) => {
+            const searchMatches =
+              normalizedSearch.length ===
+                0 ||
+              product.name
+                .toLowerCase()
+                .includes(
+                  normalizedSearch
+                ) ||
+              product.category
+                .toLowerCase()
+                .includes(
+                  normalizedSearch
+                ) ||
+              product.brand
+                .toLowerCase()
+                .includes(
+                  normalizedSearch
+                );
+
             const categoryMatches =
-              selectedCategories.length === 0 ||
+              selectedCategories.length ===
+                0 ||
               selectedCategories.includes(
                 product.category
               );
 
             const brandMatches =
-              selectedBrands.length === 0 ||
+              selectedBrands.length ===
+                0 ||
               selectedBrands.includes(
                 product.brand
               );
@@ -178,6 +341,7 @@ export class ProductsPage {
               maximumPrice;
 
             return (
+              searchMatches &&
               categoryMatches &&
               brandMatches &&
               priceMatches
@@ -227,14 +391,19 @@ export class ProductsPage {
     const checkbox =
       event.target as HTMLInputElement;
 
-    this.selectedCategories.update(
-      (selectedCategories) =>
-        this.updateSelectedValues(
-          selectedCategories,
-          categoryName,
-          checkbox.checked
-        )
-    );
+    const updatedCategories =
+      this.updateSelectedValues(
+        this.selectedCategories(),
+        categoryName,
+        checkbox.checked
+      );
+
+    this.updateQueryParams({
+      category:
+        updatedCategories.length > 0
+          ? updatedCategories
+          : null
+    });
   }
 
   toggleBrand(
@@ -244,14 +413,19 @@ export class ProductsPage {
     const checkbox =
       event.target as HTMLInputElement;
 
-    this.selectedBrands.update(
-      (selectedBrands) =>
-        this.updateSelectedValues(
-          selectedBrands,
-          brandName,
-          checkbox.checked
-        )
-    );
+    const updatedBrands =
+      this.updateSelectedValues(
+        this.selectedBrands(),
+        brandName,
+        checkbox.checked
+      );
+
+    this.updateQueryParams({
+      brand:
+        updatedBrands.length > 0
+          ? updatedBrands
+          : null
+    });
   }
 
   changeMaximumPrice(
@@ -260,9 +434,16 @@ export class ProductsPage {
     const rangeInput =
       event.target as HTMLInputElement;
 
-    this.maxPrice.set(
-      Number(rangeInput.value)
-    );
+    const selectedPrice =
+      Number(rangeInput.value);
+
+    this.updateQueryParams({
+      maxPrice:
+        selectedPrice ===
+        DEFAULT_MAX_PRICE
+          ? null
+          : selectedPrice
+    });
   }
 
   changeSorting(
@@ -271,17 +452,27 @@ export class ProductsPage {
     const selectElement =
       event.target as HTMLSelectElement;
 
-    this.sortBy.set(
-      selectElement.value as SortOption
-    );
+    const sorting =
+      selectElement.value;
+
+    this.updateQueryParams({
+      sort:
+        sorting === 'newest'
+          ? null
+          : sorting
+    });
   }
 
   showGridView(): void {
-    this.gridView.set(true);
+    this.updateQueryParams({
+      view: null
+    });
   }
 
   showListView(): void {
-    this.gridView.set(false);
+    this.updateQueryParams({
+      view: 'list'
+    });
   }
 
   isFavorite(
@@ -328,11 +519,47 @@ export class ProductsPage {
       );
   }
 
+  clearSearch(): void {
+    this.updateQueryParams({
+      q: null
+    });
+  }
+
   resetFilters(): void {
-    this.selectedCategories.set([]);
-    this.selectedBrands.set([]);
-    this.maxPrice.set(600);
-    this.sortBy.set('newest');
+    void this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+
+        queryParams: {
+          q: null,
+          category: null,
+          brand: null,
+          maxPrice: null,
+          sort: null,
+          view: null
+        },
+
+        replaceUrl: true
+      }
+    );
+  }
+
+  private updateQueryParams(
+    queryParams: Params
+  ): void {
+    void this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+
+        queryParams,
+
+        queryParamsHandling: 'merge',
+
+        replaceUrl: true
+      }
+    );
   }
 
   private updateSelectedValues(
@@ -352,6 +579,17 @@ export class ProductsPage {
     return currentValues.filter(
       (currentValue) =>
         currentValue !== value
+    );
+  }
+
+  private isSortOption(
+    value: string | null
+  ): value is SortOption {
+    return (
+      value !== null &&
+      SORT_OPTIONS.includes(
+        value as SortOption
+      )
     );
   }
 }
