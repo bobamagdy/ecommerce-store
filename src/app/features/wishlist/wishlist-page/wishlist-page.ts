@@ -1,6 +1,5 @@
-import { CurrencyPipe } from '@angular/common';
-
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   inject
@@ -10,22 +9,40 @@ import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 
-import { Product } from '../../../core/models/product.model';
-import { CartService } from '../../../core/services/cart';
-import { ProductService } from '../../../core/services/product';
-import { WishlistService } from '../../../core/services/wishlist';
+import {
+  Product
+} from '../../../core/models/product.model';
+
+import {
+  CartService
+} from '../../../core/services/cart';
+
+import {
+  ProductService
+} from '../../../core/services/product';
+
+import {
+  WishlistService
+} from '../../../core/services/wishlist';
+
+import {
+  ProductCard
+} from '../../../../app/features/shared/components/product-card/product-card';
 
 @Component({
   selector: 'app-wishlist-page',
 
   imports: [
-    CurrencyPipe,
     RouterLink,
-    ButtonModule
+    ButtonModule,
+    ProductCard
   ],
 
   templateUrl: './wishlist-page.html',
-  styleUrl: './wishlist-page.scss'
+  styleUrl: './wishlist-page.scss',
+
+  changeDetection:
+    ChangeDetectionStrategy.OnPush
 })
 export class WishlistPage {
   private readonly wishlistService =
@@ -37,34 +54,81 @@ export class WishlistPage {
   private readonly cartService =
     inject(CartService);
 
-  readonly wishlistProducts = computed(() => {
-    const favoriteProductIds =
-      this.wishlistService.productIds();
+  /*
+   * قائمة المنتجات المفضلة مشتقة من:
+   *
+   * جميع المنتجات
+   * +
+   * أرقام المنتجات المحفوظة في Wishlist.
+   *
+   * لذلك computed() هي الاختيار الصحيح.
+   */
+  readonly wishlistProducts = computed(
+    () => {
+      const favoriteProductIds =
+        this.wishlistService.productIds();
 
-    return this.productService
-      .products()
-      .filter((product) =>
-        favoriteProductIds.includes(product.id)
-      );
-  });
+      return this.productService
+        .products()
+        .filter((product) =>
+          favoriteProductIds.includes(
+            product.id
+          )
+        );
+    }
+  );
 
-  removeFromWishlist(productId: number): void {
-    this.wishlistService.removeProduct(productId);
-  }
+  /*
+   * العدد يظهر مباشرة في عنوان الصفحة.
+   */
+  readonly wishlistCount = computed(
+    () =>
+      this.wishlistProducts().length
+  );
 
   clearWishlist(): void {
     this.wishlistService.clearWishlist();
   }
 
-  getProductQuantity(productId: number): number {
-    return this.cartService.getProductQuantity(productId);
+  setFavorite(
+    productId: number,
+    shouldBeFavorite: boolean
+  ): void {
+    const currentlyFavorite =
+      this.wishlistService.isFavorite(
+        productId
+      );
+
+    /*
+     * نتجنب تنفيذ Toggle لو الحالة
+     * المطلوبة هي نفسها الحالة الحالية.
+     */
+    if (
+      currentlyFavorite ===
+      shouldBeFavorite
+    ) {
+      return;
+    }
+
+    this.wishlistService.toggleProduct(
+      productId
+    );
   }
 
-  increaseProductQuantity(product: Product): void {
-    this.cartService.addProduct(product, 1);
+  getProductQuantity(
+    productId: number
+  ): number {
+    return this.cartService
+      .getProductQuantity(productId);
   }
 
-  decreaseProductQuantity(productId: number): void {
-    this.cartService.decreaseOrRemoveProduct(productId);
+  setProductQuantity(
+    product: Product,
+    quantity: number
+  ): void {
+    this.cartService.setProductQuantity(
+      product,
+      quantity
+    );
   }
 }

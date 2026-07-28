@@ -1,0 +1,48 @@
+<div class="quantity-selector">
+
+  <button
+    type="button"
+    class="quantity-button decrease-button"
+    [class.remove-button]="
+      quantity() === min() + 1
+    "
+    [disabled]="!canDecrease()"
+    aria-label="Decrease product quantity"
+    (click)="decrease()"
+  >
+    <i
+      class="pi"
+      [class]="
+        'pi ' + decreaseIcon()
+      "
+      aria-hidden="true"
+    ></i>
+  </button>
+
+  <div
+    class="quantity-value"
+    aria-live="polite"
+  >
+    <small>
+      {{ label() }}
+    </small>
+
+    <strong>
+      {{ quantity() }}
+    </strong>
+  </div>
+
+  <button
+    type="button"
+    class="quantity-button increase-button"
+    [disabled]="!canIncrease()"
+    aria-label="Increase product quantity"
+    (click)="increase()"
+  >
+    <i
+      class="pi pi-plus"
+      aria-hidden="true"
+    ></i>
+  </button>
+
+</div>
