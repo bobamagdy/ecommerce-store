@@ -1,8 +1,4 @@
 import {
-  CurrencyPipe
-} from '@angular/common';
-
-import {
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -47,40 +43,33 @@ import {
   ProductGridSkeleton
 } from '../../../shared/components/product-grid-skeleton/product-grid-skeleton';
 
-type SortOption =
-  | 'newest'
-  | 'price-low'
-  | 'price-high'
-  | 'rating';
+import {
+  ProductsFilters
+} from '../products-filters/products-filters';
 
-type ProductsView =
-  | 'grid'
-  | 'list';
+import {
+  ProductsToolbar
+} from '../products-toolbar/products-toolbar';
 
-interface FilterOption {
-  name: string;
-  count: number;
-}
-
-const DEFAULT_MAX_PRICE = 600;
-const MINIMUM_PRICE = 10;
-
-const SORT_OPTIONS:
-  readonly SortOption[] = [
-    'newest',
-    'price-low',
-    'price-high',
-    'rating'
-  ];
+import {
+  DEFAULT_MAX_PRICE,
+  FilterOption,
+  FilterSelectionChange,
+  MINIMUM_PRICE,
+  ProductsView,
+  SORT_OPTIONS,
+  SortOption
+} from '../../../core/models/products-page.models';
 
 @Component({
   selector: 'app-products-page',
 
   imports: [
-    CurrencyPipe,
     ButtonModule,
     ProductCard,
-    ProductGridSkeleton
+    ProductGridSkeleton,
+    ProductsFilters,
+    ProductsToolbar
   ],
 
   templateUrl: './products-page.html',
@@ -124,7 +113,7 @@ export class ProductsPage {
     this.productService.errorMessage;
 
   readonly categories:
-    FilterOption[] = [
+    readonly FilterOption[] = [
       {
         name: 'Electronics',
         count: 128
@@ -148,7 +137,7 @@ export class ProductsPage {
     ];
 
   readonly brands:
-    FilterOption[] = [
+    readonly FilterOption[] = [
       {
         name: 'Apple',
         count: 32
@@ -271,11 +260,12 @@ export class ProductsPage {
     });
 
   readonly view =
-    computed<ProductsView>(() =>
-      this.queryParamMap()
-        .get('view') === 'list'
-        ? 'list'
-        : 'grid'
+    computed<ProductsView>(
+      () =>
+        this.queryParamMap()
+          .get('view') === 'list'
+          ? 'list'
+          : 'grid'
     );
 
   readonly gridView =
@@ -287,18 +277,15 @@ export class ProductsPage {
     computed(
       () =>
         this.searchQuery().length > 0 ||
-        this.selectedCategories().length >
-          0 ||
-        this.selectedBrands().length >
-          0 ||
-        this.maxPrice() !==
-          DEFAULT_MAX_PRICE ||
+        this.selectedCategories().length > 0 ||
+        this.selectedBrands().length > 0 ||
+        this.maxPrice() !== DEFAULT_MAX_PRICE ||
         this.sortBy() !== 'newest' ||
         this.view() !== 'grid'
     );
 
   readonly filteredProducts =
-    computed(() => {
+    computed<Product[]>(() => {
       const normalizedSearch =
         this.searchQuery()
           .toLowerCase();
@@ -319,41 +306,31 @@ export class ProductsPage {
         this.products().filter(
           (product) => {
             const searchMatches =
-              normalizedSearch.length ===
-                0 ||
+              normalizedSearch.length === 0 ||
               product.name
                 .toLowerCase()
-                .includes(
-                  normalizedSearch
-                ) ||
+                .includes(normalizedSearch) ||
               product.category
                 .toLowerCase()
-                .includes(
-                  normalizedSearch
-                ) ||
+                .includes(normalizedSearch) ||
               product.brand
                 .toLowerCase()
-                .includes(
-                  normalizedSearch
-                );
+                .includes(normalizedSearch);
 
             const categoryMatches =
-              selectedCategories.length ===
-                0 ||
+              selectedCategories.length === 0 ||
               selectedCategories.includes(
                 product.category
               );
 
             const brandMatches =
-              selectedBrands.length ===
-                0 ||
+              selectedBrands.length === 0 ||
               selectedBrands.includes(
                 product.brand
               );
 
             const priceMatches =
-              product.price <=
-              maximumPrice;
+              product.price <= maximumPrice;
 
             return (
               searchMatches &&
@@ -403,18 +380,14 @@ export class ProductsPage {
     this.productService.reloadProducts();
   }
 
-  toggleCategory(
-    categoryName: string,
-    event: Event
+  changeCategory(
+    change: FilterSelectionChange
   ): void {
-    const checkbox =
-      event.target as HTMLInputElement;
-
     const updatedCategories =
       this.updateSelectedValues(
         this.selectedCategories(),
-        categoryName,
-        checkbox.checked
+        change.value,
+        change.checked
       );
 
     this.updateQueryParams({
@@ -425,18 +398,14 @@ export class ProductsPage {
     });
   }
 
-  toggleBrand(
-    brandName: string,
-    event: Event
+  changeBrand(
+    change: FilterSelectionChange
   ): void {
-    const checkbox =
-      event.target as HTMLInputElement;
-
     const updatedBrands =
       this.updateSelectedValues(
         this.selectedBrands(),
-        brandName,
-        checkbox.checked
+        change.value,
+        change.checked
       );
 
     this.updateQueryParams({
@@ -448,32 +417,19 @@ export class ProductsPage {
   }
 
   changeMaximumPrice(
-    event: Event
+    selectedPrice: number
   ): void {
-    const rangeInput =
-      event.target as HTMLInputElement;
-
-    const selectedPrice =
-      Number(rangeInput.value);
-
     this.updateQueryParams({
       maxPrice:
-        selectedPrice ===
-        DEFAULT_MAX_PRICE
+        selectedPrice === DEFAULT_MAX_PRICE
           ? null
           : selectedPrice
     });
   }
 
   changeSorting(
-    event: Event
+    sorting: SortOption
   ): void {
-    const selectElement =
-      event.target as HTMLSelectElement;
-
-    const sorting =
-      selectElement.value;
-
     this.updateQueryParams({
       sort:
         sorting === 'newest'
@@ -482,15 +438,14 @@ export class ProductsPage {
     });
   }
 
-  showGridView(): void {
+  changeView(
+    view: ProductsView
+  ): void {
     this.updateQueryParams({
-      view: null
-    });
-  }
-
-  showListView(): void {
-    this.updateQueryParams({
-      view: 'list'
+      view:
+        view === 'grid'
+          ? null
+          : 'list'
     });
   }
 
@@ -571,24 +526,21 @@ export class ProductsPage {
       [],
       {
         relativeTo: this.route,
-
         queryParams,
-
         queryParamsHandling: 'merge',
-
         replaceUrl: true
       }
     );
   }
 
   private updateSelectedValues(
-    currentValues: string[],
+    currentValues: readonly string[],
     value: string,
     checked: boolean
   ): string[] {
     if (checked) {
       return currentValues.includes(value)
-        ? currentValues
+        ? [...currentValues]
         : [
             ...currentValues,
             value

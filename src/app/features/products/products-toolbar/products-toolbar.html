@@ -1,0 +1,88 @@
+<div class="products-toolbar">
+
+  <p class="results-count">
+    Showing
+
+    <strong>
+      {{ displayedCount() }}
+    </strong>
+
+    of
+
+    <strong>
+      {{ totalCount() }}
+    </strong>
+
+    products
+  </p>
+
+  <div class="toolbar-actions">
+
+    <label class="sort-control">
+
+      <span>
+        Sort by:
+      </span>
+
+      <select
+        [value]="sortBy()"
+        (change)="onSortChange($event)"
+      >
+        <option value="newest">
+          Newest First
+        </option>
+
+        <option value="price-low">
+          Price: Low to High
+        </option>
+
+        <option value="price-high">
+          Price: High to Low
+        </option>
+
+        <option value="rating">
+          Highest Rated
+        </option>
+      </select>
+
+    </label>
+
+    <div class="view-buttons">
+
+      <span>
+        View:
+      </span>
+
+      <button
+        type="button"
+        class="view-button"
+        [class.active]="gridView()"
+        [attr.aria-pressed]="gridView()"
+        aria-label="Grid view"
+        (click)="viewChange.emit('grid')"
+      >
+        <i
+          class="pi pi-th-large"
+          aria-hidden="true"
+        ></i>
+      </button>
+
+      <button
+        type="button"
+        class="view-button"
+        [class.active]="!gridView()"
+        [attr.aria-pressed]="!gridView()"
+        aria-label="List view"
+        (click)="viewChange.emit('list')"
+      >
+        <i
+          class="pi pi-list"
+          aria-hidden="true"
+        ></i>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
