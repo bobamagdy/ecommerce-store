@@ -1,0 +1,425 @@
+<main class="orders-page">
+
+  <nav
+    class="breadcrumb"
+    aria-label="Breadcrumb"
+  >
+    <a routerLink="/">
+      Home
+    </a>
+
+    <i
+      class="pi pi-chevron-right"
+      aria-hidden="true"
+    ></i>
+
+    <a routerLink="/account">
+      Account
+    </a>
+
+    <i
+      class="pi pi-chevron-right"
+      aria-hidden="true"
+    ></i>
+
+    <span>
+      Orders
+    </span>
+  </nav>
+
+  <header class="page-heading">
+
+    <div>
+      <p>
+        ORDER HISTORY
+      </p>
+
+      <h1>
+        My Orders
+      </h1>
+
+      <span>
+        Review your previous orders
+        and track current deliveries.
+      </span>
+    </div>
+
+    @if (!isEmpty()) {
+      <div class="orders-count">
+        <i
+          class="pi pi-box"
+          aria-hidden="true"
+        ></i>
+
+        <span>
+          {{ totalOrders() }}
+          {{
+            totalOrders() === 1
+              ? 'Order'
+              : 'Orders'
+          }}
+        </span>
+      </div>
+    }
+
+  </header>
+
+  @if (isEmpty()) {
+
+    <section class="empty-orders">
+
+      <div class="empty-icon">
+        <i
+          class="pi pi-box"
+          aria-hidden="true"
+        ></i>
+      </div>
+
+      <h2>
+        No orders yet
+      </h2>
+
+      <p>
+        Your completed purchases
+        will appear on this page.
+      </p>
+
+      <a
+        routerLink="/products"
+        pButton
+      >
+        <i
+          class="pi pi-shopping-bag"
+          aria-hidden="true"
+        ></i>
+
+        <span>
+          Start Shopping
+        </span>
+      </a>
+
+    </section>
+
+  } @else {
+
+    <section class="orders-list">
+
+      @for (
+        order of orders();
+        track order.id
+      ) {
+
+        <article class="order-card">
+
+          <header class="order-card-header">
+
+            <div class="order-identity">
+
+              <span class="order-icon">
+                <i
+                  class="pi pi-receipt"
+                  aria-hidden="true"
+                ></i>
+              </span>
+
+              <div>
+                <small>
+                  Order Number
+                </small>
+
+                <strong>
+                  {{ order.orderNumber }}
+                </strong>
+              </div>
+
+            </div>
+
+            <div
+              class="order-status"
+              [class.processing]="
+                order.status ===
+                'processing'
+              "
+              [class.confirmed]="
+                order.status ===
+                'confirmed'
+              "
+              [class.shipped]="
+                order.status ===
+                'shipped'
+              "
+              [class.delivered]="
+                order.status ===
+                'delivered'
+              "
+              [class.cancelled]="
+                order.status ===
+                'cancelled'
+              "
+            >
+              <i
+                class="pi"
+                [class]="
+                  'pi ' +
+                  getStatusIcon(
+                    order.status
+                  )
+                "
+                aria-hidden="true"
+              ></i>
+
+              <span>
+                {{
+                  order.status
+                    | titlecase
+                }}
+              </span>
+            </div>
+
+          </header>
+
+          <div class="order-metadata">
+
+            <div>
+              <small>
+                Order Date
+              </small>
+
+              <strong>
+                {{
+                  order.createdAt
+                    | date:
+                        'medium'
+                }}
+              </strong>
+            </div>
+
+            <div>
+              <small>
+                Payment
+              </small>
+
+              <strong>
+                {{
+                  order.paymentMethod ===
+                  'card'
+                    ? 'Card'
+                    : 'Cash on Delivery'
+                }}
+              </strong>
+            </div>
+
+            <div>
+              <small>
+                Deliver To
+              </small>
+
+              <strong>
+                {{ order.customer.city }},
+                {{ order.customer.country }}
+              </strong>
+            </div>
+
+            <div>
+              <small>
+                Total
+              </small>
+
+              <strong class="total-value">
+                {{
+                  order.total
+                    | currency:
+                        'USD':
+                        'symbol':
+                        '1.2-2'
+                }}
+              </strong>
+            </div>
+
+          </div>
+
+          <section class="order-products">
+
+            @for (
+              item of order.items;
+              track item.product.id
+            ) {
+
+              <div class="order-product">
+
+                <div class="product-image">
+                  <img
+                    appImageFallback
+                    [src]="
+                      item.product.image
+                    "
+                    [alt]="
+                      item.product.name
+                    "
+                    loading="lazy"
+                  />
+
+                  <span>
+                    {{ item.quantity }}
+                  </span>
+                </div>
+
+                <div class="product-information">
+
+                  <strong>
+                    {{ item.product.name }}
+                  </strong>
+
+                  <small>
+                    {{ item.product.category }}
+                  </small>
+
+                </div>
+
+                <strong class="line-total">
+                  {{
+                    item.lineTotal
+                      | currency:
+                          'USD':
+                          'symbol':
+                          '1.2-2'
+                  }}
+                </strong>
+
+              </div>
+
+            }
+
+          </section>
+
+          <details class="order-details">
+
+            <summary>
+              <span>
+                View Order Details
+              </span>
+
+              <i
+                class="pi pi-chevron-down"
+                aria-hidden="true"
+              ></i>
+            </summary>
+
+            <div class="details-content">
+
+              <section>
+
+                <h3>
+                  Shipping Address
+                </h3>
+
+                <p>
+                  {{ order.customer.fullName }}
+                </p>
+
+                <p>
+                  {{ order.customer.address }}
+                </p>
+
+                <p>
+                  {{ order.customer.city }},
+                  {{ order.customer.country }}
+                  {{ order.customer.postalCode }}
+                </p>
+
+                <p>
+                  {{ order.customer.phone }}
+                </p>
+
+              </section>
+
+              <section class="order-totals">
+
+                <div>
+                  <span>
+                    Subtotal
+                  </span>
+
+                  <strong>
+                    {{
+                      order.subtotal
+                        | currency:
+                            'USD':
+                            'symbol':
+                            '1.2-2'
+                    }}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>
+                    Shipping
+                  </span>
+
+                  @if (
+                    order.shipping === 0
+                  ) {
+                    <strong class="free">
+                      Free
+                    </strong>
+                  } @else {
+                    <strong>
+                      {{
+                        order.shipping
+                          | currency:
+                              'USD':
+                              'symbol':
+                              '1.2-2'
+                      }}
+                    </strong>
+                  }
+
+                </div>
+
+                <div>
+                  <span>
+                    Tax
+                  </span>
+
+                  <strong>
+                    {{
+                      order.tax
+                        | currency:
+                            'USD':
+                            'symbol':
+                            '1.2-2'
+                    }}
+                  </strong>
+                </div>
+
+                <div class="grand-total">
+                  <span>
+                    Total
+                  </span>
+
+                  <strong>
+                    {{
+                      order.total
+                        | currency:
+                            'USD':
+                            'symbol':
+                            '1.2-2'
+                    }}
+                  </strong>
+                </div>
+
+              </section>
+
+            </div>
+
+          </details>
+
+        </article>
+
+      }
+
+    </section>
+
+  }
+
+</main>

@@ -1,7 +1,5 @@
 <main class="products-page">
 
-  <!-- Page heading -->
-
   <section class="page-heading">
 
     <p class="breadcrumb">
@@ -41,319 +39,27 @@
 
   <section class="shop-layout">
 
-    <!-- Filters -->
-
-    <aside class="filters-sidebar">
-
-      <div class="filters-heading">
-
-        <h2>
-          Filters
-        </h2>
-
-        @if (hasActiveFilters()) {
-
-          <button
-            type="button"
-            class="reset-button"
-            (click)="resetFilters()"
-          >
-            Reset
-          </button>
-
-        }
-
-      </div>
-
-      @if (searchQuery().length > 0) {
-
-        <section class="filter-section">
-
-          <div class="active-search-filter">
-
-            <div>
-
-              <small>
-                Search
-              </small>
-
-              <strong>
-                {{ searchQuery() }}
-              </strong>
-
-            </div>
-
-            <button
-              type="button"
-              aria-label="Clear search"
-              (click)="clearSearch()"
-            >
-              <i
-                class="pi pi-times"
-                aria-hidden="true"
-              ></i>
-            </button>
-
-          </div>
-
-        </section>
-
-      }
-
-      <!-- Categories -->
-
-      <section class="filter-section">
-
-        <div class="filter-title">
-
-          <span>
-            <i
-              class="pi pi-list"
-              aria-hidden="true"
-            ></i>
-
-            Categories
-          </span>
-
-          <i
-            class="pi pi-chevron-up"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-        <div class="filter-options">
-
-          @for (
-            category of categories;
-            track category.name
-          ) {
-
-            <label class="filter-check">
-
-              <input
-                type="checkbox"
-                [checked]="
-                  selectedCategories()
-                    .includes(category.name)
-                "
-                (change)="
-                  toggleCategory(
-                    category.name,
-                    $event
-                  )
-                "
-              />
-
-              <span class="check-box"></span>
-
-              <span class="option-name">
-                {{ category.name }}
-              </span>
-
-              <span class="option-count">
-                ({{ category.count }})
-              </span>
-
-            </label>
-
-          }
-
-        </div>
-
-      </section>
-
-      <!-- Price -->
-
-      <section class="filter-section">
-
-        <div class="filter-title">
-
-          <span>
-            <i
-              class="pi pi-dollar"
-              aria-hidden="true"
-            ></i>
-
-            Price Range
-          </span>
-
-          <i
-            class="pi pi-chevron-up"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-        <div class="price-filter">
-
-          <input
-            type="range"
-            min="10"
-            max="600"
-            step="10"
-            aria-label="Maximum product price"
-            [value]="maxPrice()"
-            (input)="
-              changeMaximumPrice($event)
-            "
-          />
-
-          <div class="price-values">
-
-            <span>
-              $10
-            </span>
-
-            <strong>
-              Up to
-
-              {{
-                maxPrice()
-                  | currency:
-                      'USD':
-                      'symbol':
-                      '1.0-0'
-              }}
-            </strong>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- Brands -->
-
-      <section class="filter-section">
-
-        <div class="filter-title">
-
-          <span>
-            <i
-              class="pi pi-tag"
-              aria-hidden="true"
-            ></i>
-
-            Brand
-          </span>
-
-          <i
-            class="pi pi-chevron-up"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-        <div class="filter-options">
-
-          @for (
-            brand of brands;
-            track brand.name
-          ) {
-
-            <label class="filter-check">
-
-              <input
-                type="checkbox"
-                [checked]="
-                  selectedBrands()
-                    .includes(brand.name)
-                "
-                (change)="
-                  toggleBrand(
-                    brand.name,
-                    $event
-                  )
-                "
-              />
-
-              <span class="check-box"></span>
-
-              <span class="option-name">
-                {{ brand.name }}
-              </span>
-
-              <span class="option-count">
-                ({{ brand.count }})
-              </span>
-
-            </label>
-
-          }
-
-        </div>
-
-      </section>
-
-      <section class="collapsed-filter">
-
-        <span>
-          <i
-            class="pi pi-star"
-            aria-hidden="true"
-          ></i>
-
-          Rating
-        </span>
-
-        <i
-          class="pi pi-chevron-down"
-          aria-hidden="true"
-        ></i>
-
-      </section>
-
-      <section class="collapsed-filter">
-
-        <span>
-          <i
-            class="pi pi-box"
-            aria-hidden="true"
-          ></i>
-
-          Availability
-        </span>
-
-        <i
-          class="pi pi-chevron-down"
-          aria-hidden="true"
-        ></i>
-
-      </section>
-
-      <section class="collapsed-filter">
-
-        <span>
-          <i
-            class="pi pi-palette"
-            aria-hidden="true"
-          ></i>
-
-          Color
-        </span>
-
-        <i
-          class="pi pi-chevron-down"
-          aria-hidden="true"
-        ></i>
-
-      </section>
-
-    </aside>
-
-    <!-- Products area -->
+    <app-products-filters
+      [categories]="categories"
+      [brands]="brands"
+      [selectedCategories]="selectedCategories()"
+      [selectedBrands]="selectedBrands()"
+      [searchQuery]="searchQuery()"
+      [maxPrice]="maxPrice()"
+      [hasActiveFilters]="hasActiveFilters()"
+      (categoryChange)="changeCategory($event)"
+      (brandChange)="changeBrand($event)"
+      (maxPriceChange)="changeMaximumPrice($event)"
+      (clearSearch)="clearSearch()"
+      (resetFilters)="resetFilters()"
+    />
 
     <section class="products-area">
 
       @if (initialProductsLoading()) {
 
-        <div class="products-toolbar loading-toolbar">
-
-          <p class="results-count">
-            Loading products...
-          </p>
-
+        <div class="loading-toolbar">
+          Loading products...
         </div>
 
         <app-product-grid-skeleton
@@ -445,98 +151,16 @@
 
         }
 
-        <div class="products-toolbar">
+        <app-products-toolbar
+          [displayedCount]="filteredProducts().length"
+          [totalCount]="products().length"
+          [sortBy]="sortBy()"
+          [view]="view()"
+          (sortChange)="changeSorting($event)"
+          (viewChange)="changeView($event)"
+        />
 
-          <p class="results-count">
-            Showing
-
-            <strong>
-              {{ filteredProducts().length }}
-            </strong>
-
-            of
-
-            <strong>
-              {{ products().length }}
-            </strong>
-
-            products
-          </p>
-
-          <div class="toolbar-actions">
-
-            <label class="sort-control">
-
-              <span>
-                Sort by:
-              </span>
-
-              <select
-                [value]="sortBy()"
-                (change)="
-                  changeSorting($event)
-                "
-              >
-                <option value="newest">
-                  Newest First
-                </option>
-
-                <option value="price-low">
-                  Price: Low to High
-                </option>
-
-                <option value="price-high">
-                  Price: High to Low
-                </option>
-
-                <option value="rating">
-                  Highest Rated
-                </option>
-              </select>
-
-            </label>
-
-            <div class="view-buttons">
-
-              <span>
-                View:
-              </span>
-
-              <button
-                type="button"
-                class="view-button"
-                [class.active]="gridView()"
-                aria-label="Grid view"
-                (click)="showGridView()"
-              >
-                <i
-                  class="pi pi-th-large"
-                  aria-hidden="true"
-                ></i>
-              </button>
-
-              <button
-                type="button"
-                class="view-button"
-                [class.active]="!gridView()"
-                aria-label="List view"
-                (click)="showListView()"
-              >
-                <i
-                  class="pi pi-list"
-                  aria-hidden="true"
-                ></i>
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        @if (
-          filteredProducts().length > 0
-        ) {
+        @if (filteredProducts().length > 0) {
 
           <div
             class="products-grid"
@@ -583,7 +207,7 @@
 
         } @else {
 
-          <div class="no-products">
+          <section class="no-products">
 
             <i
               class="pi pi-search"
@@ -594,21 +218,17 @@
               No products found
             </h2>
 
-            @if (
-              searchQuery().length > 0
-            ) {
+            @if (searchQuery().length > 0) {
 
               <p>
-                We couldn’t find products
-                matching
+                We couldn’t find products matching
                 “{{ searchQuery() }}”.
               </p>
 
             } @else {
 
               <p>
-                Try changing or resetting
-                your filters.
+                Try changing or resetting your filters.
               </p>
 
             }
@@ -628,7 +248,7 @@
               </span>
             </button>
 
-          </div>
+          </section>
 
         }
 

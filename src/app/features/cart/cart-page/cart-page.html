@@ -1,62 +1,37 @@
 <main class="cart-page">
-
   <!-- Breadcrumb -->
 
-  <nav
-    class="breadcrumb"
-    aria-label="Breadcrumb"
-  >
-    <a routerLink="/">
-      Home
-    </a>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a routerLink="/"> Home </a>
 
     <i class="pi pi-chevron-right"></i>
 
-    <span>
-      Shopping Cart
-    </span>
+    <span> Shopping Cart </span>
   </nav>
 
   <!-- Page Heading -->
 
   <header class="page-heading">
-
     <div>
-      <h1>
-        Shopping Cart
-      </h1>
+      <h1>Shopping Cart</h1>
 
-      <p>
-        Review your products before checkout.
-      </p>
+      <p>Review your products before checkout.</p>
     </div>
 
     @if (cartItems().length > 0) {
-
-      <button
-        type="button"
-        class="clear-cart-button"
-        (click)="clearCart()"
-      >
+      <button type="button" class="clear-cart-button" (click)="clearCart()">
         <i class="pi pi-trash"></i>
 
-        <span>
-          Clear Cart
-        </span>
+        <span> Clear Cart </span>
       </button>
-
     }
-
   </header>
 
   @if (cartItems().length > 0) {
-
     <section class="cart-layout">
-
       <!-- Cart Products -->
 
       <section class="cart-products">
-
         <div class="cart-table-heading">
           <span>Product</span>
           <span>Price</span>
@@ -65,92 +40,53 @@
           <span></span>
         </div>
 
-        @for (
-          item of cartItems();
-          track item.product.id
-        ) {
-
+        @for (item of cartItems(); track item.product.id) {
           <article class="cart-item">
-
             <!-- Product -->
 
             <div class="product-column">
-
-              <a
-                class="product-image"
-                [routerLink]="[
-                  '/products',
-                  item.product.id
-                ]"
-              >
-                <img
-                  [src]="item.product.image"
-                  [alt]="item.product.name"
-                />
+              <a class="product-image" [routerLink]="['/products', item.product.id]">
+                <img [src]="item.product.image" [alt]="item.product.name" />
               </a>
 
               <div class="product-information">
-
                 <p class="product-category">
                   {{ item.product.category }}
                 </p>
 
-                <a
-                  class="product-name"
-                  [routerLink]="[
-                    '/products',
-                    item.product.id
-                  ]"
-                >
+                <a class="product-name" [routerLink]="['/products', item.product.id]">
                   {{ item.product.name }}
                 </a>
 
-                <span class="product-brand">
-                  Brand: {{ item.product.brand }}
-                </span>
+                <span class="product-brand"> Brand: {{ item.product.brand }} </span>
 
                 <button
                   type="button"
                   class="mobile-remove-button"
-                  (click)="
-                    removeProduct(item.product.id)
-                  "
+                  (click)="removeProduct(item.product.id)"
                 >
                   <i class="pi pi-trash"></i>
                   Remove
                 </button>
-
               </div>
-
             </div>
 
             <!-- Unit Price -->
 
             <div class="unit-price">
-
-              <span class="mobile-label">
-                Price
-              </span>
+              <span class="mobile-label"> Price </span>
 
               <strong>
-                {{
-                  item.product.price
-                    | currency:'USD':'symbol':'1.2-2'
-                }}
+                {{ item.product.price | currency: 'USD' : 'symbol' : '1.2-2' }}
               </strong>
-
             </div>
 
             <!-- Quantity -->
 
             <div class="quantity-column">
-
-              <span class="mobile-label">
-                Quantity
-              </span>
+              <span class="mobile-label"> Quantity </span>
 
               <div class="quantity-control">
-
                 <button
                   type="button"
                   aria-label="Decrease quantity"
@@ -167,40 +103,24 @@
                 <button
                   type="button"
                   aria-label="Increase quantity"
-                  [disabled]="
-                    item.quantity >= item.product.stock
-                  "
+                  [disabled]="item.quantity >= item.product.stock"
                   (click)="increaseQuantity(item)"
                 >
                   <i class="pi pi-plus"></i>
                 </button>
-
               </div>
 
-              <small>
-                {{ item.product.stock }} available
-              </small>
-
+              <small> {{ item.product.stock }} available </small>
             </div>
 
             <!-- Item Total -->
 
             <div class="item-total">
-
-              <span class="mobile-label">
-                Total
-              </span>
+              <span class="mobile-label"> Total </span>
 
               <strong>
-                {{
-                  (
-                    item.product.price *
-                    item.quantity
-                  )
-                    | currency:'USD':'symbol':'1.2-2'
-                }}
+                {{ item.product.price * item.quantity | currency: 'USD' : 'symbol' : '1.2-2' }}
               </strong>
-
             </div>
 
             <!-- Remove -->
@@ -209,66 +129,41 @@
               type="button"
               class="remove-button"
               aria-label="Remove product"
-              (click)="
-                removeProduct(item.product.id)
-              "
+              (click)="removeProduct(item.product.id)"
             >
               <i class="pi pi-trash"></i>
             </button>
-
           </article>
-
         }
 
         <!-- Bottom Actions -->
 
         <div class="cart-actions">
-
-          <a
-            routerLink="/products"
-            class="continue-shopping"
-          >
+          <a routerLink="/products" class="continue-shopping">
             <i class="pi pi-arrow-left"></i>
 
-            <span>
-              Continue Shopping
-            </span>
+            <span> Continue Shopping </span>
           </a>
 
-          <button
-            type="button"
-            class="clear-cart-secondary"
-            (click)="clearCart()"
-          >
+          <button type="button" class="clear-cart-secondary" (click)="clearCart()">
             <i class="pi pi-trash"></i>
 
-            <span>
-              Clear Cart
-            </span>
+            <span> Clear Cart </span>
           </button>
-
         </div>
-
       </section>
 
       <!-- Order Summary -->
 
       <aside class="order-summary">
-
-        <h2>
-          Order Summary
-        </h2>
+        <h2>Order Summary</h2>
 
         <div class="summary-content">
-
           <div class="summary-row">
             <span>Subtotal</span>
 
             <strong>
-              {{
-                subtotal()
-                  | currency:'USD':'symbol':'1.2-2'
-              }}
+              {{ subtotal() | currency: 'USD' : 'symbol' : '1.2-2' }}
             </strong>
           </div>
 
@@ -276,20 +171,11 @@
             <span>Shipping</span>
 
             @if (shipping() === 0) {
-
-              <strong class="free-shipping">
-                Free
-              </strong>
-
+              <strong class="free-shipping"> Free </strong>
             } @else {
-
               <strong>
-                {{
-                  shipping()
-                    | currency:'USD':'symbol':'1.2-2'
-                }}
+                {{ shipping() | currency: 'USD' : 'symbol' : '1.2-2' }}
               </strong>
-
             }
           </div>
 
@@ -297,40 +183,23 @@
             <span>Tax</span>
 
             <strong>
-              {{
-                tax()
-                  | currency:'USD':'symbol':'1.2-2'
-              }}
+              {{ tax() | currency: 'USD' : 'symbol' : '1.2-2' }}
             </strong>
           </div>
-
         </div>
 
         <div class="summary-total">
-
-          <span>
-            Total
-          </span>
+          <span> Total </span>
 
           <strong>
-            {{
-              total()
-                | currency:'USD':'symbol':'1.2-2'
-            }}
+            {{ total() | currency: 'USD' : 'symbol' : '1.2-2' }}
           </strong>
-
         </div>
 
-        <button
-          type="button"
-          pButton
-          class="checkout-button"
-        >
+        <button type="button" pButton routerLink="/checkout" class="checkout-button">
           <i class="pi pi-lock"></i>
 
-          <span>
-            Proceed to Checkout
-          </span>
+          <span> Proceed to Checkout </span>
         </button>
 
         <p class="secure-checkout">
@@ -340,56 +209,33 @@
         </p>
 
         <div class="payment-methods">
-
-          <span>
-            We accept
-          </span>
+          <span> We accept </span>
 
           <div>
             <strong>VISA</strong>
             <strong>Mastercard</strong>
             <strong>PayPal</strong>
           </div>
-
         </div>
-
       </aside>
-
     </section>
-
   } @else {
-
     <!-- Empty Cart -->
 
     <section class="empty-cart">
-
       <div class="empty-cart-icon">
         <i class="pi pi-shopping-cart"></i>
       </div>
 
-      <h2>
-        Your cart is empty
-      </h2>
+      <h2>Your cart is empty</h2>
 
-      <p>
-        Looks like you haven’t added any products
-        to your cart yet.
-      </p>
+      <p>Looks like you haven’t added any products to your cart yet.</p>
 
-      <a
-        routerLink="/products"
-        pButton
-        class="start-shopping-button"
-      >
+      <a routerLink="/products" pButton class="start-shopping-button">
         <i class="pi pi-shopping-bag"></i>
 
-        <span>
-          Start Shopping
-        </span>
+        <span> Start Shopping </span>
       </a>
-
     </section>
-
   }
-
 </main>

@@ -1,0 +1,118 @@
+:host {
+  display: block;
+}
+
+.account-page {
+  width: min(100% - 40px, 1150px);
+  min-height: 650px;
+  margin-inline: auto;
+  padding: 55px 0 90px;
+}
+
+.account-heading {
+  margin-bottom: 35px;
+  text-align: center;
+}
+
+.account-heading > p {
+  margin: 0 0 9px;
+  color: #7c3aed;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.account-heading h1 {
+  margin: 0 0 10px;
+  color: #111827;
+  font-size: 39px;
+}
+
+.account-heading span {
+  color: #64748b;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.account-card {
+  min-height: 145px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 15px;
+  color: #111827;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgb(15 23 42 / 5%);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+a.account-card:hover {
+  border-color: #c4b5fd;
+  box-shadow: 0 15px 35px rgb(109 40 217 / 10%);
+  transform: translateY(-3px);
+}
+
+.card-icon {
+  width: 55px;
+  height: 55px;
+  flex: 0 0 55px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  color: #6d28d9;
+  background: #f3e8ff;
+}
+
+.card-icon i {
+  font-size: 22px;
+}
+
+.account-card > div {
+  flex: 1;
+}
+
+.account-card h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.account-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.arrow {
+  color: #7c3aed;
+}
+
+.logout-button {
+  min-width: 150px;
+  margin: 30px auto 0;
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  border-color: #dc2626;
+  background: #dc2626;
+}
+
+@media (max-width: 700px) {
+  .account-page {
+    width: min(100% - 24px, 1150px);
+  }
+
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+}

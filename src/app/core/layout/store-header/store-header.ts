@@ -29,8 +29,8 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 
-import { CartService } from '../../services/cart';
-import { WishlistService } from '../../services/wishlist';
+import { CartService } from '../../services/cart/cart';
+import { WishlistService } from '../../services/wishlist/wishlist';
 
 @Component({
   selector: 'app-store-header',

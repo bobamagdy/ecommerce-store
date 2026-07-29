@@ -1,1 +1,36 @@
+@if (loadingService.isLoading()) {
+  <div
+    class="global-loading"
+    role="progressbar"
+    aria-label="Loading"
+  >
+    <span></span>
+  </div>
+}
+
+@if (
+  apiErrorService.message();
+  as errorMessage
+) {
+  <section
+    class="global-error"
+    role="alert"
+    aria-live="assertive"
+  >
+    <i class="pi pi-exclamation-circle"></i>
+
+    <span>
+      {{ errorMessage }}
+    </span>
+
+    <button
+      type="button"
+      aria-label="Dismiss error"
+      (click)="apiErrorService.clear()"
+    >
+      <i class="pi pi-times"></i>
+    </button>
+  </section>
+}
+
 <router-outlet />

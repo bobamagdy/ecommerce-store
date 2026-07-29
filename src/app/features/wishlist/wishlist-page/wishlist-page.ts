@@ -15,19 +15,19 @@ import {
 
 import {
   CartService
-} from '../../../core/services/cart';
+} from '../../../core/services/cart/cart';
 
 import {
   ProductService
-} from '../../../core/services/product';
+} from '../../../core/services/product/product';
 
 import {
   WishlistService
-} from '../../../core/services/wishlist';
+} from '../../../core/services/wishlist/wishlist';
 
 import {
   ProductCard
-} from '../../../../app/features/shared/components/product-card/product-card';
+} from '../../../shared/components/product-card/product-card';
 
 @Component({
   selector: 'app-wishlist-page',

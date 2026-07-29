@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import {
   CartItem,
   CartService
-} from '../../../core/services/cart';
+} from '../../../core/services/cart/cart';
 
 @Component({
   selector: 'app-cart-page',

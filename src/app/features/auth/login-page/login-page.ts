@@ -22,7 +22,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 
-import { AuthService } from '../../../core/services/auth';
+import { AuthService } from '../../../core/services/auth/auth';
 
 interface LoginFormModel {
   email: string;
