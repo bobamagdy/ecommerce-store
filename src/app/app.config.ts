@@ -4,7 +4,11 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 
-import { provideRouter } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling
+} from '@angular/router';
 import {
   provideHttpClient
 } from '@angular/common/http';
@@ -19,7 +23,16 @@ export const appConfig: ApplicationConfig = {
 
     provideZonelessChangeDetection(),
 
-    provideRouter(routes),
+    provideRouter(
+  routes,
+
+  withComponentInputBinding(),
+
+  withInMemoryScrolling({
+    scrollPositionRestoration: 'top',
+    anchorScrolling: 'enabled'
+  })
+),
 provideHttpClient(),
     providePrimeNG({
       license:

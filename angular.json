@@ -11,28 +11,28 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
-          "skipTests": true
+          "skipTests": false
         },
         "@schematics/angular:class": {
-          "skipTests": true
+          "skipTests": false
         },
         "@schematics/angular:directive": {
-          "skipTests": true
+          "skipTests": false
         },
         "@schematics/angular:guard": {
-          "skipTests": true
+          "skipTests": false
         },
         "@schematics/angular:interceptor": {
-          "skipTests": true
+          "skipTests": false
         },
         "@schematics/angular:pipe": {
-          "skipTests": true
+          "skipTests": false
         },
         "@schematics/angular:resolver": {
-          "skipTests": true
+          "skipTests": false
         },
         "@schematics/angular:service": {
-          "skipTests": true
+          "skipTests": false
         }
       },
       "root": "",
@@ -51,9 +51,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -65,8 +63,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "12kB",
+                  "maximumError": "16kB"
                 }
               ],
               "outputHashing": "all"
@@ -90,6 +88,14 @@
             }
           },
           "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "buildTarget": "ecommerce-store:build:development",
+            "runner": "vitest"
+          }
         }
       }
     }
