@@ -1,0 +1,286 @@
+:host {
+  display: block;
+}
+
+.recovery-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: grid;
+  place-items: center;
+  color: #111827;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgb(124 58 237 / 15%),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgb(236 72 153 / 10%),
+      transparent 32%
+    ),
+    #f8fafc;
+}
+
+.recovery-card {
+  width: min(100%, 500px);
+  padding: 38px;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow:
+    0 25px 65px
+    rgb(15 23 42 / 10%);
+}
+
+.logo {
+  margin-bottom: 35px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #111827;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #9333ea
+    );
+}
+
+.logo strong {
+  color: #7c3aed;
+}
+
+.recovery-icon {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #6d28d9;
+  background: #f3e8ff;
+}
+
+.recovery-icon i {
+  font-size: 30px;
+}
+
+.recovery-heading {
+  margin-bottom: 28px;
+}
+
+.recovery-heading > p {
+  margin: 0 0 7px;
+  color: #7c3aed;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.recovery-heading h1 {
+  margin: 0 0 11px;
+  font-size: 32px;
+  line-height: 1.15;
+}
+
+.recovery-heading span {
+  display: block;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.recovery-form {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  margin-bottom: 8px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper > i {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 14px;
+  color: #94a3b8;
+  transform: translateY(-50%);
+}
+
+.input-wrapper input {
+  width: 100%;
+  min-height: 49px;
+  padding: 11px 45px 11px 43px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  color: #111827;
+  background: #ffffff;
+  font: inherit;
+}
+
+.input-wrapper input:focus {
+  border-color: #7c3aed;
+  box-shadow:
+    0 0 0 3px
+    rgb(124 58 237 / 12%);
+}
+
+.input-wrapper.invalid input {
+  border-color: #dc2626;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 9px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: #64748b;
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.password-toggle:hover {
+  color: #6d28d9;
+  background: #f3e8ff;
+}
+
+.error-list {
+  margin-top: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #dc2626;
+  font-size: 12px;
+}
+
+.submit-button {
+  width: 100%;
+  min-height: 49px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-color: #6d28d9;
+  background: #6d28d9;
+}
+
+.submit-button:hover:not(:disabled) {
+  border-color: #5b21b6;
+  background: #5b21b6;
+}
+
+.back-link {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #6d28d9;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.success-state {
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.success-icon {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 23px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #047857;
+  background: #d1fae5;
+}
+
+.success-icon i {
+  font-size: 37px;
+}
+
+.success-state h1 {
+  margin: 0 0 11px;
+  font-size: 29px;
+}
+
+.success-state p {
+  max-width: 390px;
+  margin: 0 0 25px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.success-state a {
+  min-height: 45px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+@media (max-width: 550px) {
+  .recovery-page {
+    padding: 20px 12px;
+  }
+
+  .recovery-card {
+    padding: 27px 20px;
+  }
+
+  .recovery-heading h1 {
+    font-size: 27px;
+  }
+}

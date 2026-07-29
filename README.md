@@ -1,59 +1,304 @@
-# EcommerceStore
+# HubShop
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.6.
+[![Frontend CI](https://github.com/bobamagdy/ecommerce-store/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/bobamagdy/ecommerce-store/actions/workflows/frontend-ci.yml)
 
-## Development server
+HubShop is a modern e-commerce frontend application built with Angular 22.
 
-To start a local development server, run:
+The project demonstrates a complete customer shopping experience, account and order management, an admin dashboard, modern Angular architecture, automated unit testing and browser-based end-to-end testing.
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Current Status
 
-## Code scaffolding
+The Angular frontend MVP is complete.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+The application currently uses:
 
-```bash
-ng generate component component-name
-```
+- Local JSON product data
+- Browser storage for cart, wishlist, orders and temporary authentication
+- Frontend route guards
+- Simulated authentication and password recovery
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+A separate ASP.NET Core backend will replace the temporary frontend data and authentication implementations.
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## Main Features
 
-To build the project run:
+### Store
 
-```bash
-ng build
-```
+- Responsive home page
+- Product catalog
+- Product search
+- Category and brand filtering
+- Price filtering
+- Sorting
+- Grid and list views
+- Query parameter synchronization
+- Product details
+- Product image gallery
+- Product quantity selector
+- Stock handling
+- Discount calculation
+- Image fallback handling
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Shopping
 
-## Running unit tests
+- Shopping cart
+- Quantity management
+- Cart totals
+- Wishlist
+- Persistent browser storage
+- Checkout flow
+- Checkout form validation
+- Unsaved checkout changes guard
+- Order creation
+- Order history
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Authentication
 
-```bash
-ng test
-```
+- Login
+- Registration
+- Remember me
+- Guest route guard
+- Authentication route guard
+- Forgot password
+- Reset password
+- Safe return URL handling
 
-## Running end-to-end tests
+Authentication is currently simulated in the frontend and will be replaced by JWT authentication from the ASP.NET Core API.
 
-For end-to-end (e2e) testing, run:
+### Account
 
-```bash
-ng e2e
-```
+- Customer account page
+- Customer details
+- Orders page
+- Order details and status display
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Admin
 
-## Additional Resources
+- Admin layout
+- Responsive sidebar
+- Dashboard statistics
+- Recent orders
+- Product catalog management view
+- Product search
+- Stock status display
+- Orders management view
+- Order filtering
+- Order status updates
+- Protected admin routes
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Product creation, editing and deletion will be connected to the backend API.
+
+---
+
+## Angular Features
+
+The project uses modern Angular APIs and patterns, including:
+
+- Angular 22
+- Standalone components
+- Zoneless change detection
+- Signals
+- Computed signals
+- Effects
+- Signal Forms
+- Signal-based component inputs
+- Signal queries
+- `httpResource`
+- Functional route guards
+- Functional HTTP interceptors
+- Lazy-loaded routes
+- Component input binding from routes
+- Native Angular control flow
+- OnPush change detection
+- Dependency injection tokens
+- Strict TypeScript configuration
+
+---
+
+## Technology Stack
+
+- Angular 22
+- TypeScript 6
+- PrimeNG 22
+- PrimeUIX themes
+- PrimeIcons
+- RxJS
+- SCSS
+- Vitest
+- Playwright
+- GitHub Actions
+
+---
+
+## Application Architecture
+
+```text
+src/app
+├── core
+│   ├── guards
+│   ├── http
+│   ├── layouts
+│   ├── models
+│   ├── services
+│   └── tokens
+│
+├── features
+│   ├── account
+│   ├── admin
+│   ├── auth
+│   ├── cart
+│   ├── checkout
+│   ├── home
+│   ├── not-found
+│   ├── products
+│   └── wishlist
+│
+└── shared
+    ├── components
+    ├── directives
+    └── pipes
+
+
+
+The application is organized by feature, while reusable services, guards, infrastructure and UI utilities are separated into core and shared.
+
+Main Routes
+Route	Description	Access
+/	Home page	Public
+/products	Product catalog	Public
+/products/:id	Product details	Public
+/cart	Shopping cart	Public
+/wishlist	Wishlist	Public
+/auth/login	Login	Guest
+/auth/register	Register	Guest
+/auth/forgot-password	Forgot password	Guest
+/auth/reset-password/:token	Reset password	Guest
+/checkout	Checkout	Authenticated
+/account	Customer account	Authenticated
+/account/orders	Customer orders	Authenticated
+/admin/dashboard	Admin dashboard	Authenticated
+/admin/products	Admin products	Authenticated
+/admin/orders	Admin orders	Authenticated
+
+Real role-based authorization will be enforced by the backend API.
+
+Getting Started
+Requirements
+Node.js 24
+npm 11 or later
+Install Dependencies
+npm ci
+Start Development Server
+npm start
+
+Open:
+
+http://localhost:4200
+Available Scripts
+Development
+npm start
+Development Build
+npm run build
+Production Build
+npm run build:prod
+Unit Tests
+npm test
+Unit Tests with Coverage
+npm run test:coverage
+End-to-End Tests
+npm run e2e
+End-to-End Tests with Browser UI
+npm run e2e:ui
+End-to-End Tests in Headed Mode
+npm run e2e:headed
+Playwright Report
+npm run e2e:report
+Full Frontend Verification
+npm run verify
+
+The verification command runs:
+
+Unit tests with coverage
+Production build
+Playwright end-to-end tests
+Automated Testing
+
+The project includes:
+
+Service unit tests
+Route guard tests
+HTTP interceptor tests
+Component tests
+Directive tests
+Pipe tests
+Signal Forms tests
+Admin tests
+Playwright browser tests
+
+The Playwright suite validates important user journeys such as:
+
+Opening the product catalog
+Opening the forgot password page
+Guarding checkout routes
+Opening the admin dashboard
+Opening admin products
+Opening admin orders
+Signing out
+Handling unknown routes
+Continuous Integration
+
+GitHub Actions runs automatically for:
+
+Pushes to master
+Pull requests targeting master
+Manual workflow runs
+
+The CI pipeline performs:
+
+Dependency installation
+Unit tests with coverage
+Production build
+Playwright Chromium tests
+Coverage report upload
+Production build upload
+Playwright report upload
+Backend Roadmap
+
+The next phase is a separate ASP.NET Core backend project.
+
+Planned backend features:
+
+ASP.NET Core Web API
+SQL Server
+Entity Framework Core
+JWT authentication
+Refresh tokens
+Customer and admin roles
+Product CRUD
+Category and brand management
+Cart synchronization
+Order management
+Inventory updates
+Password recovery
+Email notifications
+Payment integration
+API validation
+Global exception handling
+Logging
+Swagger documentation
+Important Security Note
+
+The current authentication implementation is for frontend development only.
+
+Production authorization must be enforced by the ASP.NET Core API. Client-side route guards improve navigation and user experience, but they are not a replacement for server-side authorization.
+
+No database credentials, JWT signing keys, payment secrets or private API keys should be stored in the Angular application.
+
+Author
+
+Heba Tallah Magdy
+
+Information Systems graduate and software professional with experience in Angular, .NET, product ownership and project coordination.
