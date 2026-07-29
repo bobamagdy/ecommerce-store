@@ -26,11 +26,17 @@ import {
 } from '../../../core/services/cart/cart';
 
 import {
+  OrderService
+} from '../../../core/services/order/order';
+
+import {
   CheckoutPage
 } from './checkout-page';
 
 describe('CheckoutPage', () => {
-  let component: CheckoutPage;
+  let component:
+    CheckoutPage;
+
   let fixture:
     ComponentFixture<CheckoutPage>;
 
@@ -52,6 +58,9 @@ describe('CheckoutPage', () => {
   const clearCartMock =
     vi.fn();
 
+  const createOrderMock =
+    vi.fn();
+
   beforeEach(async () => {
     cartItemsState.set([]);
     subtotalState.set(0);
@@ -60,42 +69,61 @@ describe('CheckoutPage', () => {
     totalState.set(0);
 
     clearCartMock.mockClear();
+    createOrderMock.mockClear();
 
-    await TestBed.configureTestingModule({
-      imports: [
-        CheckoutPage
-      ],
+    await TestBed
+      .configureTestingModule({
+        imports: [
+          CheckoutPage
+        ],
 
-      providers: [
-        provideZonelessChangeDetection(),
+        providers: [
+          provideZonelessChangeDetection(),
 
-        provideRouter([]),
+          provideRouter([]),
 
-        {
-          provide: CartService,
+          {
+            provide:
+              CartService,
 
-          useValue: {
-            items:
-              cartItemsState.asReadonly(),
+            useValue: {
+              items:
+                cartItemsState
+                  .asReadonly(),
 
-            subtotal:
-              subtotalState.asReadonly(),
+              subtotal:
+                subtotalState
+                  .asReadonly(),
 
-            shipping:
-              shippingState.asReadonly(),
+              shipping:
+                shippingState
+                  .asReadonly(),
 
-            tax:
-              taxState.asReadonly(),
+              tax:
+                taxState
+                  .asReadonly(),
 
-            total:
-              totalState.asReadonly(),
+              total:
+                totalState
+                  .asReadonly(),
 
-            clearCart:
-              clearCartMock
+              clearCart:
+                clearCartMock
+            }
+          },
+
+          {
+            provide:
+              OrderService,
+
+            useValue: {
+              createOrder:
+                createOrderMock
+            }
           }
-        }
-      ]
-    }).compileComponents();
+        ]
+      })
+      .compileComponents();
 
     fixture =
       TestBed.createComponent(
@@ -113,7 +141,9 @@ describe('CheckoutPage', () => {
   it(
     'should create',
     () => {
-      expect(component).toBeTruthy();
+      expect(
+        component
+      ).toBeTruthy();
     }
   );
 
@@ -136,8 +166,26 @@ describe('CheckoutPage', () => {
     'should report no pending changes initially',
     () => {
       expect(
-        component.hasPendingChanges()
+        component
+          .hasPendingChanges()
       ).toBe(false);
+    }
+  );
+
+  it(
+    'should not create an order when the cart is empty',
+    async () => {
+      await component.placeOrder(
+        new Event('submit')
+      );
+
+      expect(
+        createOrderMock
+      ).not.toHaveBeenCalled();
+
+      expect(
+        clearCartMock
+      ).not.toHaveBeenCalled();
     }
   );
 });
