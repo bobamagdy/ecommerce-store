@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 
-import { Product } from '../../../../core/models/product.model';
+import { Product } from '../../../core/models/product.model';
 
 import { ImageFallback } from '../../directives/image-fallback';
 import { DiscountPercentagePipe } from '../../pipes/discount-percentage/discount-percentage-pipe';

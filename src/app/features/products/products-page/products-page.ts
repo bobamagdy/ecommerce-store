@@ -41,11 +41,11 @@ import {
 
 import {
   ProductCard
-} from '../../shared/components/product-card/product-card';
+} from '../../../shared/components/product-card/product-card';
 
 import {
   ProductGridSkeleton
-} from '../../shared/components/product-grid-skeleton/product-grid-skeleton';
+} from '../../../shared/components/product-grid-skeleton/product-grid-skeleton';
 
 type SortOption =
   | 'newest'

@@ -27,7 +27,7 @@ import {
 
 import {
   ProductCard
-} from '../../../../app/features/shared/components/product-card/product-card';
+} from '../../../shared/components/product-card/product-card';
 
 @Component({
   selector: 'app-wishlist-page',
