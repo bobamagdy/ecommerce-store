@@ -1,0 +1,183 @@
+<main class="admin-page">
+
+  <header class="page-header">
+
+    <div>
+      <p>
+        CATALOG MANAGEMENT
+      </p>
+
+      <h1>
+        Products
+      </h1>
+
+      <span>
+        Review catalog information,
+        prices and current stock.
+      </span>
+    </div>
+
+  </header>
+
+  <section class="admin-toolbar">
+
+    <label class="search-control">
+
+      <i
+        class="pi pi-search"
+        aria-hidden="true"
+      ></i>
+
+      <input
+        type="search"
+        placeholder="Search name, brand, SKU or category"
+        [value]="searchQuery()"
+        (input)="updateSearch($event)"
+      />
+
+    </label>
+
+  </section>
+
+  <section class="table-card">
+
+    <header class="card-header">
+
+      <h2>
+        Product Catalog
+      </h2>
+
+      <span>
+        {{ filteredProducts().length }}
+        products
+      </span>
+
+    </header>
+
+    @if (
+      filteredProducts().length > 0
+    ) {
+
+      <div class="table-wrapper">
+
+        <table class="data-table">
+
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>SKU</th>
+              <th>Brand</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Store Page</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (
+              product of filteredProducts();
+              track product.id
+            ) {
+              <tr>
+
+                <td>
+                  <div class="product-cell">
+
+                    <img
+                      appImageFallback
+                      [src]="product.image"
+                      [alt]="product.name"
+                    />
+
+                    <div>
+                      <strong>
+                        {{ product.name }}
+                      </strong>
+
+                      <small>
+                        {{ product.category }}
+                      </small>
+                    </div>
+
+                  </div>
+                </td>
+
+                <td>
+                  {{ product.sku }}
+                </td>
+
+                <td>
+                  {{ product.brand }}
+                </td>
+
+                <td>
+                  <strong>
+                    {{
+                      product.price
+                        | currency:
+                            'USD':
+                            'symbol':
+                            '1.2-2'
+                    }}
+                  </strong>
+                </td>
+
+                <td>
+                  <span
+                    class="stock-badge"
+                    [class.low-stock]="
+                      product.stock > 0 &&
+                      product.stock <= 5
+                    "
+                    [class.out-of-stock]="
+                      product.stock === 0
+                    "
+                  >
+                    @if (
+                      product.stock === 0
+                    ) {
+                      Out of stock
+                    } @else {
+                      {{ product.stock }}
+                      available
+                    }
+                  </span>
+                </td>
+
+                <td>
+                  <a
+                    [routerLink]="[
+                      '/products',
+                      product.id
+                    ]"
+                  >
+                    View
+                  </a>
+                </td>
+
+              </tr>
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    } @else {
+
+      <div class="empty-table">
+        <i
+          class="pi pi-search"
+          aria-hidden="true"
+        ></i>
+
+        No products match your search.
+      </div>
+
+    }
+
+  </section>
+
+</main>

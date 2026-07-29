@@ -1,0 +1,199 @@
+<main class="admin-page">
+
+  <header class="page-header">
+
+    <div>
+      <p>
+        ORDER MANAGEMENT
+      </p>
+
+      <h1>
+        Orders
+      </h1>
+
+      <span>
+        Search customer orders and
+        update fulfillment status.
+      </span>
+    </div>
+
+  </header>
+
+  <section class="admin-toolbar">
+
+    <label class="search-control">
+
+      <i
+        class="pi pi-search"
+        aria-hidden="true"
+      ></i>
+
+      <input
+        type="search"
+        placeholder="Search order, customer or email"
+        [value]="searchQuery()"
+        (input)="updateSearch($event)"
+      />
+
+    </label>
+
+    <select
+      aria-label="Filter by status"
+      [value]="selectedStatus()"
+      (change)="updateStatusFilter($event)"
+    >
+      <option value="all">
+        All statuses
+      </option>
+
+      @for (
+        status of statusOptions;
+        track status
+      ) {
+        <option [value]="status">
+          {{ status }}
+        </option>
+      }
+    </select>
+
+  </section>
+
+  <section class="table-card">
+
+    <header class="card-header">
+
+      <h2>
+        Customer Orders
+      </h2>
+
+      <span>
+        {{ filteredOrders().length }}
+        orders
+      </span>
+
+    </header>
+
+    @if (
+      filteredOrders().length > 0
+    ) {
+
+      <div class="table-wrapper">
+
+        <table class="data-table">
+
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (
+              order of filteredOrders();
+              track order.id
+            ) {
+              <tr>
+
+                <td>
+                  <strong>
+                    {{ order.orderNumber }}
+                  </strong>
+                </td>
+
+                <td>
+                  <div>
+                    <strong>
+                      {{
+                        order.customer.fullName
+                      }}
+                    </strong>
+
+                    <br />
+
+                    <small>
+                      {{
+                        order.customer.email
+                      }}
+                    </small>
+                  </div>
+                </td>
+
+                <td>
+                  {{
+                    order.createdAt
+                      | date:'medium'
+                  }}
+                </td>
+
+                <td>
+                  {{ order.items.length }}
+                </td>
+
+                <td>
+                  <strong>
+                    {{
+                      order.total
+                        | currency:
+                            'USD':
+                            'symbol':
+                            '1.2-2'
+                    }}
+                  </strong>
+                </td>
+
+                <td>
+                  <select
+                    class="status-select"
+                    aria-label="Update order status"
+                    [value]="order.status"
+                    (change)="
+                      changeOrderStatus(
+                        order.id,
+                        $event
+                      )
+                    "
+                  >
+                    @for (
+                      status of statusOptions;
+                      track status
+                    ) {
+                      <option
+                        [value]="status"
+                      >
+                        {{ status }}
+                      </option>
+                    }
+                  </select>
+                </td>
+
+              </tr>
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    } @else {
+
+      <div class="empty-table">
+        <i
+          class="pi pi-receipt"
+          aria-hidden="true"
+        ></i>
+
+        No orders match the selected filters.
+      </div>
+
+    }
+
+  </section>
+
+</main>

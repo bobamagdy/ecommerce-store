@@ -1,30 +1,18 @@
 <main class="auth-page">
-
   <section class="auth-card">
-
     <!-- Left showcase section -->
 
     <aside class="auth-showcase">
-
-      <a
-        routerLink="/"
-        class="auth-logo"
-        aria-label="Go to HubShop home"
-      >
+      <a routerLink="/" class="auth-logo" aria-label="Go to HubShop home">
         <span class="logo-icon">
           <i class="pi pi-shopping-bag"></i>
         </span>
 
-        <span>
-          Hub<strong>Shop</strong>
-        </span>
+        <span> Hub<strong>Shop</strong> </span>
       </a>
 
       <div class="showcase-content">
-
-        <p class="showcase-label">
-          WELCOME BACK
-        </p>
+        <p class="showcase-label">WELCOME BACK</p>
 
         <h2>
           Everything you love,
@@ -32,116 +20,69 @@
         </h2>
 
         <p class="showcase-description">
-          Sign in to access your orders,
-          wishlist, saved addresses and
-          exclusive offers.
+          Sign in to access your orders, wishlist, saved addresses and exclusive offers.
         </p>
 
         <div class="showcase-features">
-
           <div class="showcase-feature">
-
             <i class="pi pi-truck"></i>
 
             <span>
-              <strong>
-                Track Your Orders
-              </strong>
+              <strong> Track Your Orders </strong>
 
               Follow every delivery
             </span>
-
           </div>
 
           <div class="showcase-feature">
-
             <i class="pi pi-heart"></i>
 
             <span>
-              <strong>
-                Save Your Favorites
-              </strong>
+              <strong> Save Your Favorites </strong>
 
               Keep products in your wishlist
             </span>
-
           </div>
 
           <div class="showcase-feature">
-
             <i class="pi pi-shield"></i>
 
             <span>
-              <strong>
-                Secure Shopping
-              </strong>
+              <strong> Secure Shopping </strong>
 
               Your information is protected
             </span>
-
           </div>
-
         </div>
-
       </div>
 
-      <div
-        class="decorative-circle circle-one"
-        aria-hidden="true"
-      ></div>
+      <div class="decorative-circle circle-one" aria-hidden="true"></div>
 
-      <div
-        class="decorative-circle circle-two"
-        aria-hidden="true"
-      ></div>
-
+      <div class="decorative-circle circle-two" aria-hidden="true"></div>
     </aside>
 
     <!-- Login form section -->
 
     <section class="auth-form-panel">
-
       <div class="auth-heading">
+        <p>SIGN IN</p>
 
-        <p>
-          SIGN IN
-        </p>
+        <h1>Welcome Back</h1>
 
-        <h1>
-          Welcome Back
-        </h1>
-
-        <span>
-          Enter your account details to continue.
-        </span>
-
+        <span> Enter your account details to continue. </span>
       </div>
 
-      <form
-        class="auth-form"
-        [formRoot]="loginForm"
-      >
-
+      <form class="auth-form" [formRoot]="loginForm">
         <!-- Email -->
 
         <div class="form-field">
-
-          <label for="login-email">
-            Email Address
-          </label>
+          <label for="login-email"> Email Address </label>
 
           <div
             class="input-wrapper"
-            [class.invalid]="
-              loginForm.email().invalid() &&
-              loginForm.email().touched()
-            "
+            [class.invalid]="loginForm.email().invalid() && loginForm.email().touched()"
           >
-
-            <i
-              class="pi pi-envelope field-icon"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-envelope field-icon" aria-hidden="true"></i>
 
             <input
               id="login-email"
@@ -152,239 +93,113 @@
               autocomplete="email"
               spellcheck="false"
               aria-describedby="login-email-errors"
-              [attr.aria-invalid]="
-                loginForm.email().invalid() &&
-                loginForm.email().touched()
-              "
+              [attr.aria-invalid]="loginForm.email().invalid() && loginForm.email().touched()"
             />
-
           </div>
 
-          @if (
-            loginForm.email().invalid() &&
-            loginForm.email().touched()
-          ) {
-
-            <div
-              id="login-email-errors"
-              class="error-list"
-              aria-live="polite"
-            >
-
-              @for (
-                error of loginForm.email().errors();
-                track error.kind
-              ) {
-
+          @if (loginForm.email().invalid() && loginForm.email().touched()) {
+            <div id="login-email-errors" class="error-list" aria-live="polite">
+              @for (error of loginForm.email().errors(); track error.kind) {
                 <small class="error-message">
-
-                  <i
-                    class="pi pi-exclamation-circle"
-                    aria-hidden="true"
-                  ></i>
+                  <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
 
                   <span>
                     {{ error.message }}
                   </span>
-
                 </small>
-
               }
-
             </div>
-
           }
-
         </div>
 
         <!-- Password -->
 
         <div class="form-field">
-
-          <label for="login-password">
-            Password
-          </label>
+          <label for="login-password"> Password </label>
 
           <div
             class="input-wrapper password-wrapper"
-            [class.invalid]="
-              loginForm.password().invalid() &&
-              loginForm.password().touched()
-            "
+            [class.invalid]="loginForm.password().invalid() && loginForm.password().touched()"
           >
-
-            <i
-              class="pi pi-lock field-icon"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-lock field-icon" aria-hidden="true"></i>
 
             <input
               id="login-password"
-              [type]="
-                passwordVisible()
-                  ? 'text'
-                  : 'password'
-              "
+              [type]="passwordVisible() ? 'text' : 'password'"
               pInputText
               [formField]="loginForm.password"
               placeholder="Enter your password"
               autocomplete="current-password"
               aria-describedby="login-password-errors"
-              [attr.aria-invalid]="
-                loginForm.password().invalid() &&
-                loginForm.password().touched()
-              "
+              [attr.aria-invalid]="loginForm.password().invalid() && loginForm.password().touched()"
             />
 
             <button
               type="button"
               class="password-toggle"
-              [attr.aria-label]="
-                passwordVisible()
-                  ? 'Hide password'
-                  : 'Show password'
-              "
+              [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"
               (click)="togglePasswordVisibility()"
             >
-
               <i
                 class="pi"
                 aria-hidden="true"
-                [class.pi-eye]="
-                  !passwordVisible()
-                "
-                [class.pi-eye-slash]="
-                  passwordVisible()
-                "
+                [class.pi-eye]="!passwordVisible()"
+                [class.pi-eye-slash]="passwordVisible()"
               ></i>
-
             </button>
-
           </div>
 
-          @if (
-            loginForm.password().invalid() &&
-            loginForm.password().touched()
-          ) {
-
-            <div
-              id="login-password-errors"
-              class="error-list"
-              aria-live="polite"
-            >
-
-              @for (
-                error of loginForm.password().errors();
-                track error.kind
-              ) {
-
+          @if (loginForm.password().invalid() && loginForm.password().touched()) {
+            <div id="login-password-errors" class="error-list" aria-live="polite">
+              @for (error of loginForm.password().errors(); track error.kind) {
                 <small class="error-message">
-
-                  <i
-                    class="pi pi-exclamation-circle"
-                    aria-hidden="true"
-                  ></i>
+                  <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
 
                   <span>
                     {{ error.message }}
                   </span>
-
                 </small>
-
               }
-
             </div>
-
           }
-
         </div>
 
         <!-- Remember me and forgot password -->
 
         <div class="form-options">
-
           <label class="checkbox-label">
-
-            <input
-              type="checkbox"
-              [formField]="loginForm.rememberMe"
-            />
+            <input type="checkbox" [formField]="loginForm.rememberMe" />
 
             <span class="custom-checkbox">
-
-              <i
-                class="pi pi-check"
-                aria-hidden="true"
-              ></i>
-
+              <i class="pi pi-check" aria-hidden="true"></i>
             </span>
 
-            <span>
-              Remember me
-            </span>
-
+            <span> Remember me </span>
           </label>
 
-          <button
-            type="button"
-            class="text-button"
-          >
-            Forgot Password?
-          </button>
-
+          <a routerLink="/auth/forgot-password" class="text-button"> Forgot Password? </a>
         </div>
 
         <!-- Submit -->
 
-        <button
-          type="submit"
-          pButton
-          class="submit-button"
-          [disabled]="loginForm().submitting()"
-        >
-
+        <button type="submit" pButton class="submit-button" [disabled]="loginForm().submitting()">
           @if (loginForm().submitting()) {
+            <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
 
-            <i
-              class="pi pi-spinner pi-spin"
-              aria-hidden="true"
-            ></i>
-
-            <span>
-              Signing In...
-            </span>
-
+            <span> Signing In... </span>
           } @else {
+            <span> Sign In </span>
 
-            <span>
-              Sign In
-            </span>
-
-            <i
-              class="pi pi-arrow-right"
-              aria-hidden="true"
-            ></i>
-
+            <i class="pi pi-arrow-right" aria-hidden="true"></i>
           }
-
         </button>
-
       </form>
 
       <div class="auth-switch">
+        <span> Don’t have an account? </span>
 
-        <span>
-          Don’t have an account?
-        </span>
-
-        <a routerLink="/auth/register">
-          Create Account
-        </a>
-
+        <a routerLink="/auth/register"> Create Account </a>
       </div>
-
     </section>
-
   </section>
-
 </main>

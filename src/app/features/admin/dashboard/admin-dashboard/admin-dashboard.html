@@ -1,0 +1,232 @@
+<main class="admin-page">
+
+  <header class="page-header">
+
+    <div>
+      <p>
+        STORE OVERVIEW
+      </p>
+
+      <h1>
+        Dashboard
+      </h1>
+
+      <span>
+        Review your store performance,
+        inventory and recent orders.
+      </span>
+    </div>
+
+  </header>
+
+  <section class="stats-grid">
+
+    <article class="stat-card">
+
+      <span class="stat-icon">
+        <i
+          class="pi pi-box"
+          aria-hidden="true"
+        ></i>
+      </span>
+
+      <div>
+        <small>
+          Total Products
+        </small>
+
+        <strong>
+          {{ totalProducts() }}
+        </strong>
+      </div>
+
+    </article>
+
+    <article class="stat-card">
+
+      <span class="stat-icon">
+        <i
+          class="pi pi-receipt"
+          aria-hidden="true"
+        ></i>
+      </span>
+
+      <div>
+        <small>
+          Total Orders
+        </small>
+
+        <strong>
+          {{ totalOrders() }}
+        </strong>
+      </div>
+
+    </article>
+
+    <article class="stat-card">
+
+      <span class="stat-icon">
+        <i
+          class="pi pi-dollar"
+          aria-hidden="true"
+        ></i>
+      </span>
+
+      <div>
+        <small>
+          Total Revenue
+        </small>
+
+        <strong>
+          {{
+            totalRevenue()
+              | currency:
+                  'USD':
+                  'symbol':
+                  '1.2-2'
+          }}
+        </strong>
+      </div>
+
+    </article>
+
+    <article class="stat-card">
+
+      <span class="stat-icon">
+        <i
+          class="pi pi-exclamation-triangle"
+          aria-hidden="true"
+        ></i>
+      </span>
+
+      <div>
+        <small>
+          Low Stock
+        </small>
+
+        <strong>
+          {{ lowStockProducts() }}
+        </strong>
+      </div>
+
+    </article>
+
+  </section>
+
+  <section class="table-card">
+
+    <header class="card-header">
+
+      <h2>
+        Recent Orders
+      </h2>
+
+      <a routerLink="/admin/orders">
+        View All Orders
+      </a>
+
+    </header>
+
+    @if (recentOrders().length > 0) {
+
+      <div class="table-wrapper">
+
+        <table class="data-table">
+
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (
+              order of recentOrders();
+              track order.id
+            ) {
+              <tr>
+                <td>
+                  <strong>
+                    {{ order.orderNumber }}
+                  </strong>
+                </td>
+
+                <td>
+                  {{ order.customer.fullName }}
+                </td>
+
+                <td>
+                  {{
+                    order.createdAt
+                      | date:'mediumDate'
+                  }}
+                </td>
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [class.confirmed]="
+                      order.status ===
+                      'confirmed'
+                    "
+                    [class.shipped]="
+                      order.status ===
+                      'shipped'
+                    "
+                    [class.delivered]="
+                      order.status ===
+                      'delivered'
+                    "
+                    [class.cancelled]="
+                      order.status ===
+                      'cancelled'
+                    "
+                  >
+                    {{
+                      order.status
+                        | titlecase
+                    }}
+                  </span>
+                </td>
+
+                <td>
+                  <strong>
+                    {{
+                      order.total
+                        | currency:
+                            'USD':
+                            'symbol':
+                            '1.2-2'
+                    }}
+                  </strong>
+                </td>
+              </tr>
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    } @else {
+
+      <div class="empty-table">
+        <i
+          class="pi pi-receipt"
+          aria-hidden="true"
+        ></i>
+
+        No orders have been created yet.
+      </div>
+
+    }
+
+  </section>
+
+</main>
