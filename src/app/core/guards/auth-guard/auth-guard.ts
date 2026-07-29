@@ -5,7 +5,7 @@ import {
   Router
 } from '@angular/router';
 
-import { AuthService } from '../services/auth/auth';
+import { AuthService } from '../../services/auth/auth';
 
 export const authGuard: CanActivateFn = (
   _route,

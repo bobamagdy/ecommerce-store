@@ -4,200 +4,317 @@ import {
 
 import {
   authGuard
-} from './core/guards/auth-guard';
+} from './core/guards/auth-guard/auth-guard';
 
-export const routes: Routes = [
-  /*
-   * Legacy shortcuts.
-   */
+import {
+  guestGuard
+} from './core/guards/guest-guard/guest-guard-guard';
 
-  {
-    path: 'login',
-    redirectTo: 'auth/login',
-    pathMatch: 'full'
-  },
+import {
+  pendingChangesGuard
+} from './core/guards/pending-changes-guard/pending-changes-guard-guard';
 
-  {
-    path: 'register',
-    redirectTo: 'auth/register',
-    pathMatch: 'full'
-  },
+export const routes:
+  Routes = [
+    /*
+     * Legacy authentication URLs.
+     */
 
-  /*
-   * Authentication routes.
-   */
+    {
+      path: 'login',
 
-  {
-    path: 'auth',
+      redirectTo:
+        'auth/login',
 
-    loadComponent: () =>
-      import(
-        './core/layout/auth-layout/auth-layout'
-      ).then(
-        ({ AuthLayout }) =>
-          AuthLayout
-      ),
+      pathMatch: 'full'
+    },
 
-    children: [
-      {
-        path: 'login',
+    {
+      path: 'register',
 
-        title: 'HubShop | Login',
+      redirectTo:
+        'auth/register',
 
-        loadComponent: () =>
-          import(
-            './features/auth/login-page/login-page'
-          ).then(
-            ({ LoginPage }) =>
-              LoginPage
-          )
-      },
+      pathMatch: 'full'
+    },
 
-      {
-        path: 'register',
+    /*
+     * Authentication Area.
+     */
 
-        title: 'HubShop | Register',
+    {
+      path: 'auth',
 
-        loadComponent: () =>
-          import(
-            './features/auth/register-page/register-page'
-          ).then(
-            ({ RegisterPage }) =>
-              RegisterPage
-          )
-      },
+      loadComponent: () =>
+        import(
+          './core/layout/auth-layout/auth-layout'
+        ).then(
+          ({
+            AuthLayout
+          }) =>
+            AuthLayout
+        ),
 
-      {
-        path: '',
+      children: [
+        {
+          path: 'login',
 
-        redirectTo: 'login',
+          title:
+            'HubShop | Login',
 
-        pathMatch: 'full'
-      }
-    ]
-  },
+          canActivate: [
+            guestGuard
+          ],
 
-  /*
-   * Store routes.
-   *
-   * هنحافظ مؤقتًا على authGuard
-   * كما هو موجود في مشروعك.
-   */
+          loadComponent: () =>
+            import(
+              './features/auth/login-page/login-page'
+            ).then(
+              ({
+                LoginPage
+              }) =>
+                LoginPage
+            )
+        },
 
-  {
-    path: '',
+        {
+          path: 'register',
 
-    canActivate: [
-      authGuard
-    ],
+          title:
+            'HubShop | Register',
 
-    loadComponent: () =>
-      import(
-        './core/layout/store-layout/store-layout'
-      ).then(
-        ({ StoreLayout }) =>
-          StoreLayout
-      ),
+          canActivate: [
+            guestGuard
+          ],
 
-    children: [
-      {
-        path: '',
+          loadComponent: () =>
+            import(
+              './features/auth/register-page/register-page'
+            ).then(
+              ({
+                RegisterPage
+              }) =>
+                RegisterPage
+            )
+        },
 
-        title: 'HubShop | Home',
+        {
+          path: '',
 
-        loadComponent: () =>
-          import(
-            './features/home/home-page/home-page'
-          ).then(
-            ({ HomePage }) =>
-              HomePage
-          )
-      },
+          redirectTo:
+            'login',
 
-      {
-        path: 'products',
+          pathMatch: 'full'
+        }
+      ]
+    },
 
-        title: 'HubShop | Products',
+    /*
+     * Store Area.
+     */
 
-        loadComponent: () =>
-          import(
-            './features/products/products-page/products-page'
-          ).then(
-            ({ ProductsPage }) =>
-              ProductsPage
-          )
-      },
+    {
+      path: '',
 
-      {
-        path: 'products/:id',
+      loadComponent: () =>
+        import(
+          './core/layout/store-layout/store-layout'
+        ).then(
+          ({
+            StoreLayout
+          }) =>
+            StoreLayout
+        ),
 
-        title:
-          'HubShop | Product Details',
+      children: [
+        /*
+         * Public Routes.
+         */
 
-        loadComponent: () =>
-          import(
-            './features/products/product-details-page/product-details-page'
-          ).then(
-            ({ ProductDetailsPage }) =>
-              ProductDetailsPage
-          )
-      },
+        {
+          path: '',
 
-      {
-        path: 'wishlist',
+          title:
+            'HubShop | Home',
 
-        title: 'HubShop | Wishlist',
+          loadComponent: () =>
+            import(
+              './features/home/home-page/home-page'
+            ).then(
+              ({
+                HomePage
+              }) =>
+                HomePage
+            )
+        },
 
-        loadComponent: () =>
-          import(
-            './features/wishlist/wishlist-page/wishlist-page'
-          ).then(
-            ({ WishlistPage }) =>
-              WishlistPage
-          )
-      },
+        {
+          path: 'products',
 
-      {
-        path: 'cart',
+          title:
+            'HubShop | Products',
 
-        title: 'HubShop | Cart',
+          loadComponent: () =>
+            import(
+              './features/products/products-page/products-page'
+            ).then(
+              ({
+                ProductsPage
+              }) =>
+                ProductsPage
+            )
+        },
 
-        loadComponent: () =>
-          import(
-            './features/cart/cart-page/cart-page'
-          ).then(
-            ({ CartPage }) =>
-              CartPage
-          )
-      }
-    ]
-  },
+        {
+          path: 'products/:id',
 
-  /*
-   * Page not found.
-   */
+          title:
+            'HubShop | Product Details',
 
-  {
-    path: 'not-found',
+          loadComponent: () =>
+            import(
+              './features/products/product-details-page/product-details-page'
+            ).then(
+              ({
+                ProductDetailsPage
+              }) =>
+                ProductDetailsPage
+            )
+        },
 
-    title: 'HubShop | Page Not Found',
+        {
+          path: 'wishlist',
 
-    loadComponent: () =>
-      import(
-        './features/not-found/not-found-page/not-found-page'
-      ).then(
-        ({ NotFoundPage }) =>
-          NotFoundPage
-      )
-  },
+          title:
+            'HubShop | Wishlist',
 
-  /*
-   * Wildcard لازم تكون آخر Route.
-   */
+          loadComponent: () =>
+            import(
+              './features/wishlist/wishlist-page/wishlist-page'
+            ).then(
+              ({
+                WishlistPage
+              }) =>
+                WishlistPage
+            )
+        },
 
-  {
-    path: '**',
+        {
+          path: 'cart',
 
-    redirectTo: 'not-found'
-  }
-];
+          title:
+            'HubShop | Cart',
+
+          loadComponent: () =>
+            import(
+              './features/cart/cart-page/cart-page'
+            ).then(
+              ({
+                CartPage
+              }) =>
+                CartPage
+            )
+        },
+
+        /*
+         * Protected Routes.
+         */
+
+        {
+          path: 'checkout',
+
+          title:
+            'HubShop | Checkout',
+
+          canActivate: [
+            authGuard
+          ],
+
+          canDeactivate: [
+            pendingChangesGuard
+          ],
+
+          loadComponent: () =>
+            import(
+              './features/checkout/checkout-page/checkout-page'
+            ).then(
+              ({
+                CheckoutPage
+              }) =>
+                CheckoutPage
+            )
+        },
+
+        {
+          path:
+            'account/orders',
+
+          title:
+            'HubShop | My Orders',
+
+          canActivate: [
+            authGuard
+          ],
+
+          loadComponent: () =>
+            import(
+              './features/account/orders-page/orders-page'
+            ).then(
+              ({
+                OrdersPage
+              }) =>
+                OrdersPage
+            )
+        },
+
+        {
+          path: 'account',
+
+          title:
+            'HubShop | My Account',
+
+          canActivate: [
+            authGuard
+          ],
+
+          loadComponent: () =>
+            import(
+              './features/account/account-page/account-page'
+            ).then(
+              ({
+                AccountPage
+              }) =>
+                AccountPage
+            )
+        }
+      ]
+    },
+
+    /*
+     * Not Found.
+     */
+
+    {
+      path: 'not-found',
+
+      title:
+        'HubShop | Page Not Found',
+
+      loadComponent: () =>
+        import(
+          './features/not-found/not-found-page/not-found-page'
+        ).then(
+          ({
+            NotFoundPage
+          }) =>
+            NotFoundPage
+        )
+    },
+
+    {
+      path: '**',
+
+      redirectTo:
+        'not-found'
+    }
+  ];

@@ -1,0 +1,64 @@
+<main class="orders-page">
+
+  <nav
+    class="breadcrumb"
+    aria-label="Breadcrumb"
+  >
+    <a routerLink="/">
+      Home
+    </a>
+
+    <i class="pi pi-chevron-right"></i>
+
+    <a routerLink="/account">
+      Account
+    </a>
+
+    <i class="pi pi-chevron-right"></i>
+
+    <span>
+      Orders
+    </span>
+  </nav>
+
+  <header class="page-heading">
+    <p>ORDER HISTORY</p>
+
+    <h1>
+      My Orders
+    </h1>
+
+    <span>
+      Review your previous orders and track current deliveries.
+    </span>
+  </header>
+
+  <section class="empty-orders">
+
+    <div class="empty-icon">
+      <i class="pi pi-box"></i>
+    </div>
+
+    <h2>
+      No orders yet
+    </h2>
+
+    <p>
+      Orders created through the future .NET API
+      will appear on this page.
+    </p>
+
+    <a
+      routerLink="/products"
+      pButton
+    >
+      <i class="pi pi-shopping-bag"></i>
+
+      <span>
+        Start Shopping
+      </span>
+    </a>
+
+  </section>
+
+</main>
