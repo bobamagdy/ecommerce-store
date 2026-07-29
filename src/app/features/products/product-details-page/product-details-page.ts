@@ -3,13 +3,16 @@ import {
 } from '@angular/common';
 
 import {
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   inject,
   input,
   linkedSignal,
-  numberAttribute
+  numberAttribute,
+  viewChildren
 } from '@angular/core';
 
 import {
@@ -22,21 +25,24 @@ import {
 
 import {
   CartService
-} from '../../../core/services/cart';
+} from '../../../core/services/cart/cart';
 
 import {
   ProductService
-} from '../../../core/services/product';
+} from '../../../core/services/product/product';
 
-/*
- * Input Transform.
- *
- * الـRouter يرسل Route Parameter
- * في صورة string.
- *
- * الدالة تحول القيمة إلى number
- * صالح للاستخدام داخل الصفحة.
- */
+import {
+  WishlistService
+} from '../../../core/services/wishlist/wishlist';
+
+import {
+  QuantitySelector
+} from '../../../shared/components/quantity-selector/quantity-selector';
+
+import {
+  ImageFallback
+} from '../../../shared/directives/image-fallback/image-fallback';
+
 function transformProductId(
   value: string | null | undefined
 ): number {
@@ -54,12 +60,15 @@ function transformProductId(
 }
 
 @Component({
-  selector: 'app-product-details-page',
+  selector:
+    'app-product-details-page',
 
   imports: [
     CurrencyPipe,
     RouterLink,
-    ButtonModule
+    ButtonModule,
+    QuantitySelector,
+    ImageFallback
   ],
 
   templateUrl:
@@ -78,16 +87,14 @@ export class ProductDetailsPage {
   private readonly cartService =
     inject(CartService);
 
+  private readonly wishlistService =
+    inject(WishlistService);
+
   /*
-   * اسم الـInput هو id.
+   * Router Signal Input.
    *
-   * لذلك Angular Router يربطها
-   * تلقائيًا مع:
-   *
+   * Angular Router يربطها مع:
    * products/:id
-   *
-   * القيمة القادمة من الرابط string،
-   * والـTransform يحولها إلى number.
    */
   readonly id =
     input.required<
@@ -99,38 +106,64 @@ export class ProductDetailsPage {
     });
 
   /*
-   * Signal مشتقة من Router Input.
+   * Signal Query.
    *
-   * لو id تغيرت من الرابط،
-   * المنتج يتغير تلقائيًا.
+   * تجمع كل العناصر التي تحمل:
+   * #thumbnailButton
+   *
+   * وتتحدث تلقائيًا إذا تغير عدد الصور.
    */
+  readonly thumbnailButtons =
+    viewChildren<
+      ElementRef<HTMLButtonElement>
+    >('thumbnailButton');
+
   readonly product =
     computed(() =>
       this.productService
         .getProductById(this.id())
     );
 
-  /*
-   * selectedImage حالة قابلة للتعديل،
-   * لكنها مرتبطة بالمنتج الحالي.
-   *
-   * عند فتح منتج مختلف،
-   * ترجع تلقائيًا للصورة الأساسية.
-   */
   readonly selectedImage =
-    linkedSignal(
-      () =>
-        this.product()?.image ?? ''
+    linkedSignal(() =>
+      this.product()?.image ?? ''
     );
 
   /*
-   * الكمية ترجع إلى 1 عند تغيير المنتج.
-   *
-   * لو المنتج غير موجود أو Stock = 0
-   * تكون الكمية 0.
+   * Index الصورة المختارة حاليًا.
    */
+  readonly selectedImageIndex =
+    computed(() => {
+      const currentProduct =
+        this.product();
+
+      if (!currentProduct) {
+        return -1;
+      }
+
+      return currentProduct.images
+        .indexOf(
+          this.selectedImage()
+        );
+    });
+
+  readonly cartQuantity =
+    computed(() => {
+      const currentProduct =
+        this.product();
+
+      if (!currentProduct) {
+        return 0;
+      }
+
+      return this.cartService
+        .getProductQuantity(
+          currentProduct.id
+        );
+    });
+
   readonly quantity =
-  linkedSignal<number>(() => {
+    linkedSignal<number>(() => {
       const currentProduct =
         this.product();
 
@@ -141,15 +174,20 @@ export class ProductDetailsPage {
         return 0;
       }
 
-      return 1;
+      const currentCartQuantity =
+        this.cartQuantity();
+
+      return currentCartQuantity > 0
+        ? currentCartQuantity
+        : 1;
     });
 
-  /*
-   * بدل Signal مؤقتة تقول إن المنتج
-   * اتضاف، بنقرأ الحالة الحقيقية
-   * من CartService.
-   */
-  readonly addedToCart =
+  readonly isInCart =
+    computed(
+      () => this.cartQuantity() > 0
+    );
+
+  readonly isFavorite =
     computed(() => {
       const currentProduct =
         this.product();
@@ -158,13 +196,44 @@ export class ProductDetailsPage {
         return false;
       }
 
-      return (
-        this.cartService
-          .getProductQuantity(
-            currentProduct.id
-          ) > 0
-      );
+      return this.wishlistService
+        .isFavorite(
+          currentProduct.id
+        );
     });
+
+  constructor() {
+    /*
+     * بعد انتهاء Angular من الـRender:
+     *
+     * نضمن أن زر الصورة المختارة ظاهر
+     * داخل منطقة الصور المصغرة.
+     *
+     * الـEffect يتابع:
+     * selectedImageIndex()
+     * thumbnailButtons()
+     */
+    afterRenderEffect({
+      write: () => {
+        const selectedIndex =
+          this.selectedImageIndex();
+
+        if (selectedIndex < 0) {
+          return;
+        }
+
+        const selectedButton =
+          this.thumbnailButtons()[
+            selectedIndex
+          ]?.nativeElement;
+
+        selectedButton?.scrollIntoView({
+          block: 'nearest',
+          inline: 'nearest'
+        });
+      }
+    });
+  }
 
   selectImage(
     image: string
@@ -172,47 +241,67 @@ export class ProductDetailsPage {
     this.selectedImage.set(image);
   }
 
-  increaseQuantity(): void {
-    const currentProduct =
-      this.product();
+  handleThumbnailKeydown(
+    event: KeyboardEvent,
+    currentIndex: number
+  ): void {
+    const images =
+      this.product()?.images ?? [];
 
-    if (
-      !currentProduct ||
-      currentProduct.stock <= 0
-    ) {
+    if (images.length === 0) {
       return;
     }
 
-    this.quantity.update(
-      (currentQuantity) =>
-        Math.min(
-          currentQuantity + 1,
-          currentProduct.stock
-        )
-    );
-  }
+    let targetIndex:
+      number | null = null;
 
-  decreaseQuantity(): void {
-    const currentProduct =
-      this.product();
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        targetIndex =
+          (
+            currentIndex + 1
+          ) % images.length;
+        break;
 
-    if (
-      !currentProduct ||
-      currentProduct.stock <= 0
-    ) {
-      return;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        targetIndex =
+          (
+            currentIndex -
+            1 +
+            images.length
+          ) % images.length;
+        break;
+
+      case 'Home':
+        targetIndex = 0;
+        break;
+
+      case 'End':
+        targetIndex =
+          images.length - 1;
+        break;
+
+      default:
+        return;
     }
 
-    this.quantity.update(
-      (currentQuantity) =>
-        Math.max(
-          currentQuantity - 1,
-          1
-        )
+    event.preventDefault();
+
+    this.selectImageAtIndex(
+      targetIndex,
+      true
     );
   }
 
-  addToCart(): void {
+  setSelectedQuantity(
+    quantity: number
+  ): void {
+    this.quantity.set(quantity);
+  }
+
+  saveCartQuantity(): void {
     const currentProduct =
       this.product();
 
@@ -227,9 +316,57 @@ export class ProductDetailsPage {
       return;
     }
 
-    this.cartService.addProduct(
-      currentProduct,
-      selectedQuantity
+    this.cartService
+      .setProductQuantity(
+        currentProduct,
+        selectedQuantity
+      );
+  }
+
+  toggleFavorite(): void {
+    const currentProduct =
+      this.product();
+
+    if (!currentProduct) {
+      return;
+    }
+
+    this.wishlistService
+      .toggleProduct(
+        currentProduct.id
+      );
+  }
+
+  private selectImageAtIndex(
+    requestedIndex: number,
+    shouldFocus: boolean
+  ): void {
+    const images =
+      this.product()?.images ?? [];
+
+    if (images.length === 0) {
+      return;
+    }
+
+    const safeIndex =
+      Math.min(
+        Math.max(
+          requestedIndex,
+          0
+        ),
+        images.length - 1
+      );
+
+    this.selectedImage.set(
+      images[safeIndex]
     );
+
+    if (!shouldFocus) {
+      return;
+    }
+
+    this.thumbnailButtons()[
+      safeIndex
+    ]?.nativeElement.focus();
   }
 }

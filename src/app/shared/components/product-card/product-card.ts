@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 
 import { Product } from '../../../core/models/product.model';
 
-import { ImageFallback } from '../../directives/image-fallback';
+import { ImageFallback } from '../../directives/image-fallback/image-fallback';
 import { DiscountPercentagePipe } from '../../pipes/discount-percentage/discount-percentage-pipe';
 
 import { QuantitySelector } from '../quantity-selector/quantity-selector';

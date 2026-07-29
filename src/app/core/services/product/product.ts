@@ -9,45 +9,48 @@ import {
 
 import {
   Product
-} from '../models/product.model';
+} from '../../models/product.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  /*
-   * GET request تفاعلية باستخدام
-   * Angular 22 httpResource.
-   *
-   * لاحقًا سنغير الرابط فقط إلى
-   * .NET Products API.
-   */
   private readonly productsResource =
     httpResource<Product[]>(
       () => '/data/products.json',
-
       {
         defaultValue: []
       }
     );
 
   /*
-   * لا نقرأ value() إلا عندما تكون
-   * للـResource قيمة صالحة.
-   *
-   * قراءة value أثناء Error State
-   * قد ترمي Runtime Error.
+   * لا نقرأ value() أثناء Error State.
    */
-  readonly products = computed<Product[]>(
-    () =>
+  readonly products =
+    computed<Product[]>(() =>
       this.productsResource.hasValue()
         ? this.productsResource.value()
         : []
-  );
+    );
 
   /*
-   * Request state signals.
+   * Lookup جاهز حسب Product ID.
+   *
+   * يتكوّن من جديد فقط عندما تتغير
+   * قائمة المنتجات.
    */
+  private readonly productsById =
+    computed(() => {
+      return new Map<number, Product>(
+        this.products().map(
+          (product) => [
+            product.id,
+            product
+          ]
+        )
+      );
+    });
+
   readonly isLoading =
     this.productsResource.isLoading;
 
@@ -60,11 +63,6 @@ export class ProductService {
   readonly statusCode =
     this.productsResource.statusCode;
 
-  /*
-   * Initial loading:
-   *
-   * لا توجد منتجات قديمة نعرضها.
-   */
   readonly isInitialLoading =
     computed(
       () =>
@@ -72,21 +70,12 @@ export class ProductService {
         this.products().length === 0
     );
 
-  /*
-   * Reloading:
-   *
-   * يوجد Data قديمة ونحضر نسخة جديدة.
-   */
   readonly isReloading =
     computed(
       () =>
         this.status() === 'reloading'
     );
 
-  /*
-   * Error يمنع عرض صفحة المنتجات
-   * فقط عندما لا توجد Data سابقة.
-   */
   readonly hasBlockingError =
     computed(
       () =>
@@ -112,9 +101,8 @@ export class ProductService {
   getProductById(
     productId: number
   ): Product | undefined {
-    return this.products().find(
-      (product) =>
-        product.id === productId
+    return this.productsById().get(
+      productId
     );
   }
 
