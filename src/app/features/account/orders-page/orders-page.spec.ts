@@ -1,162 +1,85 @@
-import {
-  provideZonelessChangeDetection,
-  signal
-} from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  provideRouter
-} from '@angular/router';
+import { provideRouter } from '@angular/router';
 
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import {
-  StoreOrder
-} from '../../../core/models/order.model';
+import { StoreOrder } from '../../../core/models/order.model';
 
-import {
-  OrderService
-} from '../../../core/services/order/order';
+import { OrderService } from '../../../core/services/order/order';
 
-import {
-  OrdersPage
-} from './orders-page';
+import { OrdersPage } from './orders-page';
 
 describe('OrdersPage', () => {
-  let component:
-    OrdersPage;
+  let component: OrdersPage;
 
-  let fixture:
-    ComponentFixture<OrdersPage>;
+  let fixture: ComponentFixture<OrdersPage>;
 
-  const ordersState =
-    signal<StoreOrder[]>([]);
+  const ordersState = signal<StoreOrder[]>([]);
 
-  const totalOrdersState =
-    signal(0);
+  const totalOrdersState = signal(0);
 
-  const isEmptyState =
-    signal(true);
+  const isEmptyState = signal(true);
 
   beforeEach(async () => {
     ordersState.set([]);
     totalOrdersState.set(0);
     isEmptyState.set(true);
 
-    await TestBed
-      .configureTestingModule({
-        imports: [
-          OrdersPage
-        ],
+    await TestBed.configureTestingModule({
+      imports: [OrdersPage],
 
-        providers: [
-          provideZonelessChangeDetection(),
+      providers: [
+        provideZonelessChangeDetection(),
 
-          provideRouter([]),
+        provideRouter([]),
 
-          {
-            provide:
-              OrderService,
+        {
+          provide: OrderService,
 
-            useValue: {
-              orders:
-                ordersState
-                  .asReadonly(),
+          useValue: {
+            orders: ordersState.asReadonly(),
 
-              totalOrders:
-                totalOrdersState
-                  .asReadonly(),
+            totalOrders: totalOrdersState.asReadonly(),
 
-              isEmpty:
-                isEmptyState
-                  .asReadonly()
-            }
-          }
-        ]
-      })
-      .compileComponents();
+            isEmpty: isEmptyState.asReadonly(),
+          },
+        },
+      ],
+    }).compileComponents();
 
-    fixture =
-      TestBed.createComponent(
-        OrdersPage
-      );
+    fixture = TestBed.createComponent(OrdersPage);
 
-    component =
-      fixture.componentInstance;
+    component = fixture.componentInstance;
 
     fixture.detectChanges();
 
     await fixture.whenStable();
   });
 
-  it(
-    'should create',
-    () => {
-      expect(
-        component
-      ).toBeTruthy();
-    }
-  );
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-  it(
-    'should display the orders heading',
-    () => {
-      const hostElement:
-        HTMLElement =
-          fixture.nativeElement;
+  it('should display the orders heading', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
 
-      expect(
-        hostElement.textContent
-      ).toContain(
-        'My Orders'
-      );
-    }
-  );
+    expect(hostElement.textContent).toContain('My Orders');
+  });
 
-  it(
-    'should display the empty orders state',
-    () => {
-      const hostElement:
-        HTMLElement =
-          fixture.nativeElement;
+  it('should display the empty orders state', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
 
-      expect(
-        hostElement.textContent
-      ).toContain(
-        'No orders yet'
-      );
-    }
-  );
+    expect(hostElement.textContent).toContain('No orders yet');
+  });
 
-  it(
-    'should return the correct status icon',
-    () => {
-      expect(
-        component.getStatusIcon(
-          'processing'
-        )
-      ).toBe('pi-clock');
+  it('should return the correct status icon', () => {
+    expect(component.getStatusIcon('processing')).toBe('pi-clock');
 
-      expect(
-        component.getStatusIcon(
-          'shipped'
-        )
-      ).toBe('pi-truck');
+    expect(component.getStatusIcon('shipped')).toBe('pi-truck');
 
-      expect(
-        component.getStatusIcon(
-          'delivered'
-        )
-      ).toBe('pi-verified');
-    }
-  );
+    expect(component.getStatusIcon('delivered')).toBe('pi-verified');
+  });
 });

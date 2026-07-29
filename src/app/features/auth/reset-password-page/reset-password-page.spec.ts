@@ -1,95 +1,47 @@
-import {
-  provideZonelessChangeDetection
-} from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  provideRouter
-} from '@angular/router';
+import { provideRouter } from '@angular/router';
 
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import {
-  ResetPasswordPage
-} from './reset-password-page';
+import { ResetPasswordPage } from './reset-password-page';
 
 describe('ResetPasswordPage', () => {
-  let fixture:
-    ComponentFixture<ResetPasswordPage>;
+  let fixture: ComponentFixture<ResetPasswordPage>;
 
-  let component:
-    ResetPasswordPage;
+  let component: ResetPasswordPage;
 
   beforeEach(async () => {
-    await TestBed
-      .configureTestingModule({
-        imports: [
-          ResetPasswordPage
-        ],
+    await TestBed.configureTestingModule({
+      imports: [ResetPasswordPage],
 
-        providers: [
-          provideZonelessChangeDetection(),
-          provideRouter([])
-        ]
-      })
-      .compileComponents();
+      providers: [provideZonelessChangeDetection(), provideRouter([])],
+    }).compileComponents();
 
-    fixture =
-      TestBed.createComponent(
-        ResetPasswordPage
-      );
+    fixture = TestBed.createComponent(ResetPasswordPage);
 
-    fixture.componentRef.setInput(
-      'token',
-      'test-reset-token'
-    );
+    fixture.componentRef.setInput('token', 'test-reset-token');
 
-    component =
-      fixture.componentInstance;
+    component = fixture.componentInstance;
 
     await fixture.whenStable();
   });
 
-  it(
-    'should create',
-    () => {
-      expect(component).toBeTruthy();
-    }
-  );
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-  it(
-    'should receive the reset token',
-    () => {
-      expect(
-        component.token()
-      ).toBe(
-        'test-reset-token'
-      );
-    }
-  );
+  it('should receive the reset token', () => {
+    expect(component.token()).toBe('test-reset-token');
+  });
 
-  it(
-    'should toggle password visibility',
-    () => {
-      expect(
-        component.passwordVisible()
-      ).toBe(false);
+  it('should toggle password visibility', () => {
+    expect(component.passwordVisible()).toBe(false);
 
-      component
-        .togglePasswordVisibility();
+    component.togglePasswordVisibility();
 
-      expect(
-        component.passwordVisible()
-      ).toBe(true);
-    }
-  );
+    expect(component.passwordVisible()).toBe(true);
+  });
 });

@@ -20,16 +20,8 @@
   overflow: hidden;
 
   background:
-    radial-gradient(
-      circle at 80% 50%,
-      rgb(124 58 237 / 12%),
-      transparent 36%
-    ),
-    linear-gradient(
-      135deg,
-      #faf7ff,
-      #ffffff
-    );
+    radial-gradient(circle at 80% 50%, rgb(124 58 237 / 12%), transparent 36%),
+    linear-gradient(135deg, #faf7ff, #ffffff);
 }
 
 .hero-content {
@@ -174,12 +166,7 @@
 
   border-radius: 50%;
 
-  background:
-    linear-gradient(
-      135deg,
-      #ede9fe,
-      #c4b5fd
-    );
+  background: linear-gradient(135deg, #ede9fe, #c4b5fd);
 }
 
 .hero-visual img {

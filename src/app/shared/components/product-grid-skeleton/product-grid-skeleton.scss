@@ -6,8 +6,7 @@
 .skeleton-grid {
   display: grid;
 
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
   align-items: stretch;
   gap: 20px;
@@ -99,17 +98,9 @@
 
   transform: translateX(-100%);
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgb(255 255 255 / 70%),
-      transparent
-    );
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 70%), transparent);
 
-  animation:
-    skeleton-shimmer 1.35s
-    infinite;
+  animation: skeleton-shimmer 1.35s infinite;
 }
 
 @keyframes skeleton-shimmer {
@@ -124,33 +115,27 @@
   grid-template-columns: 1fr;
 }
 
-.skeleton-grid.list-view
-.skeleton-card {
+.skeleton-grid.list-view .skeleton-card {
   display: grid;
 
-  grid-template-columns:
-    250px minmax(0, 1fr);
+  grid-template-columns: 250px minmax(0, 1fr);
 }
 
-.skeleton-grid.list-view
-.skeleton-image {
+.skeleton-grid.list-view .skeleton-image {
   height: 230px;
 }
 
-.skeleton-grid.list-view
-.skeleton-content {
+.skeleton-grid.list-view .skeleton-content {
   padding: 24px;
 }
 
-.skeleton-grid.list-view
-.skeleton-bottom {
+.skeleton-grid.list-view .skeleton-bottom {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.skeleton-grid.list-view
-.skeleton-button {
+.skeleton-grid.list-view .skeleton-button {
   width: 180px;
 }
 
@@ -158,8 +143,7 @@
 
 @media (max-width: 1200px) {
   .skeleton-grid:not(.list-view) {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -170,37 +154,29 @@
     grid-template-columns: 1fr;
   }
 
-  .skeleton-grid.list-view
-  .skeleton-card {
+  .skeleton-grid.list-view .skeleton-card {
     display: block;
   }
 
-  .skeleton-grid.list-view
-  .skeleton-image {
+  .skeleton-grid.list-view .skeleton-image {
     height: 220px;
   }
 
-  .skeleton-grid.list-view
-  .skeleton-content {
+  .skeleton-grid.list-view .skeleton-content {
     padding: 16px;
   }
 
-  .skeleton-grid.list-view
-  .skeleton-bottom {
+  .skeleton-grid.list-view .skeleton-bottom {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .skeleton-grid.list-view
-  .skeleton-button {
+  .skeleton-grid.list-view .skeleton-button {
     width: 100%;
   }
 }
 
-@media (
-  prefers-reduced-motion:
-  reduce
-) {
+@media (prefers-reduced-motion: reduce) {
   .shimmer::after {
     animation: none;
   }

@@ -1,29 +1,12 @@
-import {
-  PLATFORM_ID
-} from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
 
-import {
-  TestBed
-} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  HasPendingChanges,
-  pendingChangesGuard
-} from './pending-changes-guard-guard';
+import { HasPendingChanges, pendingChangesGuard } from './pending-changes-guard-guard';
 
 describe('pendingChangesGuard', () => {
   beforeEach(() => {
@@ -31,9 +14,9 @@ describe('pendingChangesGuard', () => {
       providers: [
         {
           provide: PLATFORM_ID,
-          useValue: 'browser'
-        }
-      ]
+          useValue: 'browser',
+        },
+      ],
     });
   });
 
@@ -42,85 +25,50 @@ describe('pendingChangesGuard', () => {
     TestBed.resetTestingModule();
   });
 
-  function executeGuard(
-    hasPendingChanges: boolean
-  ) {
-    const component:
-      HasPendingChanges = {
-        hasPendingChanges: () =>
-          hasPendingChanges
-      };
+  function executeGuard(hasPendingChanges: boolean) {
+    const component: HasPendingChanges = {
+      hasPendingChanges: () => hasPendingChanges,
+    };
 
-    return TestBed.runInInjectionContext(
-      () =>
-        pendingChangesGuard(
-          component,
-          {} as ActivatedRouteSnapshot,
-          {} as RouterStateSnapshot,
-          {} as RouterStateSnapshot
-        )
+    return TestBed.runInInjectionContext(() =>
+      pendingChangesGuard(
+        component,
+        {} as ActivatedRouteSnapshot,
+        {} as RouterStateSnapshot,
+        {} as RouterStateSnapshot,
+      ),
     );
   }
 
-  it(
-    'should allow navigation when there are no pending changes',
-    () => {
-      const confirmSpy =
-        vi.spyOn(
-          window,
-          'confirm'
-        );
+  it('should allow navigation when there are no pending changes', () => {
+    const confirmSpy = vi.spyOn(window, 'confirm');
 
-      const result =
-        executeGuard(false);
+    const result = executeGuard(false);
 
-      expect(result).toBe(true);
+    expect(result).toBe(true);
 
-      expect(
-        confirmSpy
-      ).not.toHaveBeenCalled();
-    }
-  );
+    expect(confirmSpy).not.toHaveBeenCalled();
+  });
 
-  it(
-    'should allow navigation when the user confirms leaving',
-    () => {
-      const confirmSpy =
-        vi.spyOn(
-          window,
-          'confirm'
-        ).mockReturnValue(true);
+  it('should allow navigation when the user confirms leaving', () => {
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
 
-      const result =
-        executeGuard(true);
+    const result = executeGuard(true);
 
-      expect(result).toBe(true);
+    expect(result).toBe(true);
 
-      expect(
-        confirmSpy
-      ).toHaveBeenCalledWith(
-        'You have unsaved checkout information. Are you sure you want to leave?'
-      );
-    }
-  );
+    expect(confirmSpy).toHaveBeenCalledWith(
+      'You have unsaved checkout information. Are you sure you want to leave?',
+    );
+  });
 
-  it(
-    'should prevent navigation when the user cancels leaving',
-    () => {
-      const confirmSpy =
-        vi.spyOn(
-          window,
-          'confirm'
-        ).mockReturnValue(false);
+  it('should prevent navigation when the user cancels leaving', () => {
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
 
-      const result =
-        executeGuard(true);
+    const result = executeGuard(true);
 
-      expect(result).toBe(false);
+    expect(result).toBe(false);
 
-      expect(
-        confirmSpy
-      ).toHaveBeenCalledOnce();
-    }
-  );
+    expect(confirmSpy).toHaveBeenCalledOnce();
+  });
 });

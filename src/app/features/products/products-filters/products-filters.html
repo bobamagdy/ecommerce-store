@@ -1,97 +1,48 @@
 <aside class="filters-sidebar">
-
   <div class="filters-heading">
-
-    <h2>
-      Filters
-    </h2>
+    <h2>Filters</h2>
 
     @if (hasActiveFilters()) {
-      <button
-        type="button"
-        class="reset-button"
-        (click)="resetFilters.emit()"
-      >
-        Reset
-      </button>
+      <button type="button" class="reset-button" (click)="resetFilters.emit()">Reset</button>
     }
-
   </div>
 
   @if (searchQuery().length > 0) {
-
     <section class="filter-section">
-
       <div class="active-search-filter">
-
         <div>
-          <small>
-            Search
-          </small>
+          <small> Search </small>
 
           <strong>
             {{ searchQuery() }}
           </strong>
         </div>
 
-        <button
-          type="button"
-          aria-label="Clear search"
-          (click)="clearSearch.emit()"
-        >
-          <i
-            class="pi pi-times"
-            aria-hidden="true"
-          ></i>
+        <button type="button" aria-label="Clear search" (click)="clearSearch.emit()">
+          <i class="pi pi-times" aria-hidden="true"></i>
         </button>
-
       </div>
-
     </section>
-
   }
 
   <section class="filter-section">
-
     <div class="filter-title">
-
       <span>
-        <i
-          class="pi pi-list"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-list" aria-hidden="true"></i>
 
         Categories
       </span>
 
-      <i
-        class="pi pi-chevron-up"
-        aria-hidden="true"
-      ></i>
-
+      <i class="pi pi-chevron-up" aria-hidden="true"></i>
     </div>
 
     <div class="filter-options">
-
-      @for (
-        category of categories();
-        track category.name
-      ) {
-
+      @for (category of categories(); track category.name) {
         <label class="filter-check">
-
           <input
             type="checkbox"
-            [checked]="
-              selectedCategories()
-                .includes(category.name)
-            "
-            (change)="
-              onCategoryChange(
-                category.name,
-                $event
-              )
-            "
+            [checked]="selectedCategories().includes(category.name)"
+            (change)="onCategoryChange(category.name, $event)"
           />
 
           <span class="check-box"></span>
@@ -100,40 +51,24 @@
             {{ category.name }}
           </span>
 
-          <span class="option-count">
-            ({{ category.count }})
-          </span>
-
+          <span class="option-count"> ({{ category.count }}) </span>
         </label>
-
       }
-
     </div>
-
   </section>
 
   <section class="filter-section">
-
     <div class="filter-title">
-
       <span>
-        <i
-          class="pi pi-dollar"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-dollar" aria-hidden="true"></i>
 
         Price Range
       </span>
 
-      <i
-        class="pi pi-chevron-up"
-        aria-hidden="true"
-      ></i>
-
+      <i class="pi pi-chevron-up" aria-hidden="true"></i>
     </div>
 
     <div class="price-filter">
-
       <input
         type="range"
         [min]="minimumPrice"
@@ -145,76 +80,37 @@
       />
 
       <div class="price-values">
-
         <span>
-          {{
-            minimumPrice
-              | currency:
-                  'USD':
-                  'symbol':
-                  '1.0-0'
-          }}
+          {{ minimumPrice | currency: 'USD' : 'symbol' : '1.0-0' }}
         </span>
 
         <strong>
           Up to
 
-          {{
-            maxPrice()
-              | currency:
-                  'USD':
-                  'symbol':
-                  '1.0-0'
-          }}
+          {{ maxPrice() | currency: 'USD' : 'symbol' : '1.0-0' }}
         </strong>
-
       </div>
-
     </div>
-
   </section>
 
   <section class="filter-section">
-
     <div class="filter-title">
-
       <span>
-        <i
-          class="pi pi-tag"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-tag" aria-hidden="true"></i>
 
         Brand
       </span>
 
-      <i
-        class="pi pi-chevron-up"
-        aria-hidden="true"
-      ></i>
-
+      <i class="pi pi-chevron-up" aria-hidden="true"></i>
     </div>
 
     <div class="filter-options">
-
-      @for (
-        brand of brands();
-        track brand.name
-      ) {
-
+      @for (brand of brands(); track brand.name) {
         <label class="filter-check">
-
           <input
             type="checkbox"
-            [checked]="
-              selectedBrands()
-                .includes(brand.name)
-            "
-            (change)="
-              onBrandChange(
-                brand.name,
-                $event
-              )
-            "
+            [checked]="selectedBrands().includes(brand.name)"
+            (change)="onBrandChange(brand.name, $event)"
           />
 
           <span class="check-box"></span>
@@ -223,70 +119,39 @@
             {{ brand.name }}
           </span>
 
-          <span class="option-count">
-            ({{ brand.count }})
-          </span>
-
+          <span class="option-count"> ({{ brand.count }}) </span>
         </label>
-
       }
-
     </div>
-
   </section>
 
   <section class="collapsed-filter">
-
     <span>
-      <i
-        class="pi pi-star"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-star" aria-hidden="true"></i>
 
       Rating
     </span>
 
-    <i
-      class="pi pi-chevron-down"
-      aria-hidden="true"
-    ></i>
-
+    <i class="pi pi-chevron-down" aria-hidden="true"></i>
   </section>
 
   <section class="collapsed-filter">
-
     <span>
-      <i
-        class="pi pi-box"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-box" aria-hidden="true"></i>
 
       Availability
     </span>
 
-    <i
-      class="pi pi-chevron-down"
-      aria-hidden="true"
-    ></i>
-
+    <i class="pi pi-chevron-down" aria-hidden="true"></i>
   </section>
 
   <section class="collapsed-filter">
-
     <span>
-      <i
-        class="pi pi-palette"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-palette" aria-hidden="true"></i>
 
       Color
     </span>
 
-    <i
-      class="pi pi-chevron-down"
-      aria-hidden="true"
-    ></i>
-
+    <i class="pi pi-chevron-down" aria-hidden="true"></i>
   </section>
-
 </aside>

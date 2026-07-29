@@ -1,73 +1,38 @@
-import {
-  CurrencyPipe,
-  DatePipe,
-  TitleCasePipe
-} from '@angular/common';
+import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import {
-  RouterLink
-} from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import {
-  ButtonModule
-} from 'primeng/button';
+import { ButtonModule } from 'primeng/button';
 
-import {
-  OrderStatus
-} from '../../../core/models/order.model';
+import { OrderStatus } from '../../../core/models/order.model';
 
-import {
-  OrderService
-} from '../../../core/services/order/order';
+import { OrderService } from '../../../core/services/order/order';
 
-import {
-  ImageFallback
-} from '../../../shared/directives/image-fallback/image-fallback';
+import { ImageFallback } from '../../../shared/directives/image-fallback/image-fallback';
 
 @Component({
   selector: 'app-orders-page',
 
-  imports: [
-    CurrencyPipe,
-    DatePipe,
-    TitleCasePipe,
-    RouterLink,
-    ButtonModule,
-    ImageFallback
-  ],
+  imports: [CurrencyPipe, DatePipe, TitleCasePipe, RouterLink, ButtonModule, ImageFallback],
 
-  templateUrl:
-    './orders-page.html',
+  templateUrl: './orders-page.html',
 
-  styleUrl:
-    './orders-page.scss',
+  styleUrl: './orders-page.scss',
 
-  changeDetection:
-    ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersPage {
-  private readonly orderService =
-    inject(OrderService);
+  private readonly orderService = inject(OrderService);
 
-  readonly orders =
-    this.orderService.orders;
+  readonly orders = this.orderService.orders;
 
-  readonly totalOrders =
-    this.orderService
-      .totalOrders;
+  readonly totalOrders = this.orderService.totalOrders;
 
-  readonly isEmpty =
-    this.orderService.isEmpty;
+  readonly isEmpty = this.orderService.isEmpty;
 
-  getStatusIcon(
-    status: OrderStatus
-  ): string {
+  getStatusIcon(status: OrderStatus): string {
     switch (status) {
       case 'confirmed':
         return 'pi-check-circle';

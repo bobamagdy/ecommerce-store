@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  model
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
 
 @Component({
   selector: 'app-quantity-selector',
@@ -14,8 +8,7 @@ import {
   templateUrl: './quantity-selector.html',
   styleUrl: './quantity-selector.scss',
 
-  changeDetection:
-    ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuantitySelector {
   /*
@@ -24,8 +17,7 @@ export class QuantitySelector {
    * تستقبل quantity من الـParent،
    * وعند تغييرها ترسل quantityChange تلقائيًا.
    */
-  readonly quantity =
-    model.required<number>();
+  readonly quantity = model.required<number>();
 
   /*
    * أقل قيمة مسموحة.
@@ -41,26 +33,16 @@ export class QuantitySelector {
    * لا يمكن استخدام الـComponent
    * بدون تحديد الحد الأقصى.
    */
-  readonly max =
-    input.required<number>();
+  readonly max = input.required<number>();
 
-  readonly label =
-    input('In Cart');
+  readonly label = input('In Cart');
 
-  readonly canDecrease = computed(
-    () => this.quantity() > this.min()
-  );
+  readonly canDecrease = computed(() => this.quantity() > this.min());
 
-  readonly canIncrease = computed(
-    () => this.quantity() < this.max()
-  );
+  readonly canIncrease = computed(() => this.quantity() < this.max());
 
-  readonly decreaseIcon = computed(
-    () =>
-      this.quantity() ===
-      this.min() + 1
-        ? 'pi-trash'
-        : 'pi-minus'
+  readonly decreaseIcon = computed(() =>
+    this.quantity() === this.min() + 1 ? 'pi-trash' : 'pi-minus',
   );
 
   decrease(): void {
@@ -68,13 +50,7 @@ export class QuantitySelector {
       return;
     }
 
-    this.quantity.update(
-      (currentQuantity) =>
-        Math.max(
-          currentQuantity - 1,
-          this.min()
-        )
-    );
+    this.quantity.update((currentQuantity) => Math.max(currentQuantity - 1, this.min()));
   }
 
   increase(): void {
@@ -82,12 +58,6 @@ export class QuantitySelector {
       return;
     }
 
-    this.quantity.update(
-      (currentQuantity) =>
-        Math.min(
-          currentQuantity + 1,
-          this.max()
-        )
-    );
+    this.quantity.update((currentQuantity) => Math.min(currentQuantity + 1, this.max()));
   }
 }

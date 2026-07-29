@@ -1,50 +1,28 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
-import {
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet
-} from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
-import {
-  AuthService
-} from '../../../core/services/auth/auth';
+import { AuthService } from '../../../core/services/auth/auth';
 
 @Component({
   selector: 'app-admin-layout',
 
-  imports: [
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive
-  ],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
 
   templateUrl: './admin-layout.html',
   styleUrl: './admin-layout.scss',
 
-  changeDetection:
-    ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminLayout {
-  private readonly authService =
-    inject(AuthService);
+  private readonly authService = inject(AuthService);
 
-  private readonly router =
-    inject(Router);
+  private readonly router = inject(Router);
 
-  readonly sidebarOpen =
-    signal(false);
+  readonly sidebarOpen = signal(false);
 
   toggleSidebar(): void {
-    this.sidebarOpen.update(
-      (isOpen) => !isOpen
-    );
+    this.sidebarOpen.update((isOpen) => !isOpen);
   }
 
   closeSidebar(): void {
@@ -54,8 +32,6 @@ export class AdminLayout {
   async logout(): Promise<void> {
     this.authService.logout();
 
-    await this.router.navigateByUrl(
-      '/auth/login'
-    );
+    await this.router.navigateByUrl('/auth/login');
   }
 }

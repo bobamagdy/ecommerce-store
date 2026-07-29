@@ -9,17 +9,8 @@
   place-items: center;
   color: #111827;
   background:
-    radial-gradient(
-      circle at top left,
-      rgb(124 58 237 / 15%),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      rgb(236 72 153 / 10%),
-      transparent 32%
-    ),
-    #f8fafc;
+    radial-gradient(circle at top left, rgb(124 58 237 / 15%), transparent 34%),
+    radial-gradient(circle at bottom right, rgb(236 72 153 / 10%), transparent 32%), #f8fafc;
 }
 
 .recovery-card {
@@ -28,9 +19,7 @@
   border: 1px solid #e5e7eb;
   border-radius: 20px;
   background: #ffffff;
-  box-shadow:
-    0 25px 65px
-    rgb(15 23 42 / 10%);
+  box-shadow: 0 25px 65px rgb(15 23 42 / 10%);
 }
 
 .logo {
@@ -51,12 +40,7 @@
   place-items: center;
   border-radius: 12px;
   color: #ffffff;
-  background:
-    linear-gradient(
-      135deg,
-      #7c3aed,
-      #9333ea
-    );
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
 }
 
 .logo strong {
@@ -148,9 +132,7 @@
 
 .input-wrapper input:focus {
   border-color: #7c3aed;
-  box-shadow:
-    0 0 0 3px
-    rgb(124 58 237 / 12%);
+  box-shadow: 0 0 0 3px rgb(124 58 237 / 12%);
 }
 
 .input-wrapper.invalid input {

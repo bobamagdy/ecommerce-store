@@ -1,0 +1,15 @@
+# Dependencies
+node_modules
+
+# Angular
+.angular
+dist
+coverage
+
+# Playwright
+playwright-report
+test-results
+blob-report
+
+# Generated lock file
+package-lock.json

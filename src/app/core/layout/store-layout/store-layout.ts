@@ -7,13 +7,9 @@ import { StoreHeader } from '../store-header/store-header';
 @Component({
   selector: 'app-store-layout',
 
-  imports: [
-    RouterOutlet,
-    StoreHeader,
-    StoreFooter
-  ],
+  imports: [RouterOutlet, StoreHeader, StoreFooter],
 
   templateUrl: './store-layout.html',
-  styleUrl: './store-layout.scss'
+  styleUrl: './store-layout.scss',
 })
 export class StoreLayout {}

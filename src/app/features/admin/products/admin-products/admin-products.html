@@ -1,32 +1,17 @@
 <main class="admin-page">
-
   <header class="page-header">
-
     <div>
-      <p>
-        CATALOG MANAGEMENT
-      </p>
+      <p>CATALOG MANAGEMENT</p>
 
-      <h1>
-        Products
-      </h1>
+      <h1>Products</h1>
 
-      <span>
-        Review catalog information,
-        prices and current stock.
-      </span>
+      <span> Review catalog information, prices and current stock. </span>
     </div>
-
   </header>
 
   <section class="admin-toolbar">
-
     <label class="search-control">
-
-      <i
-        class="pi pi-search"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-search" aria-hidden="true"></i>
 
       <input
         type="search"
@@ -34,34 +19,22 @@
         [value]="searchQuery()"
         (input)="updateSearch($event)"
       />
-
     </label>
-
   </section>
 
   <section class="table-card">
-
     <header class="card-header">
-
-      <h2>
-        Product Catalog
-      </h2>
+      <h2>Product Catalog</h2>
 
       <span>
         {{ filteredProducts().length }}
         products
       </span>
-
     </header>
 
-    @if (
-      filteredProducts().length > 0
-    ) {
-
+    @if (filteredProducts().length > 0) {
       <div class="table-wrapper">
-
         <table class="data-table">
-
           <thead>
             <tr>
               <th>Product</th>
@@ -74,21 +47,11 @@
           </thead>
 
           <tbody>
-
-            @for (
-              product of filteredProducts();
-              track product.id
-            ) {
+            @for (product of filteredProducts(); track product.id) {
               <tr>
-
                 <td>
                   <div class="product-cell">
-
-                    <img
-                      appImageFallback
-                      [src]="product.image"
-                      [alt]="product.name"
-                    />
+                    <img appImageFallback [src]="product.image" [alt]="product.name" />
 
                     <div>
                       <strong>
@@ -99,7 +62,6 @@
                         {{ product.category }}
                       </small>
                     </div>
-
                   </div>
                 </td>
 
@@ -113,30 +75,17 @@
 
                 <td>
                   <strong>
-                    {{
-                      product.price
-                        | currency:
-                            'USD':
-                            'symbol':
-                            '1.2-2'
-                    }}
+                    {{ product.price | currency: 'USD' : 'symbol' : '1.2-2' }}
                   </strong>
                 </td>
 
                 <td>
                   <span
                     class="stock-badge"
-                    [class.low-stock]="
-                      product.stock > 0 &&
-                      product.stock <= 5
-                    "
-                    [class.out-of-stock]="
-                      product.stock === 0
-                    "
+                    [class.low-stock]="product.stock > 0 && product.stock <= 5"
+                    [class.out-of-stock]="product.stock === 0"
                   >
-                    @if (
-                      product.stock === 0
-                    ) {
+                    @if (product.stock === 0) {
                       Out of stock
                     } @else {
                       {{ product.stock }}
@@ -146,38 +95,19 @@
                 </td>
 
                 <td>
-                  <a
-                    [routerLink]="[
-                      '/products',
-                      product.id
-                    ]"
-                  >
-                    View
-                  </a>
+                  <a [routerLink]="['/products', product.id]"> View </a>
                 </td>
-
               </tr>
             }
-
           </tbody>
-
         </table>
-
       </div>
-
     } @else {
-
       <div class="empty-table">
-        <i
-          class="pi pi-search"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-search" aria-hidden="true"></i>
 
         No products match your search.
       </div>
-
     }
-
   </section>
-
 </main>

@@ -1,45 +1,28 @@
 <main class="checkout-page">
-
-  <nav
-    class="breadcrumb"
-    aria-label="Breadcrumb"
-  >
-    <a routerLink="/">
-      Home
-    </a>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a routerLink="/"> Home </a>
 
     <i class="pi pi-chevron-right"></i>
 
-    <a routerLink="/cart">
-      Cart
-    </a>
+    <a routerLink="/cart"> Cart </a>
 
     <i class="pi pi-chevron-right"></i>
 
-    <span>
-      Checkout
-    </span>
+    <span> Checkout </span>
   </nav>
 
   @if (orderNumber()) {
-
     <section class="order-success">
-
       <div class="success-icon">
         <i class="pi pi-check"></i>
       </div>
 
-      <p class="success-label">
-        ORDER CONFIRMED
-      </p>
+      <p class="success-label">ORDER CONFIRMED</p>
 
-      <h1>
-        Thank you for your order
-      </h1>
+      <h1>Thank you for your order</h1>
 
       <p>
-        Your order has been placed successfully.
-        You can follow its status from your orders page.
+        Your order has been placed successfully. You can follow its status from your orders page.
       </p>
 
       <div class="order-number">
@@ -51,112 +34,60 @@
       </div>
 
       <div class="success-actions">
-
-        <a
-          routerLink="/account/orders"
-          pButton
-        >
+        <a routerLink="/account/orders" pButton>
           <i class="pi pi-box"></i>
 
-          <span>
-            View My Orders
-          </span>
+          <span> View My Orders </span>
         </a>
 
-        <a
-          routerLink="/products"
-          class="secondary-link"
-        >
-          Continue Shopping
-        </a>
-
+        <a routerLink="/products" class="secondary-link"> Continue Shopping </a>
       </div>
-
     </section>
-
   } @else if (!hasCartItems()) {
-
     <section class="empty-checkout">
-
       <div class="empty-icon">
         <i class="pi pi-shopping-cart"></i>
       </div>
 
-      <h1>
-        Your cart is empty
-      </h1>
+      <h1>Your cart is empty</h1>
 
-      <p>
-        Add products to your cart before starting checkout.
-      </p>
+      <p>Add products to your cart before starting checkout.</p>
 
-      <a
-        routerLink="/products"
-        pButton
-      >
-        Start Shopping
-      </a>
-
+      <a routerLink="/products" pButton> Start Shopping </a>
     </section>
-
   } @else {
-
     <header class="page-heading">
       <div>
         <p>SECURE CHECKOUT</p>
 
-        <h1>
-          Complete Your Order
-        </h1>
+        <h1>Complete Your Order</h1>
 
-        <span>
-          Enter your shipping details and choose
-          your preferred payment method.
-        </span>
+        <span> Enter your shipping details and choose your preferred payment method. </span>
       </div>
 
       <div class="secure-message">
         <i class="pi pi-shield"></i>
 
-        <span>
-          Secure checkout
-        </span>
+        <span> Secure checkout </span>
       </div>
     </header>
 
     <section class="checkout-layout">
-
-      <form
-        class="checkout-form"
-        (submit)="placeOrder($event)"
-        novalidate
-      >
-
+      <form class="checkout-form" (submit)="placeOrder($event)" novalidate>
         <section class="form-card">
-
           <div class="section-heading">
-            <span class="section-number">
-              1
-            </span>
+            <span class="section-number"> 1 </span>
 
             <div>
-              <h2>
-                Contact Information
-              </h2>
+              <h2>Contact Information</h2>
 
-              <p>
-                We will use these details to contact you.
-              </p>
+              <p>We will use these details to contact you.</p>
             </div>
           </div>
 
           <div class="form-grid">
-
             <div class="form-field full-width">
-
-              <label for="checkout-name">
-                Full Name
-              </label>
+              <label for="checkout-name"> Full Name </label>
 
               <input
                 id="checkout-name"
@@ -166,29 +97,19 @@
                 placeholder="Enter your full name"
               />
 
-              @if (
-                checkoutForm.fullName().touched() &&
-                checkoutForm.fullName().invalid()
-              ) {
+              @if (checkoutForm.fullName().touched() && checkoutForm.fullName().invalid()) {
                 <div class="field-errors">
-                  @for (
-                    error of checkoutForm.fullName().errors();
-                    track error
-                  ) {
+                  @for (error of checkoutForm.fullName().errors(); track error) {
                     <small>
                       {{ error.message }}
                     </small>
                   }
                 </div>
               }
-
             </div>
 
             <div class="form-field">
-
-              <label for="checkout-email">
-                Email Address
-              </label>
+              <label for="checkout-email"> Email Address </label>
 
               <input
                 id="checkout-email"
@@ -198,29 +119,19 @@
                 placeholder="name@example.com"
               />
 
-              @if (
-                checkoutForm.email().touched() &&
-                checkoutForm.email().invalid()
-              ) {
+              @if (checkoutForm.email().touched() && checkoutForm.email().invalid()) {
                 <div class="field-errors">
-                  @for (
-                    error of checkoutForm.email().errors();
-                    track error
-                  ) {
+                  @for (error of checkoutForm.email().errors(); track error) {
                     <small>
                       {{ error.message }}
                     </small>
                   }
                 </div>
               }
-
             </div>
 
             <div class="form-field">
-
-              <label for="checkout-phone">
-                Phone Number
-              </label>
+              <label for="checkout-phone"> Phone Number </label>
 
               <input
                 id="checkout-phone"
@@ -230,102 +141,59 @@
                 placeholder="+1 555 000 0000"
               />
 
-              @if (
-                checkoutForm.phone().touched() &&
-                checkoutForm.phone().invalid()
-              ) {
+              @if (checkoutForm.phone().touched() && checkoutForm.phone().invalid()) {
                 <div class="field-errors">
-                  @for (
-                    error of checkoutForm.phone().errors();
-                    track error
-                  ) {
+                  @for (error of checkoutForm.phone().errors(); track error) {
                     <small>
                       {{ error.message }}
                     </small>
                   }
                 </div>
               }
-
             </div>
-
           </div>
-
         </section>
 
         <section class="form-card">
-
           <div class="section-heading">
-            <span class="section-number">
-              2
-            </span>
+            <span class="section-number"> 2 </span>
 
             <div>
-              <h2>
-                Shipping Address
-              </h2>
+              <h2>Shipping Address</h2>
 
-              <p>
-                Enter the address where your order will be delivered.
-              </p>
+              <p>Enter the address where your order will be delivered.</p>
             </div>
           </div>
 
           <div class="form-grid">
-
             <div class="form-field">
+              <label for="checkout-country"> Country </label>
 
-              <label for="checkout-country">
-                Country
-              </label>
+              <select id="checkout-country" [formField]="checkoutForm.country">
+                <option value="">Select country</option>
 
-              <select
-                id="checkout-country"
-                [formField]="checkoutForm.country"
-              >
-                <option value="">
-                  Select country
-                </option>
+                <option value="Saudi Arabia">Saudi Arabia</option>
 
-                <option value="Saudi Arabia">
-                  Saudi Arabia
-                </option>
+                <option value="Egypt">Egypt</option>
 
-                <option value="Egypt">
-                  Egypt
-                </option>
+                <option value="United States">United States</option>
 
-                <option value="United States">
-                  United States
-                </option>
-
-                <option value="United Arab Emirates">
-                  United Arab Emirates
-                </option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
               </select>
 
-              @if (
-                checkoutForm.country().touched() &&
-                checkoutForm.country().invalid()
-              ) {
+              @if (checkoutForm.country().touched() && checkoutForm.country().invalid()) {
                 <div class="field-errors">
-                  @for (
-                    error of checkoutForm.country().errors();
-                    track error
-                  ) {
+                  @for (error of checkoutForm.country().errors(); track error) {
                     <small>
                       {{ error.message }}
                     </small>
                   }
                 </div>
               }
-
             </div>
 
             <div class="form-field">
-
-              <label for="checkout-city">
-                City
-              </label>
+              <label for="checkout-city"> City </label>
 
               <input
                 id="checkout-city"
@@ -335,29 +203,19 @@
                 placeholder="Enter city"
               />
 
-              @if (
-                checkoutForm.city().touched() &&
-                checkoutForm.city().invalid()
-              ) {
+              @if (checkoutForm.city().touched() && checkoutForm.city().invalid()) {
                 <div class="field-errors">
-                  @for (
-                    error of checkoutForm.city().errors();
-                    track error
-                  ) {
+                  @for (error of checkoutForm.city().errors(); track error) {
                     <small>
                       {{ error.message }}
                     </small>
                   }
                 </div>
               }
-
             </div>
 
             <div class="form-field full-width">
-
-              <label for="checkout-address">
-                Address
-              </label>
+              <label for="checkout-address"> Address </label>
 
               <textarea
                 id="checkout-address"
@@ -367,29 +225,19 @@
                 placeholder="Street, building number and apartment"
               ></textarea>
 
-              @if (
-                checkoutForm.address().touched() &&
-                checkoutForm.address().invalid()
-              ) {
+              @if (checkoutForm.address().touched() && checkoutForm.address().invalid()) {
                 <div class="field-errors">
-                  @for (
-                    error of checkoutForm.address().errors();
-                    track error
-                  ) {
+                  @for (error of checkoutForm.address().errors(); track error) {
                     <small>
                       {{ error.message }}
                     </small>
                   }
                 </div>
               }
-
             </div>
 
             <div class="form-field">
-
-              <label for="checkout-postal">
-                Postal Code
-              </label>
+              <label for="checkout-postal"> Postal Code </label>
 
               <input
                 id="checkout-postal"
@@ -399,98 +247,59 @@
                 placeholder="Enter postal code"
               />
 
-              @if (
-                checkoutForm.postalCode().touched() &&
-                checkoutForm.postalCode().invalid()
-              ) {
+              @if (checkoutForm.postalCode().touched() && checkoutForm.postalCode().invalid()) {
                 <div class="field-errors">
-                  @for (
-                    error of checkoutForm.postalCode().errors();
-                    track error
-                  ) {
+                  @for (error of checkoutForm.postalCode().errors(); track error) {
                     <small>
                       {{ error.message }}
                     </small>
                   }
                 </div>
               }
-
             </div>
-
           </div>
-
         </section>
 
         <section class="form-card">
-
           <div class="section-heading">
-            <span class="section-number">
-              3
-            </span>
+            <span class="section-number"> 3 </span>
 
             <div>
-              <h2>
-                Payment Method
-              </h2>
+              <h2>Payment Method</h2>
 
-              <p>
-                Select how you want to pay for your order.
-              </p>
+              <p>Select how you want to pay for your order.</p>
             </div>
           </div>
 
           <div class="payment-options">
-
             <label class="payment-option">
-
-              <input
-                type="radio"
-                value="card"
-                [formField]="checkoutForm.paymentMethod"
-              />
+              <input type="radio" value="card" [formField]="checkoutForm.paymentMethod" />
 
               <span class="payment-icon">
                 <i class="pi pi-credit-card"></i>
               </span>
 
               <span>
-                <strong>
-                  Credit or Debit Card
-                </strong>
+                <strong> Credit or Debit Card </strong>
 
-                <small>
-                  Visa, Mastercard and supported cards
-                </small>
+                <small> Visa, Mastercard and supported cards </small>
               </span>
-
             </label>
 
             <label class="payment-option">
-
-              <input
-                type="radio"
-                value="cash"
-                [formField]="checkoutForm.paymentMethod"
-              />
+              <input type="radio" value="cash" [formField]="checkoutForm.paymentMethod" />
 
               <span class="payment-icon">
                 <i class="pi pi-wallet"></i>
               </span>
 
               <span>
-                <strong>
-                  Cash on Delivery
-                </strong>
+                <strong> Cash on Delivery </strong>
 
-                <small>
-                  Pay when your order arrives
-                </small>
+                <small> Pay when your order arrives </small>
               </span>
-
             </label>
-
           </div>
-
         </section>
 
         <button
@@ -507,29 +316,16 @@
             Place Order
           }
         </button>
-
       </form>
 
       <aside class="order-summary">
-
-        <h2>
-          Order Summary
-        </h2>
+        <h2>Order Summary</h2>
 
         <div class="summary-products">
-
-          @for (
-            item of cartItems();
-            track item.product.id
-          ) {
-
+          @for (item of cartItems(); track item.product.id) {
             <article class="summary-product">
-
               <div class="product-image">
-                <img
-                  [src]="item.product.image"
-                  [alt]="item.product.name"
-                />
+                <img [src]="item.product.image" [alt]="item.product.name" />
 
                 <span>
                   {{ item.quantity }}
@@ -547,28 +343,18 @@
               </div>
 
               <b>
-                {{
-                  item.product.price * item.quantity
-                    | currency:'USD':'symbol':'1.2-2'
-                }}
+                {{ item.product.price * item.quantity | currency: 'USD' : 'symbol' : '1.2-2' }}
               </b>
-
             </article>
-
           }
-
         </div>
 
         <div class="summary-values">
-
           <div>
             <span>Subtotal</span>
 
             <strong>
-              {{
-                subtotal()
-                  | currency:'USD':'symbol':'1.2-2'
-              }}
+              {{ subtotal() | currency: 'USD' : 'symbol' : '1.2-2' }}
             </strong>
           </div>
 
@@ -576,15 +362,10 @@
             <span>Shipping</span>
 
             @if (shipping() === 0) {
-              <strong class="free">
-                Free
-              </strong>
+              <strong class="free"> Free </strong>
             } @else {
               <strong>
-                {{
-                  shipping()
-                    | currency:'USD':'symbol':'1.2-2'
-                }}
+                {{ shipping() | currency: 'USD' : 'symbol' : '1.2-2' }}
               </strong>
             }
           </div>
@@ -593,23 +374,16 @@
             <span>Tax</span>
 
             <strong>
-              {{
-                tax()
-                  | currency:'USD':'symbol':'1.2-2'
-              }}
+              {{ tax() | currency: 'USD' : 'symbol' : '1.2-2' }}
             </strong>
           </div>
-
         </div>
 
         <div class="summary-total">
           <span>Total</span>
 
           <strong>
-            {{
-              total()
-                | currency:'USD':'symbol':'1.2-2'
-            }}
+            {{ total() | currency: 'USD' : 'symbol' : '1.2-2' }}
           </strong>
         </div>
 
@@ -623,15 +397,11 @@
           @if (checkoutForm().submitting()) {
             <i class="pi pi-spin pi-spinner"></i>
 
-            <span>
-              Processing...
-            </span>
+            <span> Processing... </span>
           } @else {
             <i class="pi pi-lock"></i>
 
-            <span>
-              Place Order
-            </span>
+            <span> Place Order </span>
           }
         </button>
 
@@ -639,11 +409,7 @@
           <i class="pi pi-shield"></i>
           Your information is protected and encrypted.
         </p>
-
       </aside>
-
     </section>
-
   }
-
 </main>

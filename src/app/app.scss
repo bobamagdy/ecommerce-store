@@ -20,9 +20,7 @@
   display: block;
   border-radius: 999px;
   background: #7c3aed;
-  animation:
-    global-loading-progress
-    1.1s ease-in-out infinite;
+  animation: global-loading-progress 1.1s ease-in-out infinite;
 }
 
 .global-error {
@@ -30,10 +28,7 @@
   z-index: 9998;
   top: 18px;
   left: 50%;
-  width: min(
-    calc(100% - 32px),
-    570px
-  );
+  width: min(calc(100% - 32px), 570px);
   min-height: 52px;
   padding: 12px 14px;
   display: grid;
@@ -47,9 +42,7 @@
   border-radius: 12px;
   color: #991b1b;
   background: #fef2f2;
-  box-shadow:
-    0 15px 40px
-    rgb(127 29 29 / 15%);
+  box-shadow: 0 15px 40px rgb(127 29 29 / 15%);
   transform: translateX(-50%);
 }
 
@@ -77,18 +70,15 @@
 }
 
 .global-error button:hover {
-  background:
-    rgb(153 27 27 / 8%);
+  background: rgb(153 27 27 / 8%);
 }
 
 @keyframes global-loading-progress {
   from {
-    transform:
-      translateX(-110%);
+    transform: translateX(-110%);
   }
 
   to {
-    transform:
-      translateX(390%);
+    transform: translateX(390%);
   }
 }

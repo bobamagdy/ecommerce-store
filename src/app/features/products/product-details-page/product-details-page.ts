@@ -1,6 +1,4 @@
-import {
-  CurrencyPipe
-} from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 import {
   afterRenderEffect,
@@ -12,47 +10,27 @@ import {
   input,
   linkedSignal,
   numberAttribute,
-  viewChildren
+  viewChildren,
 } from '@angular/core';
 
-import {
-  RouterLink
-} from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import {
-  ButtonModule
-} from 'primeng/button';
+import { ButtonModule } from 'primeng/button';
 
-import {
-  CartService
-} from '../../../core/services/cart/cart';
+import { CartService } from '../../../core/services/cart/cart';
 
-import {
-  ProductService
-} from '../../../core/services/product/product';
+import { ProductService } from '../../../core/services/product/product';
 
-import {
-  WishlistService
-} from '../../../core/services/wishlist/wishlist';
+import { WishlistService } from '../../../core/services/wishlist/wishlist';
 
-import {
-  QuantitySelector
-} from '../../../shared/components/quantity-selector/quantity-selector';
+import { QuantitySelector } from '../../../shared/components/quantity-selector/quantity-selector';
 
-import {
-  ImageFallback
-} from '../../../shared/directives/image-fallback/image-fallback';
+import { ImageFallback } from '../../../shared/directives/image-fallback/image-fallback';
 
-function transformProductId(
-  value: string | null | undefined
-): number {
-  const productId =
-    numberAttribute(value);
+function transformProductId(value: string | null | undefined): number {
+  const productId = numberAttribute(value);
 
-  if (
-    !Number.isInteger(productId) ||
-    productId <= 0
-  ) {
+  if (!Number.isInteger(productId) || productId <= 0) {
     return 0;
   }
 
@@ -60,35 +38,22 @@ function transformProductId(
 }
 
 @Component({
-  selector:
-    'app-product-details-page',
+  selector: 'app-product-details-page',
 
-  imports: [
-    CurrencyPipe,
-    RouterLink,
-    ButtonModule,
-    QuantitySelector,
-    ImageFallback
-  ],
+  imports: [CurrencyPipe, RouterLink, ButtonModule, QuantitySelector, ImageFallback],
 
-  templateUrl:
-    './product-details-page.html',
+  templateUrl: './product-details-page.html',
 
-  styleUrl:
-    './product-details-page.scss',
+  styleUrl: './product-details-page.scss',
 
-  changeDetection:
-    ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailsPage {
-  private readonly productService =
-    inject(ProductService);
+  private readonly productService = inject(ProductService);
 
-  private readonly cartService =
-    inject(CartService);
+  private readonly cartService = inject(CartService);
 
-  private readonly wishlistService =
-    inject(WishlistService);
+  private readonly wishlistService = inject(WishlistService);
 
   /*
    * Router Signal Input.
@@ -96,14 +61,9 @@ export class ProductDetailsPage {
    * Angular Router يربطها مع:
    * products/:id
    */
-  readonly id =
-    input.required<
-      number,
-      string | null | undefined
-    >({
-      transform:
-        transformProductId
-    });
+  readonly id = input.required<number, string | null | undefined>({
+    transform: transformProductId,
+  });
 
   /*
    * Signal Query.
@@ -113,94 +73,58 @@ export class ProductDetailsPage {
    *
    * وتتحدث تلقائيًا إذا تغير عدد الصور.
    */
-  readonly thumbnailButtons =
-    viewChildren<
-      ElementRef<HTMLButtonElement>
-    >('thumbnailButton');
+  readonly thumbnailButtons = viewChildren<ElementRef<HTMLButtonElement>>('thumbnailButton');
 
-  readonly product =
-    computed(() =>
-      this.productService
-        .getProductById(this.id())
-    );
+  readonly product = computed(() => this.productService.getProductById(this.id()));
 
-  readonly selectedImage =
-    linkedSignal(() =>
-      this.product()?.image ?? ''
-    );
+  readonly selectedImage = linkedSignal(() => this.product()?.image ?? '');
 
   /*
    * Index الصورة المختارة حاليًا.
    */
-  readonly selectedImageIndex =
-    computed(() => {
-      const currentProduct =
-        this.product();
+  readonly selectedImageIndex = computed(() => {
+    const currentProduct = this.product();
 
-      if (!currentProduct) {
-        return -1;
-      }
+    if (!currentProduct) {
+      return -1;
+    }
 
-      return currentProduct.images
-        .indexOf(
-          this.selectedImage()
-        );
-    });
+    return currentProduct.images.indexOf(this.selectedImage());
+  });
 
-  readonly cartQuantity =
-    computed(() => {
-      const currentProduct =
-        this.product();
+  readonly cartQuantity = computed(() => {
+    const currentProduct = this.product();
 
-      if (!currentProduct) {
-        return 0;
-      }
+    if (!currentProduct) {
+      return 0;
+    }
 
-      return this.cartService
-        .getProductQuantity(
-          currentProduct.id
-        );
-    });
+    return this.cartService.getProductQuantity(currentProduct.id);
+  });
 
-  readonly quantity =
-    linkedSignal<number>(() => {
-      const currentProduct =
-        this.product();
+  readonly quantity = linkedSignal<number>(() => {
+    const currentProduct = this.product();
 
-      if (
-        !currentProduct ||
-        currentProduct.stock <= 0
-      ) {
-        return 0;
-      }
+    if (!currentProduct || currentProduct.stock <= 0) {
+      return 0;
+    }
 
-      const currentCartQuantity =
-        this.cartQuantity();
+    const currentCartQuantity = this.cartQuantity();
 
-      return currentCartQuantity > 0
-        ? currentCartQuantity
-        : 1;
-    });
+    return currentCartQuantity > 0 ? currentCartQuantity : 1;
+  });
 
-  readonly isInCart =
-    computed(
-      () => this.cartQuantity() > 0
-    );
+  readonly isInCart = computed(() => this.cartQuantity() > 0);
 
-  readonly isFavorite =
-    computed(() => {
-      const currentProduct =
-        this.product();
+  readonly isFavorite = computed(() => {
+    const currentProduct = this.product();
 
-      if (!currentProduct) {
-        return false;
-      }
+    if (!currentProduct) {
+      return false;
+    }
 
-      return this.wishlistService
-        .isFavorite(
-          currentProduct.id
-        );
-    });
+    return this.wishlistService.isFavorite(currentProduct.id);
+  });
 
   constructor() {
     /*
@@ -215,63 +139,44 @@ export class ProductDetailsPage {
      */
     afterRenderEffect({
       write: () => {
-        const selectedIndex =
-          this.selectedImageIndex();
+        const selectedIndex = this.selectedImageIndex();
 
         if (selectedIndex < 0) {
           return;
         }
 
-        const selectedButton =
-          this.thumbnailButtons()[
-            selectedIndex
-          ]?.nativeElement;
+        const selectedButton = this.thumbnailButtons()[selectedIndex]?.nativeElement;
 
         selectedButton?.scrollIntoView({
           block: 'nearest',
-          inline: 'nearest'
+          inline: 'nearest',
         });
-      }
+      },
     });
   }
 
-  selectImage(
-    image: string
-  ): void {
+  selectImage(image: string): void {
     this.selectedImage.set(image);
   }
 
-  handleThumbnailKeydown(
-    event: KeyboardEvent,
-    currentIndex: number
-  ): void {
-    const images =
-      this.product()?.images ?? [];
+  handleThumbnailKeydown(event: KeyboardEvent, currentIndex: number): void {
+    const images = this.product()?.images ?? [];
 
     if (images.length === 0) {
       return;
     }
 
-    let targetIndex:
-      number | null = null;
+    let targetIndex: number | null = null;
 
     switch (event.key) {
       case 'ArrowRight':
       case 'ArrowDown':
-        targetIndex =
-          (
-            currentIndex + 1
-          ) % images.length;
+        targetIndex = (currentIndex + 1) % images.length;
         break;
 
       case 'ArrowLeft':
       case 'ArrowUp':
-        targetIndex =
-          (
-            currentIndex -
-            1 +
-            images.length
-          ) % images.length;
+        targetIndex = (currentIndex - 1 + images.length) % images.length;
         break;
 
       case 'Home':
@@ -279,8 +184,7 @@ export class ProductDetailsPage {
         break;
 
       case 'End':
-        targetIndex =
-          images.length - 1;
+        targetIndex = images.length - 1;
         break;
 
       default:
@@ -289,84 +193,50 @@ export class ProductDetailsPage {
 
     event.preventDefault();
 
-    this.selectImageAtIndex(
-      targetIndex,
-      true
-    );
+    this.selectImageAtIndex(targetIndex, true);
   }
 
-  setSelectedQuantity(
-    quantity: number
-  ): void {
+  setSelectedQuantity(quantity: number): void {
     this.quantity.set(quantity);
   }
 
   saveCartQuantity(): void {
-    const currentProduct =
-      this.product();
+    const currentProduct = this.product();
 
-    const selectedQuantity =
-      this.quantity();
+    const selectedQuantity = this.quantity();
 
-    if (
-      !currentProduct ||
-      currentProduct.stock <= 0 ||
-      selectedQuantity <= 0
-    ) {
+    if (!currentProduct || currentProduct.stock <= 0 || selectedQuantity <= 0) {
       return;
     }
 
-    this.cartService
-      .setProductQuantity(
-        currentProduct,
-        selectedQuantity
-      );
+    this.cartService.setProductQuantity(currentProduct, selectedQuantity);
   }
 
   toggleFavorite(): void {
-    const currentProduct =
-      this.product();
+    const currentProduct = this.product();
 
     if (!currentProduct) {
       return;
     }
 
-    this.wishlistService
-      .toggleProduct(
-        currentProduct.id
-      );
+    this.wishlistService.toggleProduct(currentProduct.id);
   }
 
-  private selectImageAtIndex(
-    requestedIndex: number,
-    shouldFocus: boolean
-  ): void {
-    const images =
-      this.product()?.images ?? [];
+  private selectImageAtIndex(requestedIndex: number, shouldFocus: boolean): void {
+    const images = this.product()?.images ?? [];
 
     if (images.length === 0) {
       return;
     }
 
-    const safeIndex =
-      Math.min(
-        Math.max(
-          requestedIndex,
-          0
-        ),
-        images.length - 1
-      );
+    const safeIndex = Math.min(Math.max(requestedIndex, 0), images.length - 1);
 
-    this.selectedImage.set(
-      images[safeIndex]
-    );
+    this.selectedImage.set(images[safeIndex]);
 
     if (!shouldFocus) {
       return;
     }
 
-    this.thumbnailButtons()[
-      safeIndex
-    ]?.nativeElement.focus();
+    this.thumbnailButtons()[safeIndex]?.nativeElement.focus();
   }
 }

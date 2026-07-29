@@ -1,138 +1,82 @@
 <main class="admin-page">
-
   <header class="page-header">
-
     <div>
-      <p>
-        STORE OVERVIEW
-      </p>
+      <p>STORE OVERVIEW</p>
 
-      <h1>
-        Dashboard
-      </h1>
+      <h1>Dashboard</h1>
 
-      <span>
-        Review your store performance,
-        inventory and recent orders.
-      </span>
+      <span> Review your store performance, inventory and recent orders. </span>
     </div>
-
   </header>
 
   <section class="stats-grid">
-
     <article class="stat-card">
-
       <span class="stat-icon">
-        <i
-          class="pi pi-box"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-box" aria-hidden="true"></i>
       </span>
 
       <div>
-        <small>
-          Total Products
-        </small>
+        <small> Total Products </small>
 
         <strong>
           {{ totalProducts() }}
         </strong>
       </div>
-
     </article>
 
     <article class="stat-card">
-
       <span class="stat-icon">
-        <i
-          class="pi pi-receipt"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-receipt" aria-hidden="true"></i>
       </span>
 
       <div>
-        <small>
-          Total Orders
-        </small>
+        <small> Total Orders </small>
 
         <strong>
           {{ totalOrders() }}
         </strong>
       </div>
-
     </article>
 
     <article class="stat-card">
-
       <span class="stat-icon">
-        <i
-          class="pi pi-dollar"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-dollar" aria-hidden="true"></i>
       </span>
 
       <div>
-        <small>
-          Total Revenue
-        </small>
+        <small> Total Revenue </small>
 
         <strong>
-          {{
-            totalRevenue()
-              | currency:
-                  'USD':
-                  'symbol':
-                  '1.2-2'
-          }}
+          {{ totalRevenue() | currency: 'USD' : 'symbol' : '1.2-2' }}
         </strong>
       </div>
-
     </article>
 
     <article class="stat-card">
-
       <span class="stat-icon">
-        <i
-          class="pi pi-exclamation-triangle"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
       </span>
 
       <div>
-        <small>
-          Low Stock
-        </small>
+        <small> Low Stock </small>
 
         <strong>
           {{ lowStockProducts() }}
         </strong>
       </div>
-
     </article>
-
   </section>
 
   <section class="table-card">
-
     <header class="card-header">
+      <h2>Recent Orders</h2>
 
-      <h2>
-        Recent Orders
-      </h2>
-
-      <a routerLink="/admin/orders">
-        View All Orders
-      </a>
-
+      <a routerLink="/admin/orders"> View All Orders </a>
     </header>
 
     @if (recentOrders().length > 0) {
-
       <div class="table-wrapper">
-
         <table class="data-table">
-
           <thead>
             <tr>
               <th>Order</th>
@@ -144,11 +88,7 @@
           </thead>
 
           <tbody>
-
-            @for (
-              order of recentOrders();
-              track order.id
-            ) {
+            @for (order of recentOrders(); track order.id) {
               <tr>
                 <td>
                   <strong>
@@ -161,72 +101,37 @@
                 </td>
 
                 <td>
-                  {{
-                    order.createdAt
-                      | date:'mediumDate'
-                  }}
+                  {{ order.createdAt | date: 'mediumDate' }}
                 </td>
 
                 <td>
                   <span
                     class="status-badge"
-                    [class.confirmed]="
-                      order.status ===
-                      'confirmed'
-                    "
-                    [class.shipped]="
-                      order.status ===
-                      'shipped'
-                    "
-                    [class.delivered]="
-                      order.status ===
-                      'delivered'
-                    "
-                    [class.cancelled]="
-                      order.status ===
-                      'cancelled'
-                    "
+                    [class.confirmed]="order.status === 'confirmed'"
+                    [class.shipped]="order.status === 'shipped'"
+                    [class.delivered]="order.status === 'delivered'"
+                    [class.cancelled]="order.status === 'cancelled'"
                   >
-                    {{
-                      order.status
-                        | titlecase
-                    }}
+                    {{ order.status | titlecase }}
                   </span>
                 </td>
 
                 <td>
                   <strong>
-                    {{
-                      order.total
-                        | currency:
-                            'USD':
-                            'symbol':
-                            '1.2-2'
-                    }}
+                    {{ order.total | currency: 'USD' : 'symbol' : '1.2-2' }}
                   </strong>
                 </td>
               </tr>
             }
-
           </tbody>
-
         </table>
-
       </div>
-
     } @else {
-
       <div class="empty-table">
-        <i
-          class="pi pi-receipt"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-receipt" aria-hidden="true"></i>
 
         No orders have been created yet.
       </div>
-
     }
-
   </section>
-
 </main>
