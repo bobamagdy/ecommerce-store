@@ -1,65 +1,35 @@
-import {
-  provideZonelessChangeDetection,
-  signal
-} from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  provideRouter
-} from '@angular/router';
+import { provideRouter } from '@angular/router';
 
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi
-} from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  CartItem,
-  CartService
-} from '../../../core/services/cart/cart';
+import { CartItem, CartService } from '../../../core/services/cart/cart';
 
-import {
-  OrderService
-} from '../../../core/services/order/order';
+import { OrderService } from '../../../core/services/order/order';
 
-import {
-  CheckoutPage
-} from './checkout-page';
+import { CheckoutPage } from './checkout-page';
 
 describe('CheckoutPage', () => {
-  let component:
-    CheckoutPage;
+  let component: CheckoutPage;
 
-  let fixture:
-    ComponentFixture<CheckoutPage>;
+  let fixture: ComponentFixture<CheckoutPage>;
 
-  const cartItemsState =
-    signal<CartItem[]>([]);
+  const cartItemsState = signal<CartItem[]>([]);
 
-  const subtotalState =
-    signal(0);
+  const subtotalState = signal(0);
 
-  const shippingState =
-    signal(0);
+  const shippingState = signal(0);
 
-  const taxState =
-    signal(0);
+  const taxState = signal(0);
 
-  const totalState =
-    signal(0);
+  const totalState = signal(0);
 
-  const clearCartMock =
-    vi.fn();
+  const clearCartMock = vi.fn();
 
-  const createOrderMock =
-    vi.fn();
+  const createOrderMock = vi.fn();
 
   beforeEach(async () => {
     cartItemsState.set([]);
@@ -71,121 +41,70 @@ describe('CheckoutPage', () => {
     clearCartMock.mockClear();
     createOrderMock.mockClear();
 
-    await TestBed
-      .configureTestingModule({
-        imports: [
-          CheckoutPage
-        ],
+    await TestBed.configureTestingModule({
+      imports: [CheckoutPage],
 
-        providers: [
-          provideZonelessChangeDetection(),
+      providers: [
+        provideZonelessChangeDetection(),
 
-          provideRouter([]),
+        provideRouter([]),
 
-          {
-            provide:
-              CartService,
+        {
+          provide: CartService,
 
-            useValue: {
-              items:
-                cartItemsState
-                  .asReadonly(),
+          useValue: {
+            items: cartItemsState.asReadonly(),
 
-              subtotal:
-                subtotalState
-                  .asReadonly(),
+            subtotal: subtotalState.asReadonly(),
 
-              shipping:
-                shippingState
-                  .asReadonly(),
+            shipping: shippingState.asReadonly(),
 
-              tax:
-                taxState
-                  .asReadonly(),
+            tax: taxState.asReadonly(),
 
-              total:
-                totalState
-                  .asReadonly(),
+            total: totalState.asReadonly(),
 
-              clearCart:
-                clearCartMock
-            }
+            clearCart: clearCartMock,
           },
+        },
 
-          {
-            provide:
-              OrderService,
+        {
+          provide: OrderService,
 
-            useValue: {
-              createOrder:
-                createOrderMock
-            }
-          }
-        ]
-      })
-      .compileComponents();
+          useValue: {
+            createOrder: createOrderMock,
+          },
+        },
+      ],
+    }).compileComponents();
 
-    fixture =
-      TestBed.createComponent(
-        CheckoutPage
-      );
+    fixture = TestBed.createComponent(CheckoutPage);
 
-    component =
-      fixture.componentInstance;
+    component = fixture.componentInstance;
 
     fixture.detectChanges();
 
     await fixture.whenStable();
   });
 
-  it(
-    'should create',
-    () => {
-      expect(
-        component
-      ).toBeTruthy();
-    }
-  );
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-  it(
-    'should display the empty cart state',
-    () => {
-      const hostElement:
-        HTMLElement =
-          fixture.nativeElement;
+  it('should display the empty cart state', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
 
-      expect(
-        hostElement.textContent
-      ).toContain(
-        'Your cart is empty'
-      );
-    }
-  );
+    expect(hostElement.textContent).toContain('Your cart is empty');
+  });
 
-  it(
-    'should report no pending changes initially',
-    () => {
-      expect(
-        component
-          .hasPendingChanges()
-      ).toBe(false);
-    }
-  );
+  it('should report no pending changes initially', () => {
+    expect(component.hasPendingChanges()).toBe(false);
+  });
 
-  it(
-    'should not create an order when the cart is empty',
-    async () => {
-      await component.placeOrder(
-        new Event('submit')
-      );
+  it('should not create an order when the cart is empty', async () => {
+    await component.placeOrder(new Event('submit'));
 
-      expect(
-        createOrderMock
-      ).not.toHaveBeenCalled();
+    expect(createOrderMock).not.toHaveBeenCalled();
 
-      expect(
-        clearCartMock
-      ).not.toHaveBeenCalled();
-    }
-  );
+    expect(clearCartMock).not.toHaveBeenCalled();
+  });
 });

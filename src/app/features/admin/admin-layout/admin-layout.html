@@ -1,121 +1,57 @@
-<div
-  class="admin-shell"
-  [class.sidebar-open]="sidebarOpen()"
->
+<div class="admin-shell" [class.sidebar-open]="sidebarOpen()">
   <aside class="admin-sidebar">
-
     <header class="sidebar-header">
-
-      <a
-        routerLink="/admin/dashboard"
-        class="admin-logo"
-        (click)="closeSidebar()"
-      >
+      <a routerLink="/admin/dashboard" class="admin-logo" (click)="closeSidebar()">
         <span class="logo-icon">
-          <i
-            class="pi pi-shopping-bag"
-            aria-hidden="true"
-          ></i>
+          <i class="pi pi-shopping-bag" aria-hidden="true"></i>
         </span>
 
-        <span>
-          Hub<strong>Shop</strong>
-        </span>
+        <span> Hub<strong>Shop</strong> </span>
       </a>
 
-      
-      <span class="admin-label">
-        ADMIN
-      </span>
-
+      <span class="admin-label"> ADMIN </span>
     </header>
 
-    <nav
-      class="admin-navigation"
-      aria-label="Admin navigation"
-    >
+    <nav class="admin-navigation" aria-label="Admin navigation">
       <a
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{
-          exact: true
+          exact: true,
         }"
         (click)="closeSidebar()"
       >
-        <i
-          class="pi pi-th-large"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-th-large" aria-hidden="true"></i>
 
-        <span>
-          Dashboard
-        </span>
+        <span> Dashboard </span>
       </a>
 
-      <a
-        routerLink="/admin/products"
-        routerLinkActive="active"
-        (click)="closeSidebar()"
-      >
-        <i
-          class="pi pi-box"
-          aria-hidden="true"
-        ></i>
+      <a routerLink="/admin/products" routerLinkActive="active" (click)="closeSidebar()">
+        <i class="pi pi-box" aria-hidden="true"></i>
 
-        <span>
-          Products
-        </span>
+        <span> Products </span>
       </a>
 
-      <a
-        routerLink="/admin/orders"
-        routerLinkActive="active"
-        (click)="closeSidebar()"
-      >
-        <i
-          class="pi pi-receipt"
-          aria-hidden="true"
-        ></i>
+      <a routerLink="/admin/orders" routerLinkActive="active" (click)="closeSidebar()">
+        <i class="pi pi-receipt" aria-hidden="true"></i>
 
-        <span>
-          Orders
-        </span>
+        <span> Orders </span>
       </a>
     </nav>
 
     <footer class="sidebar-footer">
+      <a routerLink="/" class="store-link">
+        <i class="pi pi-external-link" aria-hidden="true"></i>
 
-      <a
-        routerLink="/"
-        class="store-link"
-      >
-        <i
-          class="pi pi-external-link"
-          aria-hidden="true"
-        ></i>
-
-        <span>
-          View Store
-        </span>
+        <span> View Store </span>
       </a>
 
-      <button
-        type="button"
-        class="logout-button"
-        (click)="logout()"
-      >
-        <i
-          class="pi pi-sign-out"
-          aria-hidden="true"
-        ></i>
+      <button type="button" class="logout-button" (click)="logout()">
+        <i class="pi pi-sign-out" aria-hidden="true"></i>
 
-        <span>
-          Sign Out
-        </span>
+        <span> Sign Out </span>
       </button>
-
     </footer>
-
   </aside>
 
   @if (sidebarOpen()) {
@@ -128,47 +64,29 @@
   }
 
   <section class="admin-content">
-
     <header class="admin-topbar">
-
       <button
         type="button"
         class="menu-button"
         aria-label="Open admin menu"
         (click)="toggleSidebar()"
       >
-        <i
-          class="pi pi-bars"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-bars" aria-hidden="true"></i>
       </button>
 
       <div>
-        <strong>
-          HubShop Administration
-        </strong>
+        <strong> HubShop Administration </strong>
 
-        <small>
-          Store management dashboard
-        </small>
+        <small> Store management dashboard </small>
       </div>
 
-      <a
-        routerLink="/account"
-        class="account-button"
-        aria-label="Open account"
-      >
-        <i
-          class="pi pi-user"
-          aria-hidden="true"
-        ></i>
+      <a routerLink="/account" class="account-button" aria-label="Open account">
+        <i class="pi pi-user" aria-hidden="true"></i>
       </a>
-
     </header>
 
     <div class="admin-router-content">
       <router-outlet />
     </div>
-
   </section>
 </div>

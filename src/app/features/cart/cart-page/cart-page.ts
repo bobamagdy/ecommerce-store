@@ -4,52 +4,35 @@ import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 
-import {
-  CartItem,
-  CartService
-} from '../../../core/services/cart/cart';
+import { CartItem, CartService } from '../../../core/services/cart/cart';
 
 @Component({
   selector: 'app-cart-page',
 
-  imports: [
-    CurrencyPipe,
-    RouterLink,
-    ButtonModule
-  ],
+  imports: [CurrencyPipe, RouterLink, ButtonModule],
 
   templateUrl: './cart-page.html',
-  styleUrl: './cart-page.scss'
+  styleUrl: './cart-page.scss',
 })
 export class CartPage {
-  private readonly cartService =
-    inject(CartService);
+  private readonly cartService = inject(CartService);
 
-  readonly cartItems =
-    this.cartService.items;
+  readonly cartItems = this.cartService.items;
 
-  readonly subtotal =
-    this.cartService.subtotal;
+  readonly subtotal = this.cartService.subtotal;
 
-  readonly shipping =
-    this.cartService.shipping;
+  readonly shipping = this.cartService.shipping;
 
-  readonly tax =
-    this.cartService.tax;
+  readonly tax = this.cartService.tax;
 
-  readonly total =
-    this.cartService.total;
+  readonly total = this.cartService.total;
 
   increaseQuantity(item: CartItem): void {
-    this.cartService.increaseQuantity(
-      item.product.id
-    );
+    this.cartService.increaseQuantity(item.product.id);
   }
 
   decreaseQuantity(item: CartItem): void {
-    this.cartService.decreaseQuantity(
-      item.product.id
-    );
+    this.cartService.decreaseQuantity(item.product.id);
   }
 
   removeProduct(productId: number): void {

@@ -1,80 +1,50 @@
-import {
-  provideZonelessChangeDetection
-} from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  provideRouter,
-  Router
-} from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  AuthService
-} from '../../../core/services/auth/auth';
+import { AuthService } from '../../../core/services/auth/auth';
 
-import {
-  AdminLayout
-} from './admin-layout';
+import { AdminLayout } from './admin-layout';
 
 describe('AdminLayout', () => {
   let component: AdminLayout;
 
-  let fixture:
-    ComponentFixture<AdminLayout>;
+  let fixture: ComponentFixture<AdminLayout>;
 
   let router: Router;
 
-  const logoutMock =
-    vi.fn();
+  const logoutMock = vi.fn();
 
   beforeEach(async () => {
     logoutMock.mockClear();
 
-    await TestBed
-      .configureTestingModule({
-        imports: [
-          AdminLayout
-        ],
+    await TestBed.configureTestingModule({
+      imports: [AdminLayout],
 
-        providers: [
-          provideZonelessChangeDetection(),
+      providers: [
+        provideZonelessChangeDetection(),
 
-          provideRouter([]),
+        provideRouter([]),
 
-          {
-            provide: AuthService,
+        {
+          provide: AuthService,
 
-            useValue: {
-              logout: logoutMock
-            }
-          }
-        ]
-      })
-      .compileComponents();
+          useValue: {
+            logout: logoutMock,
+          },
+        },
+      ],
+    }).compileComponents();
 
-    router =
-      TestBed.inject(Router);
+    router = TestBed.inject(Router);
 
-    fixture =
-      TestBed.createComponent(
-        AdminLayout
-      );
+    fixture = TestBed.createComponent(AdminLayout);
 
-    component =
-      fixture.componentInstance;
+    component = fixture.componentInstance;
 
     await fixture.whenStable();
   });
@@ -85,75 +55,39 @@ describe('AdminLayout', () => {
     TestBed.resetTestingModule();
   });
 
-  it(
-    'should create',
-    () => {
-      expect(component).toBeTruthy();
-    }
-  );
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-  it(
-    'should display the admin navigation',
-    () => {
-      const hostElement:
-        HTMLElement =
-          fixture.nativeElement;
+  it('should display the admin navigation', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
 
-      expect(
-        hostElement.textContent
-      ).toContain('Dashboard');
+    expect(hostElement.textContent).toContain('Dashboard');
 
-      expect(
-        hostElement.textContent
-      ).toContain('Products');
+    expect(hostElement.textContent).toContain('Products');
 
-      expect(
-        hostElement.textContent
-      ).toContain('Orders');
-    }
-  );
+    expect(hostElement.textContent).toContain('Orders');
+  });
 
-  it(
-    'should toggle and close the sidebar',
-    () => {
-      expect(
-        component.sidebarOpen()
-      ).toBe(false);
+  it('should toggle and close the sidebar', () => {
+    expect(component.sidebarOpen()).toBe(false);
 
-      component.toggleSidebar();
+    component.toggleSidebar();
 
-      expect(
-        component.sidebarOpen()
-      ).toBe(true);
+    expect(component.sidebarOpen()).toBe(true);
 
-      component.closeSidebar();
+    component.closeSidebar();
 
-      expect(
-        component.sidebarOpen()
-      ).toBe(false);
-    }
-  );
+    expect(component.sidebarOpen()).toBe(false);
+  });
 
-  it(
-    'should logout and navigate to login',
-    async () => {
-      const navigateSpy =
-        vi.spyOn(
-          router,
-          'navigateByUrl'
-        ).mockResolvedValue(true);
+  it('should logout and navigate to login', async () => {
+    const navigateSpy = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
 
-      await component.logout();
+    await component.logout();
 
-      expect(
-        logoutMock
-      ).toHaveBeenCalledOnce();
+    expect(logoutMock).toHaveBeenCalledOnce();
 
-      expect(
-        navigateSpy
-      ).toHaveBeenCalledWith(
-        '/auth/login'
-      );
-    }
-  );
+    expect(navigateSpy).toHaveBeenCalledWith('/auth/login');
+  });
 });

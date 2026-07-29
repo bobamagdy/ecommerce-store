@@ -1,14 +1,8 @@
 /// <reference types="node" />
 
-import {
-  defineConfig,
-  devices
-} from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
-const isCi =
-  Boolean(
-    process.env['CI']
-  );
+const isCi = Boolean(process.env['CI']);
 
 export default defineConfig({
   testDir: './e2e',
@@ -17,39 +11,29 @@ export default defineConfig({
 
   forbidOnly: isCi,
 
-  retries: isCi
-    ? 2
-    : 0,
+  retries: isCi ? 2 : 0,
 
-  workers: isCi
-    ? 1
-    : undefined,
+  workers: isCi ? 1 : undefined,
 
   reporter: [
-    [
-      'list'
-    ],
+    ['list'],
 
     [
       'html',
       {
-        open: 'never'
-      }
-    ]
+        open: 'never',
+      },
+    ],
   ],
 
   use: {
-    baseURL:
-      'http://127.0.0.1:4200',
+    baseURL: 'http://127.0.0.1:4200',
 
-    trace:
-      'on-first-retry',
+    trace: 'on-first-retry',
 
-    screenshot:
-      'only-on-failure',
+    screenshot: 'only-on-failure',
 
-    video:
-      'retain-on-failure'
+    video: 'retain-on-failure',
   },
 
   projects: [
@@ -57,30 +41,22 @@ export default defineConfig({
       name: 'chromium',
 
       use: {
-        ...devices[
-          'Desktop Chrome'
-        ]
-      }
-    }
+        ...devices['Desktop Chrome'],
+      },
+    },
   ],
 
   webServer: {
-    command:
-      'npm run start -- --host 127.0.0.1 --port 4200',
+    command: 'npm run start -- --host 127.0.0.1 --port 4200',
 
-    url:
-      'http://127.0.0.1:4200',
+    url: 'http://127.0.0.1:4200',
 
-    reuseExistingServer:
-      !isCi,
+    reuseExistingServer: !isCi,
 
-    timeout:
-      120_000,
+    timeout: 120_000,
 
-    stdout:
-      'ignore',
+    stdout: 'ignore',
 
-    stderr:
-      'pipe'
-  }
+    stderr: 'pipe',
+  },
 });

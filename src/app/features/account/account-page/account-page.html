@@ -1,23 +1,14 @@
 <main class="account-page">
-
   <header class="account-heading">
     <p>MY ACCOUNT</p>
 
-    <h1>
-      Welcome Back
-    </h1>
+    <h1>Welcome Back</h1>
 
-    <span>
-      Manage your orders, wishlist and account settings.
-    </span>
+    <span> Manage your orders, wishlist and account settings. </span>
   </header>
 
   <section class="account-grid">
-
-    <a
-      routerLink="/account/orders"
-      class="account-card"
-    >
+    <a routerLink="/account/orders" class="account-card">
       <span class="card-icon">
         <i class="pi pi-box"></i>
       </span>
@@ -25,18 +16,13 @@
       <div>
         <h2>My Orders</h2>
 
-        <p>
-          View order history and track deliveries.
-        </p>
+        <p>View order history and track deliveries.</p>
       </div>
 
       <i class="pi pi-arrow-right arrow"></i>
     </a>
 
-    <a
-      routerLink="/wishlist"
-      class="account-card"
-    >
+    <a routerLink="/wishlist" class="account-card">
       <span class="card-icon">
         <i class="pi pi-heart"></i>
       </span>
@@ -44,9 +30,7 @@
       <div>
         <h2>Wishlist</h2>
 
-        <p>
-          View the products you saved for later.
-        </p>
+        <p>View the products you saved for later.</p>
       </div>
 
       <i class="pi pi-arrow-right arrow"></i>
@@ -60,9 +44,7 @@
       <div>
         <h2>Saved Addresses</h2>
 
-        <p>
-          Address management will connect to the API later.
-        </p>
+        <p>Address management will connect to the API later.</p>
       </div>
     </article>
 
@@ -74,25 +56,14 @@
       <div>
         <h2>Profile Details</h2>
 
-        <p>
-          Profile management will connect to the API later.
-        </p>
+        <p>Profile management will connect to the API later.</p>
       </div>
     </article>
-
   </section>
 
-  <button
-    type="button"
-    pButton
-    class="logout-button"
-    (click)="logout()"
-  >
+  <button type="button" pButton class="logout-button" (click)="logout()">
     <i class="pi pi-sign-out"></i>
 
-    <span>
-      Sign Out
-    </span>
+    <span> Sign Out </span>
   </button>
-
 </main>

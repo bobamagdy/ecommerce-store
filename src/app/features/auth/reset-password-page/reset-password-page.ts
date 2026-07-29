@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  signal
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 
 import {
   form,
@@ -12,20 +7,14 @@ import {
   minLength,
   pattern,
   required,
-  validate
+  validate,
 } from '@angular/forms/signals';
 
-import {
-  RouterLink
-} from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import {
-  ButtonModule
-} from 'primeng/button';
+import { ButtonModule } from 'primeng/button';
 
-import {
-  InputTextModule
-} from 'primeng/inputtext';
+import { InputTextModule } from 'primeng/inputtext';
 
 interface ResetPasswordFormModel {
   password: string;
@@ -33,180 +22,113 @@ interface ResetPasswordFormModel {
 }
 
 @Component({
-  selector:
-    'app-reset-password-page',
+  selector: 'app-reset-password-page',
 
-  imports: [
-    FormField,
-    FormRoot,
-    RouterLink,
-    ButtonModule,
-    InputTextModule
-  ],
+  imports: [FormField, FormRoot, RouterLink, ButtonModule, InputTextModule],
 
-  templateUrl:
-    './reset-password-page.html',
+  templateUrl: './reset-password-page.html',
 
-  styleUrl:
-    '../auth-recovery.scss',
+  styleUrl: '../auth-recovery.scss',
 
-  changeDetection:
-    ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResetPasswordPage {
-  readonly token =
-    input.required<string>();
+  readonly token = input.required<string>();
 
-  readonly passwordVisible =
-    signal(false);
+  readonly passwordVisible = signal(false);
 
-  readonly confirmPasswordVisible =
-    signal(false);
+  readonly confirmPasswordVisible = signal(false);
 
-  readonly passwordChanged =
-    signal(false);
+  readonly passwordChanged = signal(false);
 
-  readonly resetPasswordModel =
-    signal<ResetPasswordFormModel>({
-      password: '',
-      confirmPassword: ''
-    });
+  readonly resetPasswordModel = signal<ResetPasswordFormModel>({
+    password: '',
+    confirmPassword: '',
+  });
 
-  readonly resetPasswordForm =
-    form(
-      this.resetPasswordModel,
+  readonly resetPasswordForm = form(
+    this.resetPasswordModel,
 
-      (schemaPath) => {
-        required(
-          schemaPath.password,
-          {
-            message:
-              'Password is required.'
+    (schemaPath) => {
+      required(schemaPath.password, {
+        message: 'Password is required.',
+      });
+
+      minLength(schemaPath.password, 8, {
+        message: 'Password must contain at least 8 characters.',
+
+        when: ({ value }) => value().length > 0,
+      });
+
+      pattern(schemaPath.password, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/, {
+        message: 'Include uppercase, lowercase and a number.',
+
+        when: ({ value }) => value().length >= 8,
+      });
+
+      required(schemaPath.confirmPassword, {
+        message: 'Confirm your password.',
+      });
+
+      validate(
+        schemaPath.confirmPassword,
+
+        ({ value, valueOf }) => {
+          const confirmPassword = value();
+
+          if (!confirmPassword) {
+            return null;
           }
-        );
 
-        minLength(
-          schemaPath.password,
-          8,
-          {
-            message:
-              'Password must contain at least 8 characters.',
+          const password = valueOf(schemaPath.password);
 
-            when: ({ value }) =>
-              value().length > 0
+          if (password === confirmPassword) {
+            return null;
           }
-        );
 
-        pattern(
-          schemaPath.password,
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-          {
-            message:
-              'Include uppercase, lowercase and a number.',
+          return {
+            kind: 'passwordMismatch',
 
-            when: ({ value }) =>
-              value().length >= 8
-          }
-        );
+            message: 'Passwords do not match.',
+          };
+        },
+      );
+    },
 
-        required(
-          schemaPath.confirmPassword,
-          {
-            message:
-              'Confirm your password.'
-          }
-        );
+    {
+      submission: {
+        action: async (field) => {
+          const request = {
+            token: this.token(),
 
-        validate(
-          schemaPath.confirmPassword,
+            password: field().value().password,
 
-          ({
-            value,
-            valueOf
-          }) => {
-            const confirmPassword =
-              value();
+            confirmPassword: field().value().confirmPassword,
+          };
 
-            if (!confirmPassword) {
-              return null;
-            }
+          /*
+           * Temporary frontend behavior.
+           *
+           * This will be replaced by:
+           * POST /api/auth/reset-password
+           */
+          console.log('Reset password request:', request);
 
-            const password =
-              valueOf(
-                schemaPath.password
-              );
+          this.passwordChanged.set(true);
+        },
 
-            if (
-              password ===
-              confirmPassword
-            ) {
-              return null;
-            }
-
-            return {
-              kind:
-                'passwordMismatch',
-
-              message:
-                'Passwords do not match.'
-            };
-          }
-        );
+        onInvalid: (field) => {
+          field().errorSummary()[0]?.fieldTree().focusBoundControl();
+        },
       },
-
-      {
-        submission: {
-          action: async (field) => {
-            const request = {
-              token: this.token(),
-
-              password:
-                field()
-                  .value()
-                  .password,
-
-              confirmPassword:
-                field()
-                  .value()
-                  .confirmPassword
-            };
-
-            /*
-             * Temporary frontend behavior.
-             *
-             * This will be replaced by:
-             * POST /api/auth/reset-password
-             */
-            console.log(
-              'Reset password request:',
-              request
-            );
-
-            this.passwordChanged.set(
-              true
-            );
-          },
-
-          onInvalid: (field) => {
-            field()
-              .errorSummary()[0]
-              ?.fieldTree()
-              .focusBoundControl();
-          }
-        }
-      }
-    );
+    },
+  );
 
   togglePasswordVisibility(): void {
-    this.passwordVisible.update(
-      (visible) => !visible
-    );
+    this.passwordVisible.update((visible) => !visible);
   }
 
-  toggleConfirmPasswordVisibility():
-    void {
-    this.confirmPasswordVisible.update(
-      (visible) => !visible
-    );
+  toggleConfirmPasswordVisibility(): void {
+    this.confirmPasswordVisible.update((visible) => !visible);
   }
 }

@@ -5,9 +5,7 @@ import { authGuard } from './core/guards/auth-guard/auth-guard';
 import { guestGuard } from './core/guards/guest-guard/guest-guard-guard';
 
 import { pendingChangesGuard } from './core/guards/pending-changes-guard/pending-changes-guard-guard';
-import {
-  ADMIN_ROUTES
-} from './features/admin/admin.routes';
+import { ADMIN_ROUTES } from './features/admin/admin.routes';
 export const routes: Routes = [
   /*
    * Legacy authentication URLs.
@@ -98,24 +96,16 @@ export const routes: Routes = [
       },
     ],
   },
-{
-  path: 'admin',
+  {
+    path: 'admin',
 
-  canActivate: [
-    authGuard
-  ],
+    canActivate: [authGuard],
 
-  loadComponent: () =>
-    import(
-      './features/admin/admin-layout/admin-layout'
-    ).then(
-      ({ AdminLayout }) =>
-        AdminLayout
-    ),
+    loadComponent: () =>
+      import('./features/admin/admin-layout/admin-layout').then(({ AdminLayout }) => AdminLayout),
 
-  children:
-    ADMIN_ROUTES
-},
+    children: ADMIN_ROUTES,
+  },
   /*
    * Store Area.
    */

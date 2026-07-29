@@ -1,30 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  linkedSignal
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 
-import {
-  takeUntilDestroyed,
-  toObservable,
-  toSignal
-} from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterLinkActive
-} from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  skip
-} from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, skip } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,37 +15,25 @@ import { WishlistService } from '../../services/wishlist/wishlist';
 @Component({
   selector: 'app-store-header',
 
-  imports: [
-    ButtonModule,
-    InputTextModule,
-    RouterLink,
-    RouterLinkActive
-  ],
+  imports: [ButtonModule, InputTextModule, RouterLink, RouterLinkActive],
 
   templateUrl: './store-header.html',
   styleUrl: './store-header.scss',
 
-  changeDetection:
-    ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreHeader {
-  private readonly cartService =
-    inject(CartService);
+  private readonly cartService = inject(CartService);
 
-  private readonly wishlistService =
-    inject(WishlistService);
+  private readonly wishlistService = inject(WishlistService);
 
-  private readonly router =
-    inject(Router);
+  private readonly router = inject(Router);
 
-  private readonly route =
-    inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
-  readonly wishlistCount =
-    this.wishlistService.totalItems;
+  readonly wishlistCount = this.wishlistService.totalItems;
 
-  readonly cartCount =
-    this.cartService.totalQuantity;
+  readonly cartCount = this.cartService.totalQuantity;
 
   /*
    * نحول queryParamMap من Observable إلى Signal.
@@ -73,25 +41,14 @@ export class StoreHeader {
    * initialValue تمنع وجود undefined
    * قبل أول قيمة من الـRouter.
    */
-  private readonly queryParamMap =
-    toSignal(
-      this.route.queryParamMap,
-      {
-        initialValue:
-          this.route.snapshot.queryParamMap
-      }
-    );
+  private readonly queryParamMap = toSignal(this.route.queryParamMap, {
+    initialValue: this.route.snapshot.queryParamMap,
+  });
 
   /*
    * قيمة البحث الموجودة حاليًا داخل الرابط.
    */
-  private readonly routeSearchQuery =
-    computed(
-      () =>
-        this.queryParamMap()
-          .get('q')
-          ?.trim() ?? ''
-    );
+  private readonly routeSearchQuery = computed(() => this.queryParamMap().get('q')?.trim() ?? '');
 
   /*
    * linkedSignal:
@@ -99,10 +56,7 @@ export class StoreHeader {
    * تتزامن مع قيمة q الموجودة في الرابط،
    * لكنها تظل Writable أثناء الكتابة.
    */
-  readonly searchQuery =
-    linkedSignal(
-      () => this.routeSearchQuery()
-    );
+  readonly searchQuery = linkedSignal(() => this.routeSearchQuery());
 
   constructor() {
     /*
@@ -127,59 +81,37 @@ export class StoreHeader {
 
         skip(1),
 
-        takeUntilDestroyed()
+        takeUntilDestroyed(),
       )
       .subscribe((query) => {
-        this.navigateToSearch(
-          query,
-          true
-        );
+        this.navigateToSearch(query, true);
       });
   }
 
-  updateSearchQuery(
-    event: Event
-  ): void {
-    const inputElement =
-      event.target as HTMLInputElement;
+  updateSearchQuery(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
 
-    this.searchQuery.set(
-      inputElement.value
-    );
+    this.searchQuery.set(inputElement.value);
   }
 
-  submitSearch(
-    event: SubmitEvent
-  ): void {
+  submitSearch(event: SubmitEvent): void {
     event.preventDefault();
 
-    this.navigateToSearch(
-      this.searchQuery(),
-      false
-    );
+    this.navigateToSearch(this.searchQuery(), false);
   }
 
   clearSearch(): void {
     this.searchQuery.set('');
 
-    this.navigateToSearch(
-      '',
-      false
-    );
+    this.navigateToSearch('', false);
   }
 
-  private navigateToSearch(
-    query: string,
-    replaceUrl: boolean
-  ): void {
-    const normalizedQuery =
-      query.trim();
+  private navigateToSearch(query: string, replaceUrl: boolean): void {
+    const normalizedQuery = query.trim();
 
-    const currentPath =
-      this.router.url.split('?')[0];
+    const currentPath = this.router.url.split('?')[0];
 
-    const isProductsPage =
-      currentPath === '/products';
+    const isProductsPage = currentPath === '/products';
 
     /*
      * لو إحنا بالفعل داخل Products:
@@ -188,23 +120,14 @@ export class StoreHeader {
      * لو جايين من صفحة أخرى:
      * نبدأ Search جديدة بدون فلاتر قديمة.
      */
-    void this.router.navigate(
-      ['/products'],
-      {
-        queryParams: {
-          q:
-            normalizedQuery.length > 0
-              ? normalizedQuery
-              : null
-        },
+    void this.router.navigate(['/products'], {
+      queryParams: {
+        q: normalizedQuery.length > 0 ? normalizedQuery : null,
+      },
 
-        queryParamsHandling:
-          isProductsPage
-            ? 'merge'
-            : undefined,
+      queryParamsHandling: isProductsPage ? 'merge' : undefined,
 
-        replaceUrl
-      }
-    );
+      replaceUrl,
+    });
   }
 }

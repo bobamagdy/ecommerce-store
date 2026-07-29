@@ -1,7 +1,4 @@
-import {
-  Component,
-  signal
-} from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { RouterLink } from '@angular/router';
 
@@ -11,14 +8,10 @@ import { InputTextModule } from 'primeng/inputtext';
 @Component({
   selector: 'app-store-footer',
 
-  imports: [
-    RouterLink,
-    ButtonModule,
-    InputTextModule
-  ],
+  imports: [RouterLink, ButtonModule, InputTextModule],
 
   templateUrl: './store-footer.html',
-  styleUrl: './store-footer.scss'
+  styleUrl: './store-footer.scss',
 })
 export class StoreFooter {
   readonly currentYear = new Date().getFullYear();
@@ -29,9 +22,7 @@ export class StoreFooter {
     const email = emailInput.value.trim();
 
     if (!email) {
-      this.subscriptionMessage.set(
-        'Please enter your email address.'
-      );
+      this.subscriptionMessage.set('Please enter your email address.');
 
       emailInput.focus();
 
@@ -39,18 +30,14 @@ export class StoreFooter {
     }
 
     if (!emailInput.validity.valid) {
-      this.subscriptionMessage.set(
-        'Please enter a valid email address.'
-      );
+      this.subscriptionMessage.set('Please enter a valid email address.');
 
       emailInput.focus();
 
       return;
     }
 
-    this.subscriptionMessage.set(
-      'Thank you for subscribing!'
-    );
+    this.subscriptionMessage.set('Thank you for subscribing!');
 
     emailInput.value = '';
   }

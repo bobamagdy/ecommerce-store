@@ -148,12 +148,7 @@
   overflow: hidden;
   border: 1px solid #e5e7eb;
   border-radius: 11px;
-  background:
-    linear-gradient(
-      145deg,
-      #faf7ff,
-      #ffffff
-    );
+  background: linear-gradient(145deg, #faf7ff, #ffffff);
 }
 
 .product-image img {
@@ -455,13 +450,7 @@
   flex-direction: column;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
-  background:
-    radial-gradient(
-      circle at center,
-      rgb(124 58 237 / 8%),
-      transparent 38%
-    ),
-    #ffffff;
+  background: radial-gradient(circle at center, rgb(124 58 237 / 8%), transparent 38%), #ffffff;
   text-align: center;
 }
 

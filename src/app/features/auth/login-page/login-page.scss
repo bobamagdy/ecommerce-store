@@ -16,32 +16,17 @@
   overflow: hidden;
 
   background:
-    radial-gradient(
-      circle at 15% 20%,
-      rgb(124 58 237 / 12%),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 90% 75%,
-      rgb(91 33 182 / 10%),
-      transparent 32%
-    ),
-    #f8fafc;
+    radial-gradient(circle at 15% 20%, rgb(124 58 237 / 12%), transparent 30%),
+    radial-gradient(circle at 90% 75%, rgb(91 33 182 / 10%), transparent 32%), #f8fafc;
 }
 
 /* Main card */
 
 .auth-card {
   width: min(100%, 1080px);
-  height: min(
-    650px,
-    calc(100dvh - 32px)
-  );
+  height: min(650px, calc(100dvh - 32px));
 
-  min-height: min(
-    540px,
-    calc(100dvh - 32px)
-  );
+  min-height: min(540px, calc(100dvh - 32px));
 
   display: grid;
 
@@ -56,9 +41,7 @@
 
   background-color: #ffffff;
 
-  box-shadow:
-    0 25px 70px
-    rgb(76 29 149 / 13%);
+  box-shadow: 0 25px 70px rgb(76 29 149 / 13%);
 }
 
 /* Left section */
@@ -78,12 +61,7 @@
 
   color: #ffffff;
 
-  background:
-    linear-gradient(
-      145deg,
-      #5b21b6,
-      #7c3aed
-    );
+  background: linear-gradient(145deg, #5b21b6, #7c3aed);
 }
 
 .auth-logo {
@@ -111,13 +89,11 @@
   display: grid;
   place-items: center;
 
-  border: 1px solid
-    rgb(255 255 255 / 30%);
+  border: 1px solid rgb(255 255 255 / 30%);
 
   border-radius: 11px;
 
-  background-color:
-    rgb(255 255 255 / 15%);
+  background-color: rgb(255 255 255 / 15%);
 }
 
 .auth-logo strong {
@@ -144,8 +120,7 @@
 .showcase-content h2 {
   margin: 0;
 
-  font-size:
-    clamp(36px, 3.6vw, 50px);
+  font-size: clamp(36px, 3.6vw, 50px);
 
   line-height: 1.08;
   letter-spacing: -2px;
@@ -190,8 +165,7 @@
 
   color: #ffffff;
 
-  background-color:
-    rgb(255 255 255 / 15%);
+  background-color: rgb(255 255 255 / 15%);
 }
 
 .showcase-feature > span {
@@ -215,8 +189,7 @@
 .decorative-circle {
   position: absolute;
 
-  border: 1px solid
-    rgb(255 255 255 / 15%);
+  border: 1px solid rgb(255 255 255 / 15%);
 
   border-radius: 50%;
 
@@ -245,9 +218,7 @@
   min-width: 0;
   min-height: 0;
 
-  padding:
-    clamp(28px, 5vh, 52px)
-    clamp(38px, 5vw, 65px);
+  padding: clamp(28px, 5vh, 52px) clamp(38px, 5vw, 65px);
 
   display: flex;
   justify-content: center;
@@ -333,9 +304,7 @@
 .input-wrapper input:focus {
   border-color: #7c3aed;
 
-  box-shadow:
-    0 0 0 3px
-    rgb(124 58 237 / 12%);
+  box-shadow: 0 0 0 3px rgb(124 58 237 / 12%);
 }
 
 .input-wrapper.invalid input {
@@ -343,9 +312,7 @@
 }
 
 .input-wrapper.invalid input:focus {
-  box-shadow:
-    0 0 0 3px
-    rgb(220 38 38 / 10%);
+  box-shadow: 0 0 0 3px rgb(220 38 38 / 10%);
 }
 
 .field-icon {
@@ -482,18 +449,14 @@
     background-color 150ms ease;
 }
 
-.checkbox-label
-input:checked
-+ .custom-checkbox {
+.checkbox-label input:checked + .custom-checkbox {
   border-color: #6d28d9;
 
   color: #ffffff;
   background-color: #6d28d9;
 }
 
-.checkbox-label
-input:focus-visible
-+ .custom-checkbox {
+.checkbox-label input:focus-visible + .custom-checkbox {
   outline: 2px solid #7c3aed;
   outline-offset: 2px;
 }
@@ -583,11 +546,7 @@ input:focus-visible
 
 /* Short desktop screens */
 
-@media (
-  min-width: 851px
-) and (
-  max-height: 620px
-) {
+@media (min-width: 851px) and (max-height: 620px) {
   .auth-page {
     padding: 8px 20px;
   }
@@ -616,8 +575,7 @@ input:focus-visible
   }
 
   .showcase-content h2 {
-    font-size:
-      clamp(31px, 3.2vw, 42px);
+    font-size: clamp(31px, 3.2vw, 42px);
   }
 
   .showcase-description {

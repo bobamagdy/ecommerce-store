@@ -1,57 +1,32 @@
 <main class="wishlist-page">
-
   <!-- Breadcrumb -->
 
-  <nav
-    class="breadcrumb"
-    aria-label="Breadcrumb"
-  >
-    <a routerLink="/">
-      Home
-    </a>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a routerLink="/"> Home </a>
 
-    <i
-      class="pi pi-chevron-right"
-      aria-hidden="true"
-    ></i>
+    <i class="pi pi-chevron-right" aria-hidden="true"></i>
 
-    <span aria-current="page">
-      Wishlist
-    </span>
+    <span aria-current="page"> Wishlist </span>
   </nav>
 
   <!-- Heading -->
 
   <header class="page-heading">
-
     <div class="heading-content">
+      <p class="section-label">YOUR FAVORITES</p>
 
-      <p class="section-label">
-        YOUR FAVORITES
-      </p>
-
-      <h1>
-        My Wishlist
-      </h1>
+      <h1>My Wishlist</h1>
 
       <p class="page-description">
-
         @if (wishlistCount() === 0) {
-
           You have no saved products yet.
-
         } @else if (wishlistCount() === 1) {
-
           You have
 
-          <strong>
-            1
-          </strong>
+          <strong> 1 </strong>
 
           favorite product.
-
         } @else {
-
           You have
 
           <strong>
@@ -59,117 +34,55 @@
           </strong>
 
           favorite products.
-
         }
-
       </p>
-
     </div>
 
     @if (wishlistCount() > 0) {
+      <button type="button" class="clear-wishlist-button" (click)="clearWishlist()">
+        <i class="pi pi-trash" aria-hidden="true"></i>
 
-      <button
-        type="button"
-        class="clear-wishlist-button"
-        (click)="clearWishlist()"
-      >
-        <i
-          class="pi pi-trash"
-          aria-hidden="true"
-        ></i>
-
-        <span>
-          Clear Wishlist
-        </span>
+        <span> Clear Wishlist </span>
       </button>
-
     }
-
   </header>
 
   <!-- Wishlist products -->
 
   @if (wishlistCount() > 0) {
-
-    <section
-      class="wishlist-grid"
-      aria-label="Favorite products"
-    >
-
-      @for (
-        product of wishlistProducts();
-        track product.id
-      ) {
-
+    <section class="wishlist-grid" aria-label="Favorite products">
+      @for (product of wishlistProducts(); track product.id) {
         <app-product-card
           [product]="product"
           [favorite]="true"
-          [quantity]="
-            getProductQuantity(product.id)
-          "
-          (favoriteChange)="
-            setFavorite(
-              product.id,
-              $event
-            )
-          "
-          (quantityChange)="
-            setProductQuantity(
-              product,
-              $event
-            )
-          "
+          [quantity]="getProductQuantity(product.id)"
+          (favoriteChange)="setFavorite(product.id, $event)"
+          (quantityChange)="setProductQuantity(product, $event)"
         />
-
       }
-
     </section>
-
   } @else {
-
     <!-- Empty state -->
 
     <section class="empty-wishlist">
-
-      <div
-        class="empty-icon"
-        aria-hidden="true"
-      >
+      <div class="empty-icon" aria-hidden="true">
         <i class="pi pi-heart"></i>
       </div>
 
-      <p class="empty-label">
-        YOUR WISHLIST
-      </p>
+      <p class="empty-label">YOUR WISHLIST</p>
 
-      <h2>
-        Your wishlist is empty
-      </h2>
+      <h2>Your wishlist is empty</h2>
 
       <p class="empty-description">
-        Save products you love by pressing
-        the heart icon. You can return here
-        later to compare them or add them
-        to your cart.
+        Save products you love by pressing the heart icon. You can return here later to compare them
+        or add them to your cart.
       </p>
 
-      <a
-        routerLink="/products"
-        pButton
-        class="browse-products-button"
-      >
-        <i
-          class="pi pi-shopping-bag"
-          aria-hidden="true"
-        ></i>
+      <a routerLink="/products" pButton class="browse-products-button">
+        <i class="pi pi-shopping-bag" aria-hidden="true"></i>
 
-        <span>
-          Browse Products
-        </span>
+        <span> Browse Products </span>
       </a>
-
     </section>
-
   }
-
 </main>

@@ -1,32 +1,17 @@
 <main class="admin-page">
-
   <header class="page-header">
-
     <div>
-      <p>
-        ORDER MANAGEMENT
-      </p>
+      <p>ORDER MANAGEMENT</p>
 
-      <h1>
-        Orders
-      </h1>
+      <h1>Orders</h1>
 
-      <span>
-        Search customer orders and
-        update fulfillment status.
-      </span>
+      <span> Search customer orders and update fulfillment status. </span>
     </div>
-
   </header>
 
   <section class="admin-toolbar">
-
     <label class="search-control">
-
-      <i
-        class="pi pi-search"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-search" aria-hidden="true"></i>
 
       <input
         type="search"
@@ -34,7 +19,6 @@
         [value]="searchQuery()"
         (input)="updateSearch($event)"
       />
-
     </label>
 
     <select
@@ -42,45 +26,29 @@
       [value]="selectedStatus()"
       (change)="updateStatusFilter($event)"
     >
-      <option value="all">
-        All statuses
-      </option>
+      <option value="all">All statuses</option>
 
-      @for (
-        status of statusOptions;
-        track status
-      ) {
+      @for (status of statusOptions; track status) {
         <option [value]="status">
           {{ status }}
         </option>
       }
     </select>
-
   </section>
 
   <section class="table-card">
-
     <header class="card-header">
-
-      <h2>
-        Customer Orders
-      </h2>
+      <h2>Customer Orders</h2>
 
       <span>
         {{ filteredOrders().length }}
         orders
       </span>
-
     </header>
 
-    @if (
-      filteredOrders().length > 0
-    ) {
-
+    @if (filteredOrders().length > 0) {
       <div class="table-wrapper">
-
         <table class="data-table">
-
           <thead>
             <tr>
               <th>Order</th>
@@ -93,13 +61,8 @@
           </thead>
 
           <tbody>
-
-            @for (
-              order of filteredOrders();
-              track order.id
-            ) {
+            @for (order of filteredOrders(); track order.id) {
               <tr>
-
                 <td>
                   <strong>
                     {{ order.orderNumber }}
@@ -109,26 +72,19 @@
                 <td>
                   <div>
                     <strong>
-                      {{
-                        order.customer.fullName
-                      }}
+                      {{ order.customer.fullName }}
                     </strong>
 
                     <br />
 
                     <small>
-                      {{
-                        order.customer.email
-                      }}
+                      {{ order.customer.email }}
                     </small>
                   </div>
                 </td>
 
                 <td>
-                  {{
-                    order.createdAt
-                      | date:'medium'
-                  }}
+                  {{ order.createdAt | date: 'medium' }}
                 </td>
 
                 <td>
@@ -137,13 +93,7 @@
 
                 <td>
                   <strong>
-                    {{
-                      order.total
-                        | currency:
-                            'USD':
-                            'symbol':
-                            '1.2-2'
-                    }}
+                    {{ order.total | currency: 'USD' : 'symbol' : '1.2-2' }}
                   </strong>
                 </td>
 
@@ -152,48 +102,26 @@
                     class="status-select"
                     aria-label="Update order status"
                     [value]="order.status"
-                    (change)="
-                      changeOrderStatus(
-                        order.id,
-                        $event
-                      )
-                    "
+                    (change)="changeOrderStatus(order.id, $event)"
                   >
-                    @for (
-                      status of statusOptions;
-                      track status
-                    ) {
-                      <option
-                        [value]="status"
-                      >
+                    @for (status of statusOptions; track status) {
+                      <option [value]="status">
                         {{ status }}
                       </option>
                     }
                   </select>
                 </td>
-
               </tr>
             }
-
           </tbody>
-
         </table>
-
       </div>
-
     } @else {
-
       <div class="empty-table">
-        <i
-          class="pi pi-receipt"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-receipt" aria-hidden="true"></i>
 
         No orders match the selected filters.
       </div>
-
     }
-
   </section>
-
 </main>

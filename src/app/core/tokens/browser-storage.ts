@@ -1,47 +1,34 @@
-import {
-  isPlatformBrowser
-} from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 
-import {
-  inject,
-  InjectionToken,
-  PLATFORM_ID
-} from '@angular/core';
+import { inject, InjectionToken, PLATFORM_ID } from '@angular/core';
 
 function isBrowserPlatform(): boolean {
-  return isPlatformBrowser(
-    inject(PLATFORM_ID)
-  );
+  return isPlatformBrowser(inject(PLATFORM_ID));
 }
 
-export const BROWSER_STORAGE =
-  new InjectionToken<Storage | null>(
-    'Browser Local Storage',
-    {
-      providedIn: 'root',
+export const BROWSER_STORAGE = new InjectionToken<Storage | null>('Browser Local Storage', {
+  providedIn: 'root',
 
-      factory: () => {
-        if (!isBrowserPlatform()) {
-          return null;
-        }
-
-        return localStorage;
-      }
+  factory: () => {
+    if (!isBrowserPlatform()) {
+      return null;
     }
-  );
 
-export const BROWSER_SESSION_STORAGE =
-  new InjectionToken<Storage | null>(
-    'Browser Session Storage',
-    {
-      providedIn: 'root',
+    return localStorage;
+  },
+});
 
-      factory: () => {
-        if (!isBrowserPlatform()) {
-          return null;
-        }
+export const BROWSER_SESSION_STORAGE = new InjectionToken<Storage | null>(
+  'Browser Session Storage',
+  {
+    providedIn: 'root',
 
-        return sessionStorage;
+    factory: () => {
+      if (!isBrowserPlatform()) {
+        return null;
       }
-    }
-  );
+
+      return sessionStorage;
+    },
+  },
+);

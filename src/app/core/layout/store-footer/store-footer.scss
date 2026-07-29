@@ -18,21 +18,14 @@
   border-top: 1px solid #e9d5ff;
   border-bottom: 1px solid #e9d5ff;
 
-  background:
-    linear-gradient(
-      90deg,
-      #faf5ff,
-      #ffffff,
-      #faf5ff
-    );
+  background: linear-gradient(90deg, #faf5ff, #ffffff, #faf5ff);
 }
 
 .features-grid {
   min-height: 95px;
 
   display: grid;
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .feature-item {
@@ -128,12 +121,7 @@
 
   color: #ffffff;
 
-  background:
-    linear-gradient(
-      135deg,
-      #7c3aed,
-      #5b21b6
-    );
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
 }
 
 .logo-icon i {
@@ -352,8 +340,7 @@
 
 @media (max-width: 1150px) {
   .features-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .feature-item:nth-child(2) {
@@ -365,8 +352,7 @@
   }
 
   .footer-grid {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .newsletter {
@@ -399,8 +385,7 @@
   }
 
   .footer-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .footer-brand,

@@ -1,36 +1,17 @@
-import {
-  Component,
-  DebugElement,
-  provideZonelessChangeDetection
-} from '@angular/core';
+import { Component, DebugElement, provideZonelessChangeDetection } from '@angular/core';
 
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  By
-} from '@angular/platform-browser';
+import { By } from '@angular/platform-browser';
 
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import {
-  ImageFallback
-} from './image-fallback';
+import { ImageFallback } from './image-fallback';
 
 @Component({
-  selector:
-    'app-image-fallback-test-host',
+  selector: 'app-image-fallback-test-host',
 
-  imports: [
-    ImageFallback
-  ],
+  imports: [ImageFallback],
 
   template: `
     <img
@@ -41,207 +22,112 @@ import {
       alt="Test product"
       appImageFallback="/images/product-placeholder.svg"
     />
-  `
+  `,
 })
 class ImageFallbackTestHost {}
 
 describe('ImageFallback', () => {
-  let fixture:
-    ComponentFixture<ImageFallbackTestHost>;
+  let fixture: ComponentFixture<ImageFallbackTestHost>;
 
-  let image:
-    HTMLImageElement;
+  let image: HTMLImageElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        ImageFallbackTestHost
-      ],
+      imports: [ImageFallbackTestHost],
 
-      providers: [
-        provideZonelessChangeDetection()
-      ]
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
 
-    fixture =
-      TestBed.createComponent(
-        ImageFallbackTestHost
-      );
+    fixture = TestBed.createComponent(ImageFallbackTestHost);
 
     fixture.detectChanges();
 
-    image =
-      fixture.nativeElement.querySelector(
-        '#product-image'
-      ) as HTMLImageElement;
+    image = fixture.nativeElement.querySelector('#product-image') as HTMLImageElement;
   });
 
-  it(
-    'should create the test host',
-    () => {
-      expect(
-        fixture.componentInstance
-      ).toBeTruthy();
+  it('should create the test host', () => {
+    expect(fixture.componentInstance).toBeTruthy();
 
-      expect(image).toBeTruthy();
-    }
-  );
+    expect(image).toBeTruthy();
+  });
 
-  it(
-    'should attach the directive to the image',
-    () => {
-      const directiveElement:
-        DebugElement | null =
-          fixture.debugElement.query(
-            By.directive(ImageFallback)
-          );
+  it('should attach the directive to the image', () => {
+    const directiveElement: DebugElement | null = fixture.debugElement.query(
+      By.directive(ImageFallback),
+    );
 
-      expect(
-        directiveElement
-      ).not.toBeNull();
-    }
-  );
+    expect(directiveElement).not.toBeNull();
+  });
 
-  it(
-    'should replace a broken image with the fallback image',
-    () => {
-      image.dispatchEvent(
-        new Event('error')
-      );
+  it('should replace a broken image with the fallback image', () => {
+    image.dispatchEvent(new Event('error'));
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      expect(
-        image.getAttribute('src')
-      ).toBe(
-        '/images/product-placeholder.svg'
-      );
+    expect(image.getAttribute('src')).toBe('/images/product-placeholder.svg');
 
-      expect(
-        image.getAttribute(
-          'data-fallback-active'
-        )
-      ).toBe('true');
+    expect(image.getAttribute('data-fallback-active')).toBe('true');
 
-      expect(
-        image.getAttribute(
-          'data-fallback-failed'
-        )
-      ).toBeNull();
-    }
-  );
+    expect(image.getAttribute('data-fallback-failed')).toBeNull();
+  });
 
-  it(
-    'should remove srcset and sizes when using the fallback',
-    () => {
-      expect(
-        image.getAttribute('srcset')
-      ).not.toBeNull();
+  it('should remove srcset and sizes when using the fallback', () => {
+    expect(image.getAttribute('srcset')).not.toBeNull();
 
-      expect(
-        image.getAttribute('sizes')
-      ).not.toBeNull();
+    expect(image.getAttribute('sizes')).not.toBeNull();
 
-      image.dispatchEvent(
-        new Event('error')
-      );
+    image.dispatchEvent(new Event('error'));
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      expect(
-        image.getAttribute('srcset')
-      ).toBeNull();
+    expect(image.getAttribute('srcset')).toBeNull();
 
-      expect(
-        image.getAttribute('sizes')
-      ).toBeNull();
-    }
-  );
+    expect(image.getAttribute('sizes')).toBeNull();
+  });
 
-  it(
-    'should mark the image when the fallback image also fails',
-    () => {
-      /*
-       * الخطأ الأول:
-       * يتم استخدام صورة الـFallback.
-       */
-      image.dispatchEvent(
-        new Event('error')
-      );
+  it('should mark the image when the fallback image also fails', () => {
+    /*
+     * الخطأ الأول:
+     * يتم استخدام صورة الـFallback.
+     */
+    image.dispatchEvent(new Event('error'));
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      /*
-       * الخطأ الثاني:
-       * صورة الـFallback نفسها فشلت.
-       */
-      image.dispatchEvent(
-        new Event('error')
-      );
+    /*
+     * الخطأ الثاني:
+     * صورة الـFallback نفسها فشلت.
+     */
+    image.dispatchEvent(new Event('error'));
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      expect(
-        image.getAttribute(
-          'data-fallback-active'
-        )
-      ).toBe('true');
+    expect(image.getAttribute('data-fallback-active')).toBe('true');
 
-      expect(
-        image.getAttribute(
-          'data-fallback-failed'
-        )
-      ).toBe('true');
+    expect(image.getAttribute('data-fallback-failed')).toBe('true');
 
-      expect(
-        image.getAttribute('aria-label')
-      ).toBe(
-        'Product image is unavailable'
-      );
-    }
-  );
+    expect(image.getAttribute('aria-label')).toBe('Product image is unavailable');
+  });
 
-  it(
-    'should clear the fallback state when the original image loads',
-    () => {
-      image.dispatchEvent(
-        new Event('error')
-      );
+  it('should clear the fallback state when the original image loads', () => {
+    image.dispatchEvent(new Event('error'));
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      image.dispatchEvent(
-        new Event('error')
-      );
+    image.dispatchEvent(new Event('error'));
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      image.setAttribute(
-        'src',
-        '/images/working-product.jpg'
-      );
+    image.setAttribute('src', '/images/working-product.jpg');
 
-      image.dispatchEvent(
-        new Event('load')
-      );
+    image.dispatchEvent(new Event('load'));
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      expect(
-        image.getAttribute(
-          'data-fallback-active'
-        )
-      ).toBeNull();
+    expect(image.getAttribute('data-fallback-active')).toBeNull();
 
-      expect(
-        image.getAttribute(
-          'data-fallback-failed'
-        )
-      ).toBeNull();
+    expect(image.getAttribute('data-fallback-failed')).toBeNull();
 
-      expect(
-        image.getAttribute('aria-label')
-      ).toBeNull();
-    }
-  );
+    expect(image.getAttribute('aria-label')).toBeNull();
+  });
 });

@@ -1,17 +1,8 @@
-import {
-  Product
-} from './product.model';
+import { Product } from './product.model';
 
-export type PaymentMethod =
-  | 'card'
-  | 'cash';
+export type PaymentMethod = 'card' | 'cash';
 
-export type OrderStatus =
-  | 'processing'
-  | 'confirmed'
-  | 'shipped'
-  | 'delivered'
-  | 'cancelled';
+export type OrderStatus = 'processing' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
 
 export interface CheckoutCustomer {
   fullName: string;

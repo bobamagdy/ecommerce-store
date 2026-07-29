@@ -6,12 +6,9 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-home-page',
 
-  imports: [
-    RouterLink,
-    ButtonModule
-  ],
+  imports: [RouterLink, ButtonModule],
 
   templateUrl: './home-page.html',
-  styleUrl: './home-page.scss'
+  styleUrl: './home-page.scss',
 })
 export class HomePage {}

@@ -1,72 +1,33 @@
 <main class="product-details-page">
-
-  @if (
-    product();
-    as currentProduct
-  ) {
-
+  @if (product(); as currentProduct) {
     <!-- Breadcrumb -->
 
-    <nav
-      class="breadcrumb"
-      aria-label="Breadcrumb"
-    >
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/"> Home </a>
 
-      <a routerLink="/">
-        Home
-      </a>
+      <i class="pi pi-chevron-right" aria-hidden="true"></i>
 
-      <i
-        class="pi pi-chevron-right"
-        aria-hidden="true"
-      ></i>
+      <a routerLink="/products"> Products </a>
 
-      <a routerLink="/products">
-        Products
-      </a>
-
-      <i
-        class="pi pi-chevron-right"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-chevron-right" aria-hidden="true"></i>
 
       <span>
         {{ currentProduct.name }}
       </span>
-
     </nav>
 
     <section class="product-details">
-
       <!-- Product gallery -->
 
       <div class="product-gallery">
-
-        <div
-          class="thumbnails"
-          role="group"
-          aria-label="Product images"
-        >
-
-          @for (
-            image of currentProduct.images;
-            track image;
-            let imageIndex = $index
-          ) {
-
+        <div class="thumbnails" role="group" aria-label="Product images">
+          @for (image of currentProduct.images; track image; let imageIndex = $index) {
             <button
               #thumbnailButton
               type="button"
               class="thumbnail-button"
-              [class.active]="
-                selectedImage() === image
-              "
-              [tabindex]="
-                selectedImageIndex() ===
-                imageIndex
-                  ? 0
-                  : -1
-              "
+              [class.active]="selectedImage() === image"
+              [tabindex]="selectedImageIndex() === imageIndex ? 0 : -1"
               [attr.aria-label]="
                 'Show image ' +
                 (imageIndex + 1) +
@@ -75,49 +36,28 @@
                 ' for ' +
                 currentProduct.name
               "
-              [attr.aria-pressed]="
-                selectedImage() === image
-              "
+              [attr.aria-pressed]="selectedImage() === image"
               (click)="selectImage(image)"
-              (keydown)="
-                handleThumbnailKeydown(
-                  $event,
-                  imageIndex
-                )
-              "
+              (keydown)="handleThumbnailKeydown($event, imageIndex)"
             >
-
               <img
                 [src]="image"
-                [alt]="
-                  currentProduct.name +
-                  ' thumbnail ' +
-                  (imageIndex + 1)
-                "
+                [alt]="currentProduct.name + ' thumbnail ' + (imageIndex + 1)"
                 appImageFallback="/images/product-placeholder.svg"
                 loading="lazy"
                 decoding="async"
                 width="90"
                 height="90"
               />
-
             </button>
-
           }
-
         </div>
 
-        <div
-          class="main-image"
-          aria-live="polite"
-        >
-
+        <div class="main-image" aria-live="polite">
           @if (currentProduct.badge) {
-
             <span class="product-badge">
               {{ currentProduct.badge }}
             </span>
-
           }
 
           <img
@@ -128,15 +68,12 @@
             width="700"
             height="700"
           />
-
         </div>
-
       </div>
 
       <!-- Product information -->
 
       <div class="product-information">
-
         <p class="product-category">
           {{ currentProduct.category }}
         </p>
@@ -148,14 +85,7 @@
         <!-- Rating -->
 
         <div class="rating-row">
-
-          <span
-            class="stars"
-            [attr.aria-label]="
-              currentProduct.rating +
-              ' out of 5 stars'
-            "
-          >
+          <span class="stars" [attr.aria-label]="currentProduct.rating + ' out of 5 stars'">
             ★★★★★
           </span>
 
@@ -167,86 +97,49 @@
             ({{ currentProduct.reviews }}
             reviews)
           </span>
-
         </div>
 
         <!-- Price -->
 
         <div class="price-row">
-
           <strong>
-            {{
-              currentProduct.price
-                | currency:
-                    'USD':
-                    'symbol':
-                    '1.2-2'
-            }}
+            {{ currentProduct.price | currency: 'USD' : 'symbol' : '1.2-2' }}
           </strong>
 
           @if (currentProduct.oldPrice) {
-
             <del>
-              {{
-                currentProduct.oldPrice
-                  | currency:
-                      'USD':
-                      'symbol':
-                      '1.2-2'
-              }}
+              {{ currentProduct.oldPrice | currency: 'USD' : 'symbol' : '1.2-2' }}
             </del>
 
             <span class="discount">
               Save
 
               {{
-                currentProduct.oldPrice -
-                currentProduct.price
-                  | currency:
-                      'USD':
-                      'symbol':
-                      '1.2-2'
+                currentProduct.oldPrice - currentProduct.price
+                  | currency: 'USD' : 'symbol' : '1.2-2'
               }}
             </span>
-
           }
-
         </div>
 
         <!-- Stock -->
 
         @if (currentProduct.stock > 0) {
-
           <div class="stock-row">
-
-            <i
-              class="pi pi-check-circle"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-check-circle" aria-hidden="true"></i>
 
             <span>
               In Stock —
               {{ currentProduct.stock }}
               available
             </span>
-
           </div>
-
         } @else {
-
           <div class="stock-row">
+            <i class="pi pi-times-circle" aria-hidden="true"></i>
 
-            <i
-              class="pi pi-times-circle"
-              aria-hidden="true"
-            ></i>
-
-            <span>
-              Out of Stock
-            </span>
-
+            <span> Out of Stock </span>
           </div>
-
         }
 
         <p class="description">
@@ -256,11 +149,8 @@
         <!-- Metadata -->
 
         <dl class="product-meta">
-
           <div>
-            <dt>
-              Brand
-            </dt>
+            <dt>Brand</dt>
 
             <dd>
               {{ currentProduct.brand }}
@@ -268,9 +158,7 @@
           </div>
 
           <div>
-            <dt>
-              SKU
-            </dt>
+            <dt>SKU</dt>
 
             <dd>
               {{ currentProduct.sku }}
@@ -278,41 +166,28 @@
           </div>
 
           <div>
-            <dt>
-              Category
-            </dt>
+            <dt>Category</dt>
 
             <dd>
               {{ currentProduct.category }}
             </dd>
           </div>
-
         </dl>
 
         <!-- Purchase section -->
 
         <div class="purchase-section">
-
-          @if (
-            currentProduct.stock > 0
-          ) {
-
+          @if (currentProduct.stock > 0) {
             <div class="quantity-control">
-
-              <span class="quantity-label">
-                Quantity
-              </span>
+              <span class="quantity-label"> Quantity </span>
 
               <app-quantity-selector
                 [quantity]="quantity()"
-                (quantityChange)="
-                  setSelectedQuantity($event)
-                "
+                (quantityChange)="setSelectedQuantity($event)"
                 [min]="1"
                 [max]="currentProduct.stock"
                 label="Selected"
               />
-
             </div>
 
             <button
@@ -322,48 +197,23 @@
               [class.added]="isInCart()"
               (click)="saveCartQuantity()"
             >
-
               <i
                 class="pi"
-                [class.pi-shopping-cart]="
-                  !isInCart()
-                "
-                [class.pi-check]="
-                  isInCart()
-                "
+                [class.pi-shopping-cart]="!isInCart()"
+                [class.pi-check]="isInCart()"
                 aria-hidden="true"
               ></i>
 
               <span>
-                {{
-                  isInCart()
-                    ? 'Update Cart'
-                    : 'Add to Cart'
-                }}
+                {{ isInCart() ? 'Update Cart' : 'Add to Cart' }}
               </span>
-
             </button>
-
           } @else {
+            <button type="button" pButton class="add-to-cart-button" disabled>
+              <i class="pi pi-ban" aria-hidden="true"></i>
 
-            <button
-              type="button"
-              pButton
-              class="add-to-cart-button"
-              disabled
-            >
-
-              <i
-                class="pi pi-ban"
-                aria-hidden="true"
-              ></i>
-
-              <span>
-                Out of Stock
-              </span>
-
+              <span> Out of Stock </span>
             </button>
-
           }
 
           <!-- Wishlist -->
@@ -371,129 +221,67 @@
           <button
             type="button"
             class="wishlist-button"
-            [attr.aria-label]="
-              isFavorite()
-                ? 'Remove from wishlist'
-                : 'Add to wishlist'
-            "
-            [attr.aria-pressed]="
-              isFavorite()
-            "
+            [attr.aria-label]="isFavorite() ? 'Remove from wishlist' : 'Add to wishlist'"
+            [attr.aria-pressed]="isFavorite()"
             (click)="toggleFavorite()"
           >
-
             <i
               class="pi"
-              [class.pi-heart]="
-                !isFavorite()
-              "
-              [class.pi-heart-fill]="
-                isFavorite()
-              "
+              [class.pi-heart]="!isFavorite()"
+              [class.pi-heart-fill]="isFavorite()"
               aria-hidden="true"
             ></i>
-
           </button>
-
         </div>
 
         <!-- Service features -->
 
         <div class="service-features">
-
           <div>
-
-            <i
-              class="pi pi-truck"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-truck" aria-hidden="true"></i>
 
             <span>
-              <strong>
-                Free Shipping
-              </strong>
+              <strong> Free Shipping </strong>
 
               Orders over $50
             </span>
-
           </div>
 
           <div>
-
-            <i
-              class="pi pi-refresh"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-refresh" aria-hidden="true"></i>
 
             <span>
-              <strong>
-                30-Day Returns
-              </strong>
+              <strong> 30-Day Returns </strong>
 
               Money-back guarantee
             </span>
-
           </div>
 
           <div>
-
-            <i
-              class="pi pi-shield"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-shield" aria-hidden="true"></i>
 
             <span>
-              <strong>
-                Secure Payment
-              </strong>
+              <strong> Secure Payment </strong>
 
               Protected checkout
             </span>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
-
   } @else {
-
     <section class="not-found">
+      <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
 
-      <i
-        class="pi pi-exclamation-circle"
-        aria-hidden="true"
-      ></i>
+      <h1>Product Not Found</h1>
 
-      <h1>
-        Product Not Found
-      </h1>
+      <p>The product you are looking for does not exist.</p>
 
-      <p>
-        The product you are looking for
-        does not exist.
-      </p>
+      <a routerLink="/products" pButton>
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>
 
-      <a
-        routerLink="/products"
-        pButton
-      >
-
-        <i
-          class="pi pi-arrow-left"
-          aria-hidden="true"
-        ></i>
-
-        <span>
-          Back to Products
-        </span>
-
+        <span> Back to Products </span>
       </a>
-
     </section>
-
   }
-
 </main>

@@ -1,109 +1,74 @@
 import { CurrencyPipe } from '@angular/common';
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 import {
   DEFAULT_MAX_PRICE,
   FilterOption,
   FilterSelectionChange,
-  MINIMUM_PRICE
+  MINIMUM_PRICE,
 } from '../../../core/models/products-page.models';
 
 @Component({
   selector: 'app-products-filters',
 
-  imports: [
-    CurrencyPipe
-  ],
+  imports: [CurrencyPipe],
 
   templateUrl: './products-filters.html',
   styleUrl: './products-filters.scss',
 
-  changeDetection:
-    ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsFilters {
-  readonly categories =
-    input.required<readonly FilterOption[]>();
+  readonly categories = input.required<readonly FilterOption[]>();
 
-  readonly brands =
-    input.required<readonly FilterOption[]>();
+  readonly brands = input.required<readonly FilterOption[]>();
 
-  readonly selectedCategories =
-    input.required<readonly string[]>();
+  readonly selectedCategories = input.required<readonly string[]>();
 
-  readonly selectedBrands =
-    input.required<readonly string[]>();
+  readonly selectedBrands = input.required<readonly string[]>();
 
-  readonly searchQuery =
-    input.required<string>();
+  readonly searchQuery = input.required<string>();
 
-  readonly maxPrice =
-    input.required<number>();
+  readonly maxPrice = input.required<number>();
 
-  readonly hasActiveFilters =
-    input.required<boolean>();
+  readonly hasActiveFilters = input.required<boolean>();
 
-  readonly categoryChange =
-    output<FilterSelectionChange>();
+  readonly categoryChange = output<FilterSelectionChange>();
 
-  readonly brandChange =
-    output<FilterSelectionChange>();
+  readonly brandChange = output<FilterSelectionChange>();
 
-  readonly maxPriceChange =
-    output<number>();
+  readonly maxPriceChange = output<number>();
 
-  readonly clearSearch =
-    output<void>();
+  readonly clearSearch = output<void>();
 
-  readonly resetFilters =
-    output<void>();
+  readonly resetFilters = output<void>();
 
-  readonly minimumPrice =
-    MINIMUM_PRICE;
+  readonly minimumPrice = MINIMUM_PRICE;
 
-  readonly maximumPrice =
-    DEFAULT_MAX_PRICE;
+  readonly maximumPrice = DEFAULT_MAX_PRICE;
 
-  onCategoryChange(
-    categoryName: string,
-    event: Event
-  ): void {
-    const checkbox =
-      event.currentTarget as HTMLInputElement;
+  onCategoryChange(categoryName: string, event: Event): void {
+    const checkbox = event.currentTarget as HTMLInputElement;
 
     this.categoryChange.emit({
       value: categoryName,
-      checked: checkbox.checked
+      checked: checkbox.checked,
     });
   }
 
-  onBrandChange(
-    brandName: string,
-    event: Event
-  ): void {
-    const checkbox =
-      event.currentTarget as HTMLInputElement;
+  onBrandChange(brandName: string, event: Event): void {
+    const checkbox = event.currentTarget as HTMLInputElement;
 
     this.brandChange.emit({
       value: brandName,
-      checked: checkbox.checked
+      checked: checkbox.checked,
     });
   }
 
-  onMaxPriceInput(
-    event: Event
-  ): void {
-    const rangeInput =
-      event.currentTarget as HTMLInputElement;
+  onMaxPriceInput(event: Event): void {
+    const rangeInput = event.currentTarget as HTMLInputElement;
 
-    this.maxPriceChange.emit(
-      Number(rangeInput.value)
-    );
+    this.maxPriceChange.emit(Number(rangeInput.value));
   }
 }

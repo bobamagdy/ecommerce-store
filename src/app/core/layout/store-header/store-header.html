@@ -1,97 +1,49 @@
 <header class="store-header">
-
   <!-- Top bar -->
 
   <div class="top-bar">
-
     <div class="header-container top-bar-content">
-
       <p class="shipping-message">
-
-        <i
-          class="pi pi-truck"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-truck" aria-hidden="true"></i>
 
         Free shipping on orders over $50
-
       </p>
 
       <div class="top-links">
+        <a href="#"> Track Order </a>
 
-        <a href="#">
-          Track Order
-        </a>
+        <span aria-hidden="true"> | </span>
 
-        <span aria-hidden="true">
-          |
-        </span>
+        <a href="#"> Help Center </a>
 
-        <a href="#">
-          Help Center
-        </a>
+        <span aria-hidden="true"> | </span>
 
-        <span aria-hidden="true">
-          |
-        </span>
-
-        <button
-          type="button"
-          class="currency-button"
-        >
+        <button type="button" class="currency-button">
           USD
 
-          <i
-            class="pi pi-chevron-down"
-            aria-hidden="true"
-          ></i>
+          <i class="pi pi-chevron-down" aria-hidden="true"></i>
         </button>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- Main header -->
 
   <div class="main-header">
-
     <div class="header-container main-header-content">
-
       <!-- Logo -->
 
-      <a
-        class="logo"
-        routerLink="/"
-        aria-label="Go to HubShop home"
-      >
-
+      <a class="logo" routerLink="/" aria-label="Go to HubShop home">
         <span class="logo-icon">
-
-          <i
-            class="pi pi-shopping-bag"
-            aria-hidden="true"
-          ></i>
-
+          <i class="pi pi-shopping-bag" aria-hidden="true"></i>
         </span>
 
-        <span class="logo-text">
-
-          Hub<span>Shop</span>
-
-        </span>
-
+        <span class="logo-text"> Hub<span>Shop</span> </span>
       </a>
 
       <!-- Search -->
 
-      <form
-        class="search-box"
-        role="search"
-        (submit)="submitSearch($event)"
-      >
-
+      <form class="search-box" role="search" (submit)="submitSearch($event)">
         <input
           type="search"
           pInputText
@@ -103,51 +55,28 @@
         />
 
         @if (searchQuery().length > 0) {
-
           <button
             type="button"
             class="clear-search-button"
             aria-label="Clear search"
             (click)="clearSearch()"
           >
-            <i
-              class="pi pi-times"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-times" aria-hidden="true"></i>
           </button>
-
         }
 
-        <button
-          type="submit"
-          pButton
-          class="search-button"
-          aria-label="Search"
-        >
-          <i
-            class="pi pi-search"
-            aria-hidden="true"
-          ></i>
+        <button type="submit" pButton class="search-button" aria-label="Search">
+          <i class="pi pi-search" aria-hidden="true"></i>
         </button>
-
       </form>
 
       <!-- Header actions -->
 
       <div class="header-actions">
+        <a class="header-action" routerLink="/auth/login">
+          <i class="pi pi-user" aria-hidden="true"></i>
 
-        <a
-          class="header-action"
-          routerLink="/auth/login"
-        >
-          <i
-            class="pi pi-user"
-            aria-hidden="true"
-          ></i>
-
-          <span class="action-text">
-            Account
-          </span>
+          <span class="action-text"> Account </span>
         </a>
 
         <a
@@ -156,31 +85,17 @@
           routerLinkActive="active"
           ariaCurrentWhenActive="page"
         >
-
           <span class="action-icon">
-
-            <i
-              class="pi pi-heart"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-heart" aria-hidden="true"></i>
 
             @if (wishlistCount() > 0) {
-
-              <span
-                class="count-badge"
-                aria-label="Wishlist items"
-              >
+              <span class="count-badge" aria-label="Wishlist items">
                 {{ wishlistCount() }}
               </span>
-
             }
-
           </span>
 
-          <span class="action-text">
-            Wishlist
-          </span>
-
+          <span class="action-text"> Wishlist </span>
         </a>
 
         <a
@@ -189,54 +104,32 @@
           routerLinkActive="active"
           ariaCurrentWhenActive="page"
         >
-
           <span class="action-icon">
-
-            <i
-              class="pi pi-shopping-cart"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-shopping-cart" aria-hidden="true"></i>
 
             @if (cartCount() > 0) {
-
-              <span
-                class="count-badge"
-                aria-label="Cart items"
-              >
+              <span class="count-badge" aria-label="Cart items">
                 {{ cartCount() }}
               </span>
-
             }
-
           </span>
 
-          <span class="action-text">
-            Cart
-          </span>
-
+          <span class="action-text"> Cart </span>
         </a>
-
       </div>
-
     </div>
-
   </div>
 
   <!-- Navigation -->
 
-  <nav
-    class="main-nav"
-    aria-label="Main navigation"
-  >
-
+  <nav class="main-nav" aria-label="Main navigation">
     <div class="header-container nav-content">
-
       <a
         class="nav-link"
         routerLink="/"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{
-          exact: true
+          exact: true,
         }"
         ariaCurrentWhenActive="page"
       >
@@ -251,33 +144,22 @@
       >
         Shop
 
-        <i
-          class="pi pi-chevron-down"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-chevron-down" aria-hidden="true"></i>
       </a>
 
-      <a
-        class="nav-link categories-link"
-        routerLink="/products"
-      >
+      <a class="nav-link categories-link" routerLink="/products">
         Categories
 
-        <span class="hot-badge">
-          HOT
-        </span>
+        <span class="hot-badge"> HOT </span>
 
-        <i
-          class="pi pi-chevron-down"
-          aria-hidden="true"
-        ></i>
+        <i class="pi pi-chevron-down" aria-hidden="true"></i>
       </a>
 
       <a
         class="nav-link"
         routerLink="/products"
         [queryParams]="{
-          sort: 'price-low'
+          sort: 'price-low',
         }"
       >
         Deals
@@ -287,28 +169,15 @@
         class="nav-link"
         routerLink="/products"
         [queryParams]="{
-          sort: 'newest'
+          sort: 'newest',
         }"
       >
         New Arrivals
       </a>
 
-      <a
-        class="nav-link"
-        href="#"
-      >
-        About
-      </a>
+      <a class="nav-link" href="#"> About </a>
 
-      <a
-        class="nav-link"
-        href="#"
-      >
-        Contact
-      </a>
-
+      <a class="nav-link" href="#"> Contact </a>
     </div>
-
   </nav>
-
 </header>

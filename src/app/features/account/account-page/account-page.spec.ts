@@ -1,54 +1,29 @@
-import {
-  provideZonelessChangeDetection
-} from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  provideRouter,
-  Router
-} from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  AuthService
-} from '../../../core/services/auth/auth';
+import { AuthService } from '../../../core/services/auth/auth';
 
-import {
-  AccountPage
-} from './account-page';
+import { AccountPage } from './account-page';
 
 describe('AccountPage', () => {
-  let component:
-    AccountPage;
+  let component: AccountPage;
 
-  let fixture:
-    ComponentFixture<AccountPage>;
+  let fixture: ComponentFixture<AccountPage>;
 
-  let router:
-    Router;
+  let router: Router;
 
-  const logoutMock =
-    vi.fn();
+  const logoutMock = vi.fn();
 
   beforeEach(async () => {
     logoutMock.mockClear();
 
     await TestBed.configureTestingModule({
-      imports: [
-        AccountPage
-      ],
+      imports: [AccountPage],
 
       providers: [
         provideZonelessChangeDetection(),
@@ -59,23 +34,17 @@ describe('AccountPage', () => {
           provide: AuthService,
 
           useValue: {
-            logout:
-              logoutMock
-          }
-        }
-      ]
+            logout: logoutMock,
+          },
+        },
+      ],
     }).compileComponents();
 
-    router =
-      TestBed.inject(Router);
+    router = TestBed.inject(Router);
 
-    fixture =
-      TestBed.createComponent(
-        AccountPage
-      );
+    fixture = TestBed.createComponent(AccountPage);
 
-    component =
-      fixture.componentInstance;
+    component = fixture.componentInstance;
 
     fixture.detectChanges();
 
@@ -87,62 +56,27 @@ describe('AccountPage', () => {
     TestBed.resetTestingModule();
   });
 
-  it(
-    'should create',
-    () => {
-      expect(
-        component
-      ).toBeTruthy();
-    }
-  );
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-  it(
-    'should display the account heading',
-    () => {
-      const hostElement:
-        HTMLElement =
-          fixture.nativeElement;
+  it('should display the account heading', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
 
-      expect(
-        hostElement.textContent
-      ).toContain(
-        'Welcome Back'
-      );
+    expect(hostElement.textContent).toContain('Welcome Back');
 
-      expect(
-        hostElement.textContent
-      ).toContain(
-        'My Orders'
-      );
+    expect(hostElement.textContent).toContain('My Orders');
 
-      expect(
-        hostElement.textContent
-      ).toContain(
-        'Wishlist'
-      );
-    }
-  );
+    expect(hostElement.textContent).toContain('Wishlist');
+  });
 
-  it(
-    'should logout and navigate to the login page',
-    async () => {
-      const navigateSpy =
-        vi.spyOn(
-          router,
-          'navigateByUrl'
-        ).mockResolvedValue(true);
+  it('should logout and navigate to the login page', async () => {
+    const navigateSpy = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
 
-      await component.logout();
+    await component.logout();
 
-      expect(
-        logoutMock
-      ).toHaveBeenCalledOnce();
+    expect(logoutMock).toHaveBeenCalledOnce();
 
-      expect(
-        navigateSpy
-      ).toHaveBeenCalledWith(
-        '/auth/login'
-      );
-    }
-  );
+    expect(navigateSpy).toHaveBeenCalledWith('/auth/login');
+  });
 });

@@ -1,8 +1,4 @@
-import {
-  Component,
-  inject,
-  signal
-} from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 
 import {
   email,
@@ -13,13 +9,10 @@ import {
   minLength,
   pattern,
   required,
-  validate
+  validate,
 } from '@angular/forms/signals';
 
-import {
-  Router,
-  RouterLink
-} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -44,24 +37,17 @@ interface RegisterRequest {
 @Component({
   selector: 'app-register-page',
 
-  imports: [
-    FormField,
-    FormRoot,
-    RouterLink,
-    ButtonModule,
-    InputTextModule
-  ],
+  imports: [FormField, FormRoot, RouterLink, ButtonModule, InputTextModule],
 
   templateUrl: './register-page.html',
-  styleUrl: './register-page.scss'
+  styleUrl: './register-page.scss',
 })
 export class RegisterPage {
   private readonly router = inject(Router);
 
   readonly passwordVisible = signal(false);
 
-  readonly confirmPasswordVisible =
-    signal(false);
+  readonly confirmPasswordVisible = signal(false);
 
   /*
    * ده مصدر الحقيقة الوحيد لقيم الـForm.
@@ -69,15 +55,14 @@ export class RegisterPage {
    * أي تغيير في الـInputs يحدث هذا الـSignal،
    * وأي تغيير في الـSignal يظهر في الـInputs.
    */
-  readonly registerModel =
-    signal<RegisterFormModel>({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      acceptTerms: false
-    });
+  readonly registerModel = signal<RegisterFormModel>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    acceptTerms: false,
+  });
 
   /*
    * form() تنشئ FieldTree مكتوبة بالـTypeScript
@@ -92,20 +77,17 @@ export class RegisterPage {
        */
 
       required(schemaPath.firstName, {
-        message: 'First name is required.'
+        message: 'First name is required.',
       });
 
       minLength(schemaPath.firstName, 2, {
-        message:
-          'First name must contain at least 2 characters.',
+        message: 'First name must contain at least 2 characters.',
 
-        when: ({ value }) =>
-          value().length > 0
+        when: ({ value }) => value().length > 0,
       });
 
       maxLength(schemaPath.firstName, 50, {
-        message:
-          'First name cannot exceed 50 characters.'
+        message: 'First name cannot exceed 50 characters.',
       });
 
       /*
@@ -113,20 +95,17 @@ export class RegisterPage {
        */
 
       required(schemaPath.lastName, {
-        message: 'Last name is required.'
+        message: 'Last name is required.',
       });
 
       minLength(schemaPath.lastName, 2, {
-        message:
-          'Last name must contain at least 2 characters.',
+        message: 'Last name must contain at least 2 characters.',
 
-        when: ({ value }) =>
-          value().length > 0
+        when: ({ value }) => value().length > 0,
       });
 
       maxLength(schemaPath.lastName, 50, {
-        message:
-          'Last name cannot exceed 50 characters.'
+        message: 'Last name cannot exceed 50 characters.',
       });
 
       /*
@@ -134,11 +113,11 @@ export class RegisterPage {
        */
 
       required(schemaPath.email, {
-        message: 'Email address is required.'
+        message: 'Email address is required.',
       });
 
       email(schemaPath.email, {
-        message: 'Enter a valid email address.'
+        message: 'Enter a valid email address.',
       });
 
       /*
@@ -146,35 +125,27 @@ export class RegisterPage {
        */
 
       required(schemaPath.password, {
-        message: 'Password is required.'
+        message: 'Password is required.',
       });
 
       minLength(schemaPath.password, 8, {
-        message:
-          'Password must contain at least 8 characters.',
+        message: 'Password must contain at least 8 characters.',
 
-        when: ({ value }) =>
-          value().length > 0
+        when: ({ value }) => value().length > 0,
       });
 
-      pattern(
-        schemaPath.password,
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-        {
-          message:
-            'Include uppercase, lowercase and a number.',
+      pattern(schemaPath.password, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/, {
+        message: 'Include uppercase, lowercase and a number.',
 
-          when: ({ value }) =>
-            value().length >= 8
-        }
-      );
+        when: ({ value }) => value().length >= 8,
+      });
 
       /*
        * Confirm Password
        */
 
       required(schemaPath.confirmPassword, {
-        message: 'Confirm your password.'
+        message: 'Confirm your password.',
       });
 
       /*
@@ -198,9 +169,7 @@ export class RegisterPage {
             return null;
           }
 
-          const password = valueOf(
-            schemaPath.password
-          );
+          const password = valueOf(schemaPath.password);
 
           if (confirmPassword === password) {
             return null;
@@ -208,9 +177,9 @@ export class RegisterPage {
 
           return {
             kind: 'passwordMismatch',
-            message: 'Passwords do not match.'
+            message: 'Passwords do not match.',
           };
-        }
+        },
       );
 
       /*
@@ -220,8 +189,7 @@ export class RegisterPage {
        * ولذلك يجب تحديد الـCheckbox.
        */
       required(schemaPath.acceptTerms, {
-        message:
-          'You must accept the terms and conditions.'
+        message: 'You must accept the terms and conditions.',
       });
     },
 
@@ -238,31 +206,21 @@ export class RegisterPage {
            * ولذلك لا نرسلها للـBackend.
            */
           const registerRequest: RegisterRequest = {
-            firstName:
-              formValue.firstName.trim(),
+            firstName: formValue.firstName.trim(),
 
-            lastName:
-              formValue.lastName.trim(),
+            lastName: formValue.lastName.trim(),
 
-            email:
-              formValue.email
-                .trim()
-                .toLowerCase(),
+            email: formValue.email.trim().toLowerCase(),
 
-            password:
-              formValue.password,
+            password: formValue.password,
 
-            confirmPassword:
-              formValue.confirmPassword
+            confirmPassword: formValue.confirmPassword,
           };
 
           /*
            * مؤقتًا لحين ربط .NET API.
            */
-          console.log(
-            'Register request:',
-            registerRequest
-          );
+          console.log('Register request:', registerRequest);
 
           /*
            * بعد التسجيل ننتقل إلى Login.
@@ -270,23 +228,17 @@ export class RegisterPage {
            * لاحقًا مكان console.log سنستدعي
            * POST /api/auth/register.
            */
-          await this.router.navigateByUrl(
-            '/auth/login'
-          );
-        }
-      }
-    }
+          await this.router.navigateByUrl('/auth/login');
+        },
+      },
+    },
   );
 
   togglePasswordVisibility(): void {
-    this.passwordVisible.update(
-      (currentValue) => !currentValue
-    );
+    this.passwordVisible.update((currentValue) => !currentValue);
   }
 
   toggleConfirmPasswordVisibility(): void {
-    this.confirmPasswordVisible.update(
-      (currentValue) => !currentValue
-    );
+    this.confirmPasswordVisible.update((currentValue) => !currentValue);
   }
 }
