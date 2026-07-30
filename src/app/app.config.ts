@@ -3,7 +3,8 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
-
+import { environment } from '../environments/environment';
+import { APP_ENVIRONMENT } from './core/tokens/app-environment.token';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { provideAppHttp } from './core/http/provide-app-http';
 import { providePrimeNG } from 'primeng/config';
@@ -13,6 +14,8 @@ import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: APP_ENVIRONMENT, useValue: environment },
+
     provideBrowserGlobalErrorListeners(),
 
     provideZonelessChangeDetection(),

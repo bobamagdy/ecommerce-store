@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   quality:
-    name: Format, Unit Tests and Build
+    name: Format, Lint, Unit Tests and Build
 
     runs-on: ubuntu-latest
 
@@ -42,6 +42,9 @@ jobs:
 
       - name: Check code formatting
         run: npm run format:check
+
+      - name: Run ESLint
+        run: npm run lint
 
       - name: Run unit tests with coverage
         run: npm run test:coverage
