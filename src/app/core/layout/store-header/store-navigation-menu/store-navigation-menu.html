@@ -1,0 +1,125 @@
+<div class="store-navigation-menu" aria-label="Store navigation menus">
+  <!-- Shop menu trigger -->
+
+  <button
+    #shopOrigin
+    #shopTrigger="ngMenuTrigger"
+    ngMenuTrigger
+    type="button"
+    class="navigation-menu-trigger"
+    data-testid="shop-menu-trigger"
+    [menu]="shopMenu()"
+  >
+    <span>Shop</span>
+
+    <i class="pi pi-chevron-down trigger-arrow" aria-hidden="true"></i>
+  </button>
+
+  <!-- Shop menu overlay -->
+
+  <ng-template
+    [cdkConnectedOverlay]="{
+      origin: shopOrigin,
+      usePopover: 'inline',
+    }"
+    [cdkConnectedOverlayOpen]="shopTrigger.expanded()"
+    [cdkConnectedOverlayPositions]="menuPositions"
+    cdkAttachPopoverAsChild
+    (overlayOutsideClick)="shopTrigger.close()"
+    (detach)="shopTrigger.close()"
+  >
+    <div
+      #shopMenu="ngMenu"
+      ngMenu
+      class="navigation-dropdown"
+      aria-label="Shop options"
+      [wrap]="true"
+      (itemSelected)="onShopItemSelected($event)"
+    >
+      <ng-template ngMenuContent>
+        @for (item of shopItems; track item.value) {
+          <button ngMenuItem type="button" class="navigation-menu-item" [value]="item.value">
+            <span class="menu-item-icon">
+              <i [class]="item.icon" aria-hidden="true"></i>
+            </span>
+
+            <span class="menu-item-content">
+              <strong>
+                {{ item.label }}
+              </strong>
+
+              <small>
+                {{ item.description }}
+              </small>
+            </span>
+
+            <i class="pi pi-angle-right item-arrow" aria-hidden="true"></i>
+          </button>
+        }
+      </ng-template>
+    </div>
+  </ng-template>
+
+  <!-- Categories menu trigger -->
+
+  <button
+    #categoriesOrigin
+    #categoriesTrigger="ngMenuTrigger"
+    ngMenuTrigger
+    type="button"
+    class="navigation-menu-trigger categories-trigger"
+    data-testid="categories-menu-trigger"
+    [menu]="categoriesMenu()"
+  >
+    <span>Categories</span>
+
+    <span class="hot-badge"> HOT </span>
+
+    <i class="pi pi-chevron-down trigger-arrow" aria-hidden="true"></i>
+  </button>
+
+  <!-- Categories menu overlay -->
+
+  <ng-template
+    [cdkConnectedOverlay]="{
+      origin: categoriesOrigin,
+      usePopover: 'inline',
+    }"
+    [cdkConnectedOverlayOpen]="categoriesTrigger.expanded()"
+    [cdkConnectedOverlayPositions]="menuPositions"
+    cdkAttachPopoverAsChild
+    (overlayOutsideClick)="categoriesTrigger.close()"
+    (detach)="categoriesTrigger.close()"
+  >
+    <div
+      #categoriesMenu="ngMenu"
+      ngMenu
+      class="navigation-dropdown"
+      aria-label="Product categories"
+      [wrap]="true"
+      (itemSelected)="onCategoryItemSelected($event)"
+    >
+      <ng-template ngMenuContent>
+        @for (category of categoryItems; track category.value) {
+          <button ngMenuItem type="button" class="navigation-menu-item" [value]="category.value">
+            <span class="menu-item-icon">
+              <i [class]="category.icon" aria-hidden="true"></i>
+            </span>
+
+            <span class="menu-item-content">
+              <strong>
+                {{ category.label }}
+              </strong>
+
+              <small>
+                {{ category.description }}
+              </small>
+            </span>
+
+            <i class="pi pi-angle-right item-arrow" aria-hidden="true"></i>
+          </button>
+        }
+      </ng-template>
+    </div>
+  </ng-template>
+</div>
