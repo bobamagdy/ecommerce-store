@@ -13,3 +13,9 @@ blob-report
 
 # Generated lock file
 package-lock.json
+
+# Local environment configuration
+.env.local
+
+# Generated PrimeUI configuration
+src/app/core/config/primeui-license.generated.ts
