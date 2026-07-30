@@ -1,5 +1,5 @@
 <div class="products-toolbar">
-  <p class="results-count">
+  <p class="results-count" aria-live="polite">
     Showing
 
     <strong>
@@ -16,44 +16,57 @@
   </p>
 
   <div class="toolbar-actions">
-    <label class="sort-control">
-      <span> Sort by: </span>
+    <div class="sort-control">
+      <span>Sort by:</span>
 
-      <select [value]="sortBy()" (change)="onSortChange($event)">
-        <option value="newest">Newest First</option>
+      <app-product-sort-select [value]="sortBy()" (valueChange)="sortChange.emit($event)" />
+    </div>
 
-        <option value="price-low">Price: Low to High</option>
+    <div
+      ngToolbar
+      class="view-buttons"
+      aria-label="Product display controls"
+      orientation="horizontal"
+      [wrap]="true"
+      [value]="selectedViews()"
+      (valueChange)="onSelectedViewsChange($event)"
+    >
+      <span class="view-label" aria-hidden="true"> View: </span>
 
-        <option value="price-high">Price: High to Low</option>
-
-        <option value="rating">Highest Rated</option>
-      </select>
-    </label>
-
-    <div class="view-buttons">
-      <span> View: </span>
-
-      <button
-        type="button"
-        class="view-button"
-        [class.active]="gridView()"
-        [attr.aria-pressed]="gridView()"
-        aria-label="Grid view"
-        (click)="viewChange.emit('grid')"
+      <div
+        ngToolbarWidgetGroup
+        role="radiogroup"
+        class="view-button-group"
+        aria-label="Product view options"
       >
-        <i class="pi pi-th-large" aria-hidden="true"></i>
-      </button>
+        <button
+          #gridWidget="ngToolbarWidget"
+          ngToolbarWidget
+          type="button"
+          role="radio"
+          value="grid"
+          class="view-button"
+          [class.active]="gridWidget.selected()"
+          [attr.aria-checked]="gridWidget.selected()"
+          aria-label="Grid view"
+        >
+          <i class="pi pi-th-large" aria-hidden="true"></i>
+        </button>
 
-      <button
-        type="button"
-        class="view-button"
-        [class.active]="!gridView()"
-        [attr.aria-pressed]="!gridView()"
-        aria-label="List view"
-        (click)="viewChange.emit('list')"
-      >
-        <i class="pi pi-list" aria-hidden="true"></i>
-      </button>
+        <button
+          #listWidget="ngToolbarWidget"
+          ngToolbarWidget
+          type="button"
+          role="radio"
+          value="list"
+          class="view-button"
+          [class.active]="listWidget.selected()"
+          [attr.aria-checked]="listWidget.selected()"
+          aria-label="List view"
+        >
+          <i class="pi pi-list" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

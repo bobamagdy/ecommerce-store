@@ -1,11 +1,18 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Toolbar, ToolbarWidget, ToolbarWidgetGroup } from '@angular/aria/toolbar';
 
-import { ProductsView, SORT_OPTIONS, SortOption } from '../../../core/models/products-page.models';
+import { ChangeDetectionStrategy, Component, input, linkedSignal, output } from '@angular/core';
+
+import { ProductsView, SortOption } from '../../../core/models/products-page.models';
+
+import { ProductSortSelect } from '../product-sort-select/product-sort-select';
 
 @Component({
   selector: 'app-products-toolbar',
 
+  imports: [ProductSortSelect, Toolbar, ToolbarWidget, ToolbarWidgetGroup],
+
   templateUrl: './products-toolbar.html',
+
   styleUrl: './products-toolbar.scss',
 
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,15 +30,21 @@ export class ProductsToolbar {
 
   readonly viewChange = output<ProductsView>();
 
-  readonly gridView = () => this.view() === 'grid';
+  readonly selectedViews = linkedSignal((): ProductsView[] => [this.view()]);
 
-  onSortChange(event: Event): void {
-    const selectElement = event.currentTarget as HTMLSelectElement;
+  onSelectedViewsChange(selectedViews: ProductsView[]): void {
+    const selectedView = selectedViews[0];
 
-    const selectedSort = selectElement.value;
-
-    if (SORT_OPTIONS.includes(selectedSort as SortOption)) {
-      this.sortChange.emit(selectedSort as SortOption);
+    if (!selectedView) {
+      return;
     }
+
+    this.selectedViews.set([selectedView]);
+
+    if (selectedView === this.view()) {
+      return;
+    }
+
+    this.viewChange.emit(selectedView);
   }
 }
