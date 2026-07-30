@@ -166,7 +166,7 @@ export class ProductDetailsPage {
       return;
     }
 
-    let targetIndex: number | null = null;
+    let targetIndex: number;
 
     switch (event.key) {
       case 'ArrowRight':
