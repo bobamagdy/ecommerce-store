@@ -1,5 +1,12 @@
 import { CurrencyPipe } from '@angular/common';
 
+import {
+  AccordionContent,
+  AccordionGroup,
+  AccordionPanel,
+  AccordionTrigger,
+} from '@angular/aria/accordion';
+
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 import {
@@ -12,9 +19,10 @@ import {
 @Component({
   selector: 'app-products-filters',
 
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, AccordionGroup, AccordionTrigger, AccordionPanel, AccordionContent],
 
   templateUrl: './products-filters.html',
+
   styleUrl: './products-filters.scss',
 
   changeDetection: ChangeDetectionStrategy.OnPush,

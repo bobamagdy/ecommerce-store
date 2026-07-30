@@ -67,6 +67,50 @@ describe('ProductsFilters', () => {
     expect(hostElement.textContent).toContain('Sony');
   });
 
+  it('should initially expand the functional filters', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
+
+    const triggers = hostElement.querySelectorAll('.filter-trigger');
+
+    expect(triggers).toHaveLength(3);
+
+    for (const trigger of triggers) {
+      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    }
+  });
+
+  it('should collapse the category filter', async () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
+
+    const categoryTrigger = hostElement.querySelector(
+      '[data-testid="categories-filter-trigger"]',
+    ) as HTMLButtonElement;
+
+    categoryTrigger.click();
+
+    await fixture.whenStable();
+
+    expect(categoryTrigger.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('should reopen the category filter', async () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
+
+    const categoryTrigger = hostElement.querySelector(
+      '[data-testid="categories-filter-trigger"]',
+    ) as HTMLButtonElement;
+
+    categoryTrigger.click();
+
+    await fixture.whenStable();
+
+    categoryTrigger.click();
+
+    await fixture.whenStable();
+
+    expect(categoryTrigger.getAttribute('aria-expanded')).toBe('true');
+  });
+
   it('should emit a category selection', () => {
     let emittedValue: unknown;
 
@@ -86,5 +130,52 @@ describe('ProductsFilters', () => {
       value: 'Electronics',
       checked: true,
     });
+  });
+
+  it('should emit a brand selection', () => {
+    let emittedValue: unknown;
+
+    component.brandChange.subscribe((value) => {
+      emittedValue = value;
+    });
+
+    const checkboxes = fixture.nativeElement.querySelectorAll('input[type="checkbox"]');
+
+    const brandCheckbox = checkboxes[1] as HTMLInputElement;
+
+    brandCheckbox.checked = true;
+
+    brandCheckbox.dispatchEvent(new Event('change'));
+
+    expect(emittedValue).toEqual({
+      value: 'Sony',
+      checked: true,
+    });
+  });
+
+  it('should emit the maximum price', () => {
+    let emittedPrice: number | undefined;
+
+    component.maxPriceChange.subscribe((price) => {
+      emittedPrice = price;
+    });
+
+    const rangeInput = fixture.nativeElement.querySelector(
+      'input[type="range"]',
+    ) as HTMLInputElement;
+
+    rangeInput.value = '350';
+
+    rangeInput.dispatchEvent(new Event('input'));
+
+    expect(emittedPrice).toBe(350);
+  });
+
+  it('should mark unavailable filters as disabled', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
+
+    const unavailableFilters = hostElement.querySelectorAll('.future-filter[aria-disabled="true"]');
+
+    expect(unavailableFilters).toHaveLength(3);
   });
 });
