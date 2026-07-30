@@ -1,18 +1,9 @@
-<aside
-  class="filters-sidebar"
-  aria-label="Product filters"
->
+<aside class="filters-sidebar" aria-label="Product filters">
   <div class="filters-heading">
     <h2>Filters</h2>
 
     @if (hasActiveFilters()) {
-      <button
-        type="button"
-        class="reset-button"
-        (click)="resetFilters.emit()"
-      >
-        Reset
-      </button>
+      <button type="button" class="reset-button" (click)="resetFilters.emit()">Reset</button>
     }
   </div>
 
@@ -27,26 +18,14 @@
           </strong>
         </div>
 
-        <button
-          type="button"
-          aria-label="Clear search"
-          (click)="clearSearch.emit()"
-        >
-          <i
-            class="pi pi-times"
-            aria-hidden="true"
-          ></i>
+        <button type="button" aria-label="Clear search" (click)="clearSearch.emit()">
+          <i class="pi pi-times" aria-hidden="true"></i>
         </button>
       </div>
     </section>
   }
 
-  <div
-    ngAccordionGroup
-    class="filters-accordion"
-    [multiExpandable]="true"
-    [wrap]="true"
-  >
+  <div ngAccordionGroup class="filters-accordion" [multiExpandable]="true" [wrap]="true">
     <!-- Categories -->
 
     <section class="filter-section">
@@ -61,10 +40,7 @@
           [expanded]="true"
         >
           <span class="filter-trigger-label">
-            <i
-              class="pi pi-list"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-list" aria-hidden="true"></i>
 
             Categories
           </span>
@@ -72,53 +48,30 @@
           <i
             class="pi pi-chevron-down filter-chevron"
             aria-hidden="true"
-            [class.filter-chevron-expanded]="
-              categoriesTrigger.expanded()
-            "
+            [class.filter-chevron-expanded]="categoriesTrigger.expanded()"
           ></i>
         </button>
       </h3>
 
-      <div
-        #categoriesPanel="ngAccordionPanel"
-        ngAccordionPanel
-        class="filter-panel"
-      >
+      <div #categoriesPanel="ngAccordionPanel" ngAccordionPanel class="filter-panel">
         <ng-template ngAccordionContent>
           <div class="filter-panel-content">
             <div class="filter-options">
-              @for (
-                category of categories();
-                track category.name
-              ) {
+              @for (category of categories(); track category.name) {
                 <label class="filter-check">
                   <input
                     type="checkbox"
-                    [checked]="
-                      selectedCategories().includes(
-                        category.name
-                      )
-                    "
-                    (change)="
-                      onCategoryChange(
-                        category.name,
-                        $event
-                      )
-                    "
+                    [checked]="selectedCategories().includes(category.name)"
+                    (change)="onCategoryChange(category.name, $event)"
                   />
 
-                  <span
-                    class="check-box"
-                    aria-hidden="true"
-                  ></span>
+                  <span class="check-box" aria-hidden="true"></span>
 
                   <span class="option-name">
                     {{ category.name }}
                   </span>
 
-                  <span class="option-count">
-                    ({{ category.count }})
-                  </span>
+                  <span class="option-count"> ({{ category.count }}) </span>
                 </label>
               }
             </div>
@@ -141,10 +94,7 @@
           [expanded]="true"
         >
           <span class="filter-trigger-label">
-            <i
-              class="pi pi-dollar"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-dollar" aria-hidden="true"></i>
 
             Price Range
           </span>
@@ -152,18 +102,12 @@
           <i
             class="pi pi-chevron-down filter-chevron"
             aria-hidden="true"
-            [class.filter-chevron-expanded]="
-              priceTrigger.expanded()
-            "
+            [class.filter-chevron-expanded]="priceTrigger.expanded()"
           ></i>
         </button>
       </h3>
 
-      <div
-        #pricePanel="ngAccordionPanel"
-        ngAccordionPanel
-        class="filter-panel"
-      >
+      <div #pricePanel="ngAccordionPanel" ngAccordionPanel class="filter-panel">
         <ng-template ngAccordionContent>
           <div class="filter-panel-content">
             <div class="price-filter">
@@ -179,25 +123,13 @@
 
               <div class="price-values">
                 <span>
-                  {{
-                    minimumPrice
-                      | currency
-                        : 'USD'
-                        : 'symbol'
-                        : '1.0-0'
-                  }}
+                  {{ minimumPrice | currency: 'USD' : 'symbol' : '1.0-0' }}
                 </span>
 
                 <strong>
                   Up to
 
-                  {{
-                    maxPrice()
-                      | currency
-                        : 'USD'
-                        : 'symbol'
-                        : '1.0-0'
-                  }}
+                  {{ maxPrice() | currency: 'USD' : 'symbol' : '1.0-0' }}
                 </strong>
               </div>
             </div>
@@ -220,10 +152,7 @@
           [expanded]="true"
         >
           <span class="filter-trigger-label">
-            <i
-              class="pi pi-tag"
-              aria-hidden="true"
-            ></i>
+            <i class="pi pi-tag" aria-hidden="true"></i>
 
             Brand
           </span>
@@ -231,53 +160,30 @@
           <i
             class="pi pi-chevron-down filter-chevron"
             aria-hidden="true"
-            [class.filter-chevron-expanded]="
-              brandTrigger.expanded()
-            "
+            [class.filter-chevron-expanded]="brandTrigger.expanded()"
           ></i>
         </button>
       </h3>
 
-      <div
-        #brandPanel="ngAccordionPanel"
-        ngAccordionPanel
-        class="filter-panel"
-      >
+      <div #brandPanel="ngAccordionPanel" ngAccordionPanel class="filter-panel">
         <ng-template ngAccordionContent>
           <div class="filter-panel-content">
             <div class="filter-options">
-              @for (
-                brand of brands();
-                track brand.name
-              ) {
+              @for (brand of brands(); track brand.name) {
                 <label class="filter-check">
                   <input
                     type="checkbox"
-                    [checked]="
-                      selectedBrands().includes(
-                        brand.name
-                      )
-                    "
-                    (change)="
-                      onBrandChange(
-                        brand.name,
-                        $event
-                      )
-                    "
+                    [checked]="selectedBrands().includes(brand.name)"
+                    (change)="onBrandChange(brand.name, $event)"
                   />
 
-                  <span
-                    class="check-box"
-                    aria-hidden="true"
-                  ></span>
+                  <span class="check-box" aria-hidden="true"></span>
 
                   <span class="option-name">
                     {{ brand.name }}
                   </span>
 
-                  <span class="option-count">
-                    ({{ brand.count }})
-                  </span>
+                  <span class="option-count"> ({{ brand.count }}) </span>
                 </label>
               }
             </div>
@@ -289,15 +195,9 @@
 
   <!-- Filters that do not have logic yet -->
 
-  <div
-    class="future-filter"
-    aria-disabled="true"
-  >
+  <div class="future-filter" aria-disabled="true">
     <span>
-      <i
-        class="pi pi-star"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-star" aria-hidden="true"></i>
 
       Rating
     </span>
@@ -305,15 +205,9 @@
     <small>Coming soon</small>
   </div>
 
-  <div
-    class="future-filter"
-    aria-disabled="true"
-  >
+  <div class="future-filter" aria-disabled="true">
     <span>
-      <i
-        class="pi pi-box"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-box" aria-hidden="true"></i>
 
       Availability
     </span>
@@ -321,15 +215,9 @@
     <small>Coming soon</small>
   </div>
 
-  <div
-    class="future-filter"
-    aria-disabled="true"
-  >
+  <div class="future-filter" aria-disabled="true">
     <span>
-      <i
-        class="pi pi-palette"
-        aria-hidden="true"
-      ></i>
+      <i class="pi pi-palette" aria-hidden="true"></i>
 
       Color
     </span>
