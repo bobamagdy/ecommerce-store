@@ -15,7 +15,7 @@ describe('ProductSearchAutocomplete', () => {
 
   let component: ProductSearchAutocomplete;
 
-  const products: Product[] = [ 
+  const products: Product[] = [
     {
       id: 1,
       name: 'Sony Wireless Headphones',

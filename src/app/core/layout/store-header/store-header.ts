@@ -6,8 +6,7 @@ import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/r
 
 import { debounceTime, distinctUntilChanged, map, skip } from 'rxjs';
 
-import { ProductSearchAutocomplete } from '../../../../../src/app/shared/components/product-search-autocomplete/product-search-autocomplete';
-
+import { ProductSearchAutocomplete } from '../../../shared/components/product-search-autocomplete/product-search-autocomplete';
 import { Product } from '../../models/product.model';
 
 import { CartService } from '../../services/cart/cart';
