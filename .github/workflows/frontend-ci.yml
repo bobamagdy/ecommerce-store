@@ -69,6 +69,11 @@ jobs:
           retention-days: 14
           if-no-files-found: error
 
+      - name: Generate PrimeUI license configuration
+        run: npm run config:generate
+        env:
+        PRIMEUI_LICENSE_KEY: ${{ secrets.PRIMEUI_LICENSE_KEY }}
+
   e2e:
     name: Playwright E2E
 
