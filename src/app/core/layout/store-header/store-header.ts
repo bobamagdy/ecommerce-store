@@ -6,18 +6,21 @@ import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/r
 
 import { debounceTime, distinctUntilChanged, map, skip } from 'rxjs';
 
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
+import { ProductSearchAutocomplete } from '../../../../../src/app/shared/components/product-search-autocomplete/product-search-autocomplete';
+
+import { Product } from '../../models/product.model';
 
 import { CartService } from '../../services/cart/cart';
+
 import { WishlistService } from '../../services/wishlist/wishlist';
 
 @Component({
   selector: 'app-store-header',
 
-  imports: [ButtonModule, InputTextModule, RouterLink, RouterLinkActive],
+  imports: [ProductSearchAutocomplete, RouterLink, RouterLinkActive],
 
   templateUrl: './store-header.html',
+
   styleUrl: './store-header.scss',
 
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,42 +38,15 @@ export class StoreHeader {
 
   readonly cartCount = this.cartService.totalQuantity;
 
-  /*
-   * نحول queryParamMap من Observable إلى Signal.
-   *
-   * initialValue تمنع وجود undefined
-   * قبل أول قيمة من الـRouter.
-   */
   private readonly queryParamMap = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
   });
 
-  /*
-   * قيمة البحث الموجودة حاليًا داخل الرابط.
-   */
   private readonly routeSearchQuery = computed(() => this.queryParamMap().get('q')?.trim() ?? '');
 
-  /*
-   * linkedSignal:
-   *
-   * تتزامن مع قيمة q الموجودة في الرابط،
-   * لكنها تظل Writable أثناء الكتابة.
-   */
   readonly searchQuery = linkedSignal(() => this.routeSearchQuery());
 
   constructor() {
-    /*
-     * تحويل Signal البحث إلى Observable.
-     *
-     * debounceTime:
-     * ننتظر 400ms بعد آخر حرف.
-     *
-     * distinctUntilChanged:
-     * لا ننفذ Navigation لنفس القيمة مرتين.
-     *
-     * skip(1):
-     * نتجاهل القيمة الأولى عند إنشاء الـHeader.
-     */
     toObservable(this.searchQuery)
       .pipe(
         map((query) => query.trim()),
@@ -84,26 +60,43 @@ export class StoreHeader {
         takeUntilDestroyed(),
       )
       .subscribe((query) => {
+        /*
+         * الـLive Search يعمل فقط
+         * ونحن داخل Products Page.
+         *
+         * في باقي الصفحات تظهر الاقتراحات،
+         * لكن الانتقال لا يحدث إلا عند Submit.
+         */
+        const currentPath = this.router.url.split('?')[0];
+
+        if (currentPath !== '/products') {
+          return;
+        }
+
         this.navigateToSearch(query, true);
       });
   }
 
-  updateSearchQuery(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
+  submitSearch(query: string): void {
+    this.searchQuery.set(query);
 
-    this.searchQuery.set(inputElement.value);
-  }
-
-  submitSearch(event: SubmitEvent): void {
-    event.preventDefault();
-
-    this.navigateToSearch(this.searchQuery(), false);
+    this.navigateToSearch(query, false);
   }
 
   clearSearch(): void {
     this.searchQuery.set('');
 
+    const currentPath = this.router.url.split('?')[0];
+
+    if (currentPath !== '/products') {
+      return;
+    }
+
     this.navigateToSearch('', false);
+  }
+
+  openProduct(product: Product): void {
+    void this.router.navigate(['/products', product.id]);
   }
 
   private navigateToSearch(query: string, replaceUrl: boolean): void {
@@ -113,13 +106,6 @@ export class StoreHeader {
 
     const isProductsPage = currentPath === '/products';
 
-    /*
-     * لو إحنا بالفعل داخل Products:
-     * نحافظ على باقي الفلاتر.
-     *
-     * لو جايين من صفحة أخرى:
-     * نبدأ Search جديدة بدون فلاتر قديمة.
-     */
     void this.router.navigate(['/products'], {
       queryParams: {
         q: normalizedQuery.length > 0 ? normalizedQuery : null,

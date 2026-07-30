@@ -10,13 +10,13 @@
       </p>
 
       <div class="top-links">
-        <a href="#"> Track Order </a>
+        <a href="#">Track Order</a>
 
-        <span aria-hidden="true"> | </span>
+        <span aria-hidden="true">|</span>
 
-        <a href="#"> Help Center </a>
+        <a href="#">Help Center</a>
 
-        <span aria-hidden="true"> | </span>
+        <span aria-hidden="true">|</span>
 
         <button type="button" class="currency-button">
           USD
@@ -41,34 +41,15 @@
         <span class="logo-text"> Hub<span>Shop</span> </span>
       </a>
 
-      <!-- Search -->
+      <!-- Product search -->
 
-      <form class="search-box" role="search" (submit)="submitSearch($event)">
-        <input
-          type="search"
-          pInputText
-          placeholder="Search products..."
-          aria-label="Search products"
-          autocomplete="off"
-          [value]="searchQuery()"
-          (input)="updateSearchQuery($event)"
-        />
-
-        @if (searchQuery().length > 0) {
-          <button
-            type="button"
-            class="clear-search-button"
-            aria-label="Clear search"
-            (click)="clearSearch()"
-          >
-            <i class="pi pi-times" aria-hidden="true"></i>
-          </button>
-        }
-
-        <button type="submit" pButton class="search-button" aria-label="Search">
-          <i class="pi pi-search" aria-hidden="true"></i>
-        </button>
-      </form>
+      <app-product-search-autocomplete
+        class="header-product-search"
+        [(query)]="searchQuery"
+        (searchSubmitted)="submitSearch($event)"
+        (cleared)="clearSearch()"
+        (productSelected)="openProduct($event)"
+      />
 
       <!-- Header actions -->
 
@@ -76,7 +57,7 @@
         <a class="header-action" routerLink="/auth/login">
           <i class="pi pi-user" aria-hidden="true"></i>
 
-          <span class="action-text"> Account </span>
+          <span class="action-text">Account</span>
         </a>
 
         <a
@@ -95,7 +76,7 @@
             }
           </span>
 
-          <span class="action-text"> Wishlist </span>
+          <span class="action-text">Wishlist</span>
         </a>
 
         <a
@@ -114,7 +95,7 @@
             }
           </span>
 
-          <span class="action-text"> Cart </span>
+          <span class="action-text">Cart</span>
         </a>
       </div>
     </div>
@@ -150,7 +131,7 @@
       <a class="nav-link categories-link" routerLink="/products">
         Categories
 
-        <span class="hot-badge"> HOT </span>
+        <span class="hot-badge">HOT</span>
 
         <i class="pi pi-chevron-down" aria-hidden="true"></i>
       </a>
