@@ -12,11 +12,11 @@ import { Product } from '../../models/product.model';
 import { CartService } from '../../services/cart/cart';
 
 import { WishlistService } from '../../services/wishlist/wishlist';
-
+import { StoreNavigationMenu } from './store-navigation-menu/store-navigation-menu';
 @Component({
   selector: 'app-store-header',
 
-  imports: [ProductSearchAutocomplete, RouterLink, RouterLinkActive],
+  imports: [ProductSearchAutocomplete, RouterLink, RouterLinkActive, StoreNavigationMenu],
 
   templateUrl: './store-header.html',
 
