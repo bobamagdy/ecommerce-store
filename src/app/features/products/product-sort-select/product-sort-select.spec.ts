@@ -2,7 +2,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ProductSortSelect } from './product-sort-select';
 
@@ -12,6 +12,8 @@ describe('ProductSortSelect', () => {
   let component: ProductSortSelect;
 
   beforeEach(async () => {
+    HTMLElement.prototype.scrollIntoView = vi.fn();
+
     await TestBed.configureTestingModule({
       imports: [ProductSortSelect],
 
@@ -70,6 +72,52 @@ describe('ProductSortSelect', () => {
     component.popupExpanded.set(true);
 
     component.closePopup();
+
+    expect(component.popupExpanded()).toBe(false);
+  });
+
+  it('should ignore an invalid selection', () => {
+    const emitSpy = vi.spyOn(component.valueChange, 'emit');
+
+    component.selectedValues.set([]);
+
+    component.popupExpanded.set(true);
+
+    component.commitSelection();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+
+    expect(component.popupExpanded()).toBe(true);
+  });
+
+  it('should render the popup options when expanded', async () => {
+    component.popupExpanded.set(true);
+
+    await fixture.whenStable();
+
+    const options = document.body.querySelectorAll('.sort-option');
+
+    expect(options).toHaveLength(4);
+
+    component.popupExpanded.set(false);
+
+    await fixture.whenStable();
+  });
+
+  it('should commit the selected option when an option is clicked', async () => {
+    const emitSpy = vi.spyOn(component.valueChange, 'emit');
+
+    component.popupExpanded.set(true);
+
+    await fixture.whenStable();
+
+    const optionsList = document.body.querySelector('.sort-options-list') as HTMLElement;
+
+    optionsList.click();
+
+    await fixture.whenStable();
+
+    expect(emitSpy).toHaveBeenCalledWith('newest');
 
     expect(component.popupExpanded()).toBe(false);
   });
