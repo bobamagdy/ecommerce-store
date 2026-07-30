@@ -47,3 +47,9 @@ Thumbs.db
 /playwright-report/
 /test-results/
 /blob-report/
+
+# Local environment values
+.env.local
+
+# Generated PrimeUI configuration
+/src/app/core/config/primeui-license.generated.ts
