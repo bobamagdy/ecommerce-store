@@ -17,7 +17,7 @@ describe('ProductSearchAutocomplete', () => {
 
   const products: Product[] = [
     {
-      id: 1,
+      id: '019c1fb7-f4a5-7b88-a796-0f53a37161de',
       name: 'Sony Wireless Headphones',
       category: 'Electronics',
       brand: 'Sony',
@@ -32,20 +32,6 @@ describe('ProductSearchAutocomplete', () => {
       stock: 10,
       sku: 'SONY-001',
     },
-    {
-      id: 2,
-      name: 'Apple Smart Watch',
-      category: 'Wearables',
-      brand: 'Apple',
-      price: 299.99,
-      rating: 4.7,
-      reviews: 220,
-      image: '/images/watch.jpg',
-      images: ['/images/watch.jpg'],
-      description: 'Smart watch.',
-      stock: 8,
-      sku: 'APPLE-002',
-    },
   ];
 
   const productServiceMock = {
@@ -57,7 +43,7 @@ describe('ProductSearchAutocomplete', () => {
 
     errorMessage: signal(''),
 
-    getProductById: (productId: number): Product | undefined => {
+    getProductById: (productId: string): Product | undefined => {
       return products.find((product) => product.id === productId);
     },
   };
@@ -142,7 +128,7 @@ describe('ProductSearchAutocomplete', () => {
       emittedProduct = product;
     });
 
-    component.selectedProductIds.set([1]);
+    component.selectedProductIds.set(['119c4fb7-f4a5-7b88-a796-0f53a37161de']);
 
     component.commitSelection();
 

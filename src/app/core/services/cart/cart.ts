@@ -30,7 +30,7 @@ export class CartService {
    * itemsState.
    */
   private readonly itemsByProductId = computed(
-    () => new Map<number, CartItem>(this.itemsState().map((item) => [item.product.id, item])),
+    () => new Map<string, CartItem>(this.itemsState().map((item) => [item.product.id, item])),
   );
 
   readonly totalQuantity = computed(() =>
@@ -134,7 +134,7 @@ export class CartService {
     this.setProductQuantity(product, currentQuantity + quantity);
   }
 
-  increaseQuantity(productId: number): void {
+  increaseQuantity(productId: string): void {
     const currentItem = this.itemsByProductId().get(productId);
 
     if (!currentItem) {
@@ -147,7 +147,7 @@ export class CartService {
   /*
    * تقلل الكمية لكن لا تحذف المنتج.
    */
-  decreaseQuantity(productId: number): void {
+  decreaseQuantity(productId: string): void {
     const currentItem = this.itemsByProductId().get(productId);
 
     if (!currentItem) {
@@ -165,7 +165,7 @@ export class CartService {
    * تقلل الكمية وتحذف المنتج
    * عندما تصل إلى صفر.
    */
-  decreaseOrRemoveProduct(productId: number): void {
+  decreaseOrRemoveProduct(productId: string): void {
     const currentItem = this.itemsByProductId().get(productId);
 
     if (!currentItem) {
@@ -175,7 +175,7 @@ export class CartService {
     this.setProductQuantity(currentItem.product, currentItem.quantity - 1);
   }
 
-  removeProduct(productId: number): void {
+  removeProduct(productId: string): void {
     this.itemsState.update((currentItems) =>
       currentItems.filter((item) => item.product.id !== productId),
     );
@@ -185,11 +185,11 @@ export class CartService {
     this.itemsState.set([]);
   }
 
-  isProductInCart(productId: number): boolean {
+  isProductInCart(productId: string): boolean {
     return this.itemsByProductId().has(productId);
   }
 
-  getProductQuantity(productId: number): number {
+  getProductQuantity(productId: string): number {
     return this.itemsByProductId().get(productId)?.quantity ?? 0;
   }
 
@@ -262,8 +262,8 @@ export class CartService {
     const product = productValue as Record<string, unknown>;
 
     return (
-      typeof product['id'] === 'number' &&
-      Number.isInteger(product['id']) &&
+      typeof product['id'] === 'string' &&
+      product['id'].trim().length > 0 &&
       typeof product['name'] === 'string' &&
       typeof product['category'] === 'string' &&
       typeof product['brand'] === 'string' &&

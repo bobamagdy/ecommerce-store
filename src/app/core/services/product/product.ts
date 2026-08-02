@@ -2,31 +2,76 @@ import { httpResource } from '@angular/common/http';
 
 import { computed, Injectable } from '@angular/core';
 
-import { Product } from '../../models/product.model';
+import { Product, ProductBadge } from '../../models/product.model';
+
+import { ProductListItemDto } from '../../models/catalog-api.models';
+
+import { PagedResult } from '../../models/paged-result.model';
+
+const EMPTY_PRODUCTS_RESULT: PagedResult<ProductListItemDto> = {
+  items: [],
+
+  page: 1,
+
+  pageSize: 12,
+
+  totalCount: 0,
+
+  totalPages: 0,
+
+  hasPreviousPage: false,
+
+  hasNextPage: false,
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private readonly productsResource = httpResource<Product[]>(() => '/data/products.json', {
-    defaultValue: [],
-  });
+  private readonly productsResource = httpResource<PagedResult<ProductListItemDto>>(
+    () => ({
+      url: 'api/products',
 
-  /*
-   * لا نقرأ value() أثناء Error State.
-   */
-  readonly products = computed<Product[]>(() =>
-    this.productsResource.hasValue() ? this.productsResource.value() : [],
+      params: {
+        page: 1,
+
+        pageSize: 12,
+
+        sortBy: 'newest',
+      },
+    }),
+
+    {
+      defaultValue: EMPTY_PRODUCTS_RESULT,
+    },
   );
 
-  /*
-   * Lookup جاهز حسب Product ID.
-   *
-   * يتكوّن من جديد فقط عندما تتغير
-   * قائمة المنتجات.
-   */
+  readonly pageResult = computed(() => {
+    if (!this.productsResource.hasValue()) {
+      return EMPTY_PRODUCTS_RESULT;
+    }
+
+    return this.productsResource.value();
+  });
+
+  readonly products = computed<Product[]>(() =>
+    this.pageResult().items.map((product) => this.mapListItemToProduct(product)),
+  );
+
+  readonly totalCount = computed(() => this.pageResult().totalCount);
+
+  readonly totalPages = computed(() => this.pageResult().totalPages);
+
+  readonly currentPage = computed(() => this.pageResult().page);
+
+  readonly pageSize = computed(() => this.pageResult().pageSize);
+
+  readonly hasPreviousPage = computed(() => this.pageResult().hasPreviousPage);
+
+  readonly hasNextPage = computed(() => this.pageResult().hasNextPage);
+
   private readonly productsById = computed(() => {
-    return new Map<number, Product>(this.products().map((product) => [product.id, product]));
+    return new Map<string, Product>(this.products().map((product) => [product.id, product]));
   });
 
   readonly isLoading = this.productsResource.isLoading;
@@ -55,11 +100,47 @@ export class ProductService {
     return currentError.message || 'Products could not be loaded.';
   });
 
-  getProductById(productId: number): Product | undefined {
+  getProductById(productId: string): Product | undefined {
     return this.productsById().get(productId);
   }
 
   reloadProducts(): boolean {
     return this.productsResource.reload();
+  }
+
+  private mapListItemToProduct(product: ProductListItemDto): Product {
+    return {
+      id: product.id,
+
+      name: product.name,
+
+      category: product.category,
+
+      brand: product.brand,
+
+      price: product.price,
+
+      oldPrice: product.oldPrice,
+
+      rating: product.rating,
+
+      reviews: product.reviews,
+
+      stock: product.stock,
+
+      badge: product.badge as ProductBadge | null,
+
+      image: product.image,
+
+      images: product.image ? [product.image] : [],
+
+      /*
+       * List endpoint does not return
+       * details fields yet.
+       */
+      description: '',
+
+      sku: '',
+    };
   }
 }

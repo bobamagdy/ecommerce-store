@@ -16,7 +16,7 @@ describe('ProductCard', () => {
   let component: ProductCard;
 
   const product: Product = {
-    id: 1,
+    id: '119c1fb7-f4a5-7b88-a796-0f53a37161de',
 
     name: 'Sony Wireless Headphones',
 

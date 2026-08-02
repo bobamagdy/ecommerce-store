@@ -11,11 +11,17 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { PRIMEUI_LICENSE_KEY } from './core/config/primeui-license.generated';
 import { routes } from './app.routes';
-
+import { API_CONFIG } from './core/tokens/api-config';
 export const appConfig: ApplicationConfig = {
   providers: [
     { provide: APP_ENVIRONMENT, useValue: environment },
+    {
+      provide: API_CONFIG,
 
+      useValue: {
+        baseUrl: environment.apiBaseUrl,
+      },
+    },
     provideBrowserGlobalErrorListeners(),
 
     provideZonelessChangeDetection(),

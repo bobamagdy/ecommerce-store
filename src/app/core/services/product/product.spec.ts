@@ -12,7 +12,7 @@ import { ProductService } from './product';
 
 const MOCK_PRODUCTS: Product[] = [
   {
-    id: 1,
+    id: '019c1fb7-f4a5-7b88-a796-0f53a37161de',
     name: 'Sony Wireless Headphones',
     category: 'Electronics',
     brand: 'Sony',
@@ -29,7 +29,7 @@ const MOCK_PRODUCTS: Product[] = [
   },
 
   {
-    id: 2,
+    id: '019c1fb7-f4a5-7b88-a796-0f53a37161df',
     name: 'Nike Running Shoes',
     category: 'Fashion',
     brand: 'Nike',
@@ -41,6 +41,8 @@ const MOCK_PRODUCTS: Product[] = [
     description: 'Comfortable running shoes.',
     stock: 6,
     sku: 'NIKE-002',
+    oldPrice: 150,
+    badge: 'New',
   },
 ];
 
@@ -154,7 +156,7 @@ describe('ProductService', () => {
 
     await applicationRef.whenStable();
 
-    expect(service.getProductById(2)).toEqual(MOCK_PRODUCTS[1]);
+    expect(service.getProductById('019c1fb7-f4a5-7b88-a796-0f53a37161df')).toEqual(MOCK_PRODUCTS[1]);
   });
 
   it('should return undefined when product does not exist', async () => {
@@ -164,7 +166,7 @@ describe('ProductService', () => {
 
     await applicationRef.whenStable();
 
-    expect(service.getProductById(999)).toBeUndefined();
+    expect(service.getProductById('999')).toBeUndefined();
   });
 
   it('should expose a blocking error when initial request fails', async () => {
@@ -203,7 +205,7 @@ describe('ProductService', () => {
       ...MOCK_PRODUCTS,
 
       {
-        id: 3,
+        id: '019c1fb7-f4a5-7b88-a796-0f53a37161dg',
         name: 'Apple Watch',
         category: 'Electronics',
         brand: 'Apple',
@@ -215,6 +217,8 @@ describe('ProductService', () => {
         description: 'Smart watch with fitness tracking.',
         stock: 8,
         sku: 'APPLE-003',
+        oldPrice: 450,
+        badge: 'New',
       },
     ];
 
@@ -241,6 +245,6 @@ describe('ProductService', () => {
 
     expect(service.isReloading()).toBe(false);
 
-    expect(service.getProductById(3)).toEqual(updatedProducts[2]);
+    expect(service.getProductById('019c1fb7-f4a5-7b88-a796-0f53a37161dg')).toEqual(updatedProducts[2]);
   });
 });

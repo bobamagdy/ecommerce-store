@@ -85,13 +85,13 @@ describe('WishlistService', () => {
   it('should add a product', () => {
     const service = createService();
 
-    service.addProduct(1);
+    service.addProduct('119c1fb7-f4a5-7b88-a796-0f53a37161de');
 
-    expect(service.productIds()).toEqual([1]);
+    expect(service.productIds()).toEqual(['119c1fb7-f4a5-7b88-a796-0f53a37161de']);
 
     expect(service.totalItems()).toBe(1);
 
-    expect(service.isFavorite(1)).toBe(true);
+    expect(service.isFavorite('119c1fb7-f4a5-7b88-a796-0f53a37161de')).toBe(true);
 
     expect(service.isEmpty()).toBe(false);
   });
@@ -99,10 +99,10 @@ describe('WishlistService', () => {
   it('should not add the same product twice', () => {
     const service = createService();
 
-    service.addProduct(1);
-    service.addProduct(1);
+    service.addProduct('119c1fb7-f4a5-7b88-a796-0f53a37161de');
+    service.addProduct('119c1fb7-f4a5-7b88-a796-0f53a37161de');
 
-    expect(service.productIds()).toEqual([1]);
+    expect(service.productIds()).toEqual(['119c1fb7-f4a5-7b88-a796-0f53a37161de']);
 
     expect(service.totalItems()).toBe(1);
   });
@@ -110,13 +110,13 @@ describe('WishlistService', () => {
   it('should add and remove a product using toggle', () => {
     const service = createService();
 
-    service.toggleProduct(2);
+    service.toggleProduct('229c1fb7-f4a5-7b88-a796-0f53a37161de' );
 
-    expect(service.isFavorite(2)).toBe(true);
+    expect(service.isFavorite('229c1fb7-f4a5-7b88-a796-0f53a37161de')).toBe(true);
 
-    service.toggleProduct(2);
+    service.toggleProduct('229c1fb7-f4a5-7b88-a796-0f53a37161de');
 
-    expect(service.isFavorite(2)).toBe(false);
+    expect(service.isFavorite('229c1fb7-f4a5-7b88-a796-0f53a37161de')).toBe(false);
 
     expect(service.productIds()).toEqual([]);
   });
@@ -124,12 +124,12 @@ describe('WishlistService', () => {
   it('should remove a product', () => {
     const service = createService();
 
-    service.addProduct(1);
-    service.addProduct(2);
+    service.addProduct('119c1fb7-f4a5-7b88-a796-0f53a37161de');
+    service.addProduct('229c1fb7-f4a5-7b88-a796-0f53a37161de');
 
-    service.removeProduct(1);
+    service.removeProduct('119c1fb7-f4a5-7b88-a796-0f53a37161de');
 
-    expect(service.productIds()).toEqual([2]);
+    expect(service.productIds()).toEqual(['229c1fb7-f4a5-7b88-a796-0f53a37161de']);
 
     expect(service.totalItems()).toBe(1);
   });
@@ -137,9 +137,9 @@ describe('WishlistService', () => {
   it('should clear the wishlist', () => {
     const service = createService();
 
-    service.addProduct(1);
-    service.addProduct(2);
-    service.addProduct(3);
+    service.addProduct('119c1fb7-f4a5-7b88-a796-0f53a37161de');
+    service.addProduct('229c1fb7-f4a5-7b88-a796-0f53a37161de');
+    service.addProduct('339c1fb7-f4a5-7b88-a796-0f53a37161de');
 
     service.clearWishlist();
 
@@ -153,13 +153,13 @@ describe('WishlistService', () => {
   it('should ignore invalid product ids', () => {
     const service = createService();
 
-    service.addProduct(0);
-    service.addProduct(-1);
-    service.addProduct(1.5);
-    service.addProduct(Number.NaN);
+    service.addProduct('0');
+    service.addProduct('-1');
+    service.addProduct('1.5');
+    service.addProduct('NaN');
 
-    service.toggleProduct(0);
-    service.removeProduct(-1);
+    service.toggleProduct('0');
+    service.removeProduct('-1');
 
     expect(service.productIds()).toEqual([]);
   });
@@ -167,8 +167,8 @@ describe('WishlistService', () => {
   it('should save wishlist changes in storage', () => {
     const service = createService();
 
-    service.addProduct(4);
-    service.addProduct(7);
+    service.addProduct('4');
+    service.addProduct('7');
 
     TestBed.tick();
 
@@ -176,47 +176,47 @@ describe('WishlistService', () => {
 
     expect(savedValue).not.toBeNull();
 
-    expect(JSON.parse(savedValue ?? '[]')).toEqual([4, 7]);
+    expect(JSON.parse(savedValue ?? '[]')).toEqual(['4', '7']);
   });
 
   it('should load a saved wishlist', () => {
     storage.setItem(
       'hubshop-wishlist',
 
-      JSON.stringify([1, 3, 5]),
+      JSON.stringify(['1', '3', '5']),
     );
 
     const service = createService();
 
-    expect(service.productIds()).toEqual([1, 3, 5]);
+    expect(service.productIds()).toEqual(['1', '3', '5']);
 
     expect(service.totalItems()).toBe(3);
 
-    expect(service.isFavorite(3)).toBe(true);
+    expect(service.isFavorite('3')).toBe(true);
   });
 
   it('should remove duplicate stored product ids', () => {
     storage.setItem(
       'hubshop-wishlist',
 
-      JSON.stringify([1, 1, 2, 2, 3]),
+      JSON.stringify(['1', '1', '2', '2', '3']),
     );
 
     const service = createService();
 
-    expect(service.productIds()).toEqual([1, 2, 3]);
+    expect(service.productIds()).toEqual(['1', '2', '3']);
   });
 
   it('should ignore invalid stored values', () => {
     storage.setItem(
       'hubshop-wishlist',
 
-      JSON.stringify([1, 'invalid', -2, 2.5, null, 3]),
+      JSON.stringify(['1', 'invalid', '-2', '2.5', 'null', '3']),
     );
 
     const service = createService();
 
-    expect(service.productIds()).toEqual([1, 3]);
+    expect(service.productIds()).toEqual(['1', '3']);
   });
 
   it('should ignore a stored value that is not an array', () => {
@@ -252,8 +252,8 @@ describe('WishlistService', () => {
   it('should work without browser storage', () => {
     const service = createService(null);
 
-    service.addProduct(1);
-    service.addProduct(2);
+    service.addProduct('229c1fb7-f4a5-7b88-a796-0f53a37161de');
+    service.addProduct('129c1fb7-f4a5-7b88-a796-0f53a37161de');
 
     expect(service.productIds()).toEqual([1, 2]);
 

@@ -32,6 +32,7 @@ import {
   SortOption,
 } from '../../../core/models/products-page.models';
 
+
 @Component({
   selector: 'app-products-page',
 
@@ -44,7 +45,6 @@ import {
 })
 export class ProductsPage {
   private readonly productService = inject(ProductService);
-
   private readonly cartService = inject(CartService);
 
   private readonly wishlistService = inject(WishlistService);
@@ -218,7 +218,7 @@ export class ProductsPage {
 
         case 'newest':
         default:
-          return secondProduct.id - firstProduct.id;
+          return String(secondProduct.id).localeCompare(String(firstProduct.id));
       }
     });
   });
@@ -269,11 +269,11 @@ export class ProductsPage {
     });
   }
 
-  isFavorite(productId: number): boolean {
+  isFavorite(productId: string): boolean {
     return this.wishlistService.isFavorite(productId);
   }
 
-  setFavorite(productId: number, shouldBeFavorite: boolean): void {
+  setFavorite(productId: string, shouldBeFavorite: boolean): void {
     const currentlyFavorite = this.wishlistService.isFavorite(productId);
 
     if (currentlyFavorite === shouldBeFavorite) {
@@ -283,7 +283,7 @@ export class ProductsPage {
     this.wishlistService.toggleProduct(productId);
   }
 
-  getProductQuantity(productId: number): number {
+  getProductQuantity(productId: string): number {
     return this.cartService.getProductQuantity(productId);
   }
 
