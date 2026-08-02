@@ -32,7 +32,6 @@ import {
   SortOption,
 } from '../../../core/models/products-page.models';
 
-
 @Component({
   selector: 'app-products-page',
 
