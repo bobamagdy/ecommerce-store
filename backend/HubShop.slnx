@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HubShop.Api/HubShop.Api.csproj" />
+    <Project Path="src/HubShop.Application/HubShop.Application.csproj" />
+    <Project Path="src/HubShop.Domain/HubShop.Domain.csproj" />
+    <Project Path="src/HubShop.Infrastructure/HubShop.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HubShop.Api.IntegrationTests/HubShop.Api.IntegrationTests.csproj" />
+    <Project Path="tests/HubShop.Application.UnitTests/HubShop.Application.UnitTests.csproj" />
+  </Folder>
+</Solution>

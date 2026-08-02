@@ -53,3 +53,20 @@ Thumbs.db
 
 # Generated PrimeUI configuration
 /src/app/core/config/primeui-license.generated.ts
+
+
+
+# .NET build output
+/backend/**/bin/
+/backend/**/obj/
+
+# Visual Studio
+/backend/.vs/
+*.user
+*.suo
+
+# .NET test results
+/backend/**/TestResults/
+
+# Local development secrets
+/backend/**/appsettings.Local.json
