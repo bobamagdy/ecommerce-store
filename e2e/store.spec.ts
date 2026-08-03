@@ -1,5 +1,42 @@
 import { expect, Page, test } from '@playwright/test';
 
+const MOCK_PRODUCTS_RESPONSE = {
+  items: [
+    {
+      id: '019c1fb7-f4a5-7b88-a796-0f53a37161d0',
+      name: 'Sony Wireless Headphones',
+      category: 'Electronics',
+      brand: 'Sony',
+      price: 150,
+      oldPrice: 200,
+      rating: 4.8,
+      reviews: 320,
+      stock: 10,
+      badge: 'Sale',
+      image: '/images/headphones.jpg',
+    },
+    {
+      id: '019c1fb7-f4a5-7b88-a796-0f53a37161d1',
+      name: 'Nike Running Shoes',
+      category: 'Fashion',
+      brand: 'Nike',
+      price: 120,
+      oldPrice: 150,
+      rating: 4.5,
+      reviews: 180,
+      stock: 6,
+      badge: 'New',
+      image: '/images/shoes.jpg',
+    },
+  ],
+  page: 1,
+  pageSize: 12,
+  totalCount: 2,
+  totalPages: 1,
+  hasPreviousPage: false,
+  hasNextPage: false,
+};
+
 async function clearApplicationState(page: Page): Promise<void> {
   await page.goto('/');
 
@@ -22,6 +59,18 @@ async function authenticateUser(page: Page): Promise<void> {
 
 test.describe('HubShop frontend', () => {
   test.beforeEach(async ({ page }) => {
+    /*
+     * الـ GitHub Actions تشغل الـ Frontend فقط،
+     * لذلك نعترض طلب المنتجات ونرجع بيانات اختبار ثابتة.
+     */
+    await page.route('**/api/products**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(MOCK_PRODUCTS_RESPONSE),
+      });
+    });
+
     await clearApplicationState(page);
   });
 
