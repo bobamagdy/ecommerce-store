@@ -61,25 +61,93 @@ internal sealed class ProductConfiguration
         .HasPrecision(0);
 
     builder.HasIndex(product => product.Sku)
-        .IsUnique();
+        .IsUnique()
+        .HasDatabaseName("UX_Products_Sku");
 
-    builder.HasIndex(product => new
-    {
-      product.CategoryId,
-      product.IsActive
-    });
-
-    builder.HasIndex(product => new
-    {
-      product.BrandId,
-      product.IsActive
-    });
-
+    /*
+     * Supports the default catalog order:
+     *
+     * WHERE IsActive = 1
+     * ORDER BY CreatedAtUtc DESC, Id DESC
+     */
     builder.HasIndex(product => new
     {
       product.IsActive,
-      product.CreatedAtUtc
-    });
+      product.CreatedAtUtc,
+      product.Id
+    })
+        .IsDescending(
+            false,
+            true,
+            true
+        )
+        .HasDatabaseName(
+            "IX_Products_IsActive_CreatedAtUtc_Id"
+        );
+
+    /*
+     * Supports price sorting:
+     *
+     * WHERE IsActive = 1
+     * ORDER BY Price, Id
+     */
+    builder.HasIndex(product => new
+    {
+      product.IsActive,
+      product.Price,
+      product.Id
+    })
+        .HasDatabaseName(
+            "IX_Products_IsActive_Price_Id"
+        );
+
+    /*
+     * Supports category filtering with newest sorting:
+     *
+     * WHERE CategoryId = ...
+     * AND IsActive = 1
+     * ORDER BY CreatedAtUtc DESC, Id DESC
+     */
+    builder.HasIndex(product => new
+    {
+      product.CategoryId,
+      product.IsActive,
+      product.CreatedAtUtc,
+      product.Id
+    })
+        .IsDescending(
+            false,
+            false,
+            true,
+            true
+        )
+        .HasDatabaseName(
+            "IX_Products_CategoryId_IsActive_CreatedAtUtc_Id"
+        );
+
+    /*
+     * Supports brand filtering with newest sorting:
+     *
+     * WHERE BrandId = ...
+     * AND IsActive = 1
+     * ORDER BY CreatedAtUtc DESC, Id DESC
+     */
+    builder.HasIndex(product => new
+    {
+      product.BrandId,
+      product.IsActive,
+      product.CreatedAtUtc,
+      product.Id
+    })
+        .IsDescending(
+            false,
+            false,
+            true,
+            true
+        )
+        .HasDatabaseName(
+            "IX_Products_BrandId_IsActive_CreatedAtUtc_Id"
+        );
 
     builder.HasMany(product => product.Images)
         .WithOne(image => image.Product)

@@ -1,23 +1,18 @@
 import { provideZonelessChangeDetection, signal } from '@angular/core';
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Product } from '../../../core/models/product.model';
-
 import { ProductService } from '../../../core/services/product/product';
-
 import { ProductSearchAutocomplete } from './product-search-autocomplete';
 
 describe('ProductSearchAutocomplete', () => {
   let fixture: ComponentFixture<ProductSearchAutocomplete>;
-
   let component: ProductSearchAutocomplete;
 
   const products: Product[] = [
     {
-      id: 1,
+      id: '019c1fb7-f4a5-7b88-a796-0f53a37161de',
       name: 'Sony Wireless Headphones',
       category: 'Electronics',
       brand: 'Sony',
@@ -33,31 +28,30 @@ describe('ProductSearchAutocomplete', () => {
       sku: 'SONY-001',
     },
     {
-      id: 2,
-      name: 'Apple Smart Watch',
-      category: 'Wearables',
+      id: '029c1fb7-f4a5-7b88-a796-0f53a37161df',
+      name: 'Apple Watch',
+      category: 'Electronics',
       brand: 'Apple',
-      price: 299.99,
-      rating: 4.7,
-      reviews: 220,
+      price: 399,
+      oldPrice: 450,
+      rating: 4.9,
+      reviews: 245,
+      badge: 'New',
       image: '/images/watch.jpg',
       images: ['/images/watch.jpg'],
       description: 'Smart watch.',
       stock: 8,
-      sku: 'APPLE-002',
+      sku: 'APPLE-003',
     },
   ];
 
   const productServiceMock = {
     products: signal(products),
-
     isInitialLoading: signal(false),
-
     hasBlockingError: signal(false),
-
     errorMessage: signal(''),
 
-    getProductById: (productId: number): Product | undefined => {
+    getProductById: (productId: string): Product | undefined => {
       return products.find((product) => product.id === productId);
     },
   };
@@ -65,10 +59,8 @@ describe('ProductSearchAutocomplete', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProductSearchAutocomplete],
-
       providers: [
         provideZonelessChangeDetection(),
-
         {
           provide: ProductService,
           useValue: productServiceMock,
@@ -77,7 +69,6 @@ describe('ProductSearchAutocomplete', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductSearchAutocomplete);
-
     component = fixture.componentInstance;
 
     await fixture.whenStable();
@@ -107,11 +98,9 @@ describe('ProductSearchAutocomplete', () => {
     });
 
     component.query.set('  headphones  ');
-
     component.submitSearch();
 
     expect(emittedQuery).toBe('headphones');
-
     expect(component.popupExpanded()).toBe(false);
   });
 
@@ -123,15 +112,12 @@ describe('ProductSearchAutocomplete', () => {
     });
 
     component.query.set('sony');
-
     component.popupExpanded.set(true);
 
     component.clearSearch();
 
     expect(component.query()).toBe('');
-
     expect(component.popupExpanded()).toBe(false);
-
     expect(cleared).toBe(true);
   });
 
@@ -142,12 +128,11 @@ describe('ProductSearchAutocomplete', () => {
       emittedProduct = product;
     });
 
-    component.selectedProductIds.set([1]);
+    component.selectedProductIds.set(['019c1fb7-f4a5-7b88-a796-0f53a37161de']);
 
     component.commitSelection();
 
     expect(emittedProduct).toEqual(products[0]);
-
     expect(component.popupExpanded()).toBe(false);
   });
 });

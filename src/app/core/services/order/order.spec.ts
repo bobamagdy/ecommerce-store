@@ -41,7 +41,7 @@ class MemoryStorage implements Storage {
 }
 
 const PRODUCT: Product = {
-  id: 1,
+  id: '019c1fb7-f4a5-7b88-a796-0f53a37161de',
   name: 'Test Product',
   category: 'Electronics',
   brand: 'Test Brand',
@@ -53,6 +53,8 @@ const PRODUCT: Product = {
   description: 'Test product.',
   stock: 10,
   sku: 'TEST-001',
+  oldPrice: 50,
+  badge: 'Sale',
 };
 
 const ORDER_INPUT: CreateOrderInput = {

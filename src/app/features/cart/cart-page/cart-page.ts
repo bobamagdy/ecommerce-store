@@ -35,7 +35,7 @@ export class CartPage {
     this.cartService.decreaseQuantity(item.product.id);
   }
 
-  removeProduct(productId: number): void {
+  removeProduct(productId: string): void {
     this.cartService.removeProduct(productId);
   }
 

@@ -57,7 +57,7 @@ export class WishlistPage {
     this.wishlistService.clearWishlist();
   }
 
-  setFavorite(productId: number, shouldBeFavorite: boolean): void {
+  setFavorite(productId: string, shouldBeFavorite: boolean): void {
     const currentlyFavorite = this.wishlistService.isFavorite(productId);
 
     /*
@@ -71,7 +71,7 @@ export class WishlistPage {
     this.wishlistService.toggleProduct(productId);
   }
 
-  getProductQuantity(productId: number): number {
+  getProductQuantity(productId: string): number {
     return this.cartService.getProductQuantity(productId);
   }
 

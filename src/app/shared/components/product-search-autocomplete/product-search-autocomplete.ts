@@ -80,7 +80,7 @@ export class ProductSearchAutocomplete {
 
   readonly popupExpanded = signal(false);
 
-  readonly selectedProductIds = signal<number[]>([]);
+  readonly selectedProductIds = signal<string[]>([]);
 
   readonly combobox = viewChild(Combobox);
 

@@ -1,24 +1,31 @@
 export type ProductBadge = 'Sale' | 'New';
 
 export interface Product {
-  id: number;
+  id: string;
+
   name: string;
+
   category: string;
+
   brand: string;
 
   price: number;
-  oldPrice?: number;
+
+  oldPrice: number | null;
 
   rating: number;
+
   reviews: number;
 
-  badge?: ProductBadge;
+  badge: ProductBadge | null;
 
   image: string;
+
   images: string[];
 
   description: string;
 
   stock: number;
+
   sku: string;
 }

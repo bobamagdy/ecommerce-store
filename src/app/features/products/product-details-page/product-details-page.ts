@@ -9,7 +9,6 @@ import {
   inject,
   input,
   linkedSignal,
-  numberAttribute,
   viewChildren,
 } from '@angular/core';
 
@@ -27,14 +26,8 @@ import { QuantitySelector } from '../../../shared/components/quantity-selector/q
 
 import { ImageFallback } from '../../../shared/directives/image-fallback/image-fallback';
 
-function transformProductId(value: string | null | undefined): number {
-  const productId = numberAttribute(value);
-
-  if (!Number.isInteger(productId) || productId <= 0) {
-    return 0;
-  }
-
-  return productId;
+function transformProductId(value: string | null | undefined): string {
+  return value?.trim() ?? '';
 }
 
 @Component({
@@ -61,7 +54,7 @@ export class ProductDetailsPage {
    * Angular Router يربطها مع:
    * products/:id
    */
-  readonly id = input.required<number, string | null | undefined>({
+  readonly id = input.required<string, string | null | undefined>({
     transform: transformProductId,
   });
 

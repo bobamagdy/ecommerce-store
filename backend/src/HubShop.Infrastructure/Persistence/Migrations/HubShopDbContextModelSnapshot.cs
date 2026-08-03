@@ -154,13 +154,23 @@ namespace HubShop.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Sku")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("UX_Products_Sku");
 
-                    b.HasIndex("BrandId", "IsActive");
+                    b.HasIndex("IsActive", "CreatedAtUtc", "Id")
+                        .IsDescending(false, true, true)
+                        .HasDatabaseName("IX_Products_IsActive_CreatedAtUtc_Id");
 
-                    b.HasIndex("CategoryId", "IsActive");
+                    b.HasIndex("IsActive", "Price", "Id")
+                        .HasDatabaseName("IX_Products_IsActive_Price_Id");
 
-                    b.HasIndex("IsActive", "CreatedAtUtc");
+                    b.HasIndex("BrandId", "IsActive", "CreatedAtUtc", "Id")
+                        .IsDescending(false, false, true, true)
+                        .HasDatabaseName("IX_Products_BrandId_IsActive_CreatedAtUtc_Id");
+
+                    b.HasIndex("CategoryId", "IsActive", "CreatedAtUtc", "Id")
+                        .IsDescending(false, false, true, true)
+                        .HasDatabaseName("IX_Products_CategoryId_IsActive_CreatedAtUtc_Id");
 
                     b.ToTable("Products", (string)null);
                 });

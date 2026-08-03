@@ -174,7 +174,8 @@ export class OrderService {
       this.isFiniteNumber(item['quantity']) &&
       (item['quantity'] as number) > 0 &&
       this.isFiniteNumber(item['lineTotal']) &&
-      typeof productValue['id'] === 'number' &&
+      typeof productValue['id'] === 'string' &&
+      productValue['id'].trim().length > 0 &&
       typeof productValue['name'] === 'string' &&
       typeof productValue['image'] === 'string' &&
       this.isFiniteNumber(productValue['price'])
